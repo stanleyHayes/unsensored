@@ -13,7 +13,13 @@ const Layout = ({children}) => {
     const useStyles = makeStyles(theme => {
         return {
             content: {
-                flexGrow: 1
+                flexGrow: 1,
+                paddingTop: 72,
+                paddingBottom: 72
+            },
+            desktopContent: {
+                paddingTop: 96,
+                paddingBottom: 32
             },
             bottom: {
                 position: 'fixed',
@@ -59,7 +65,7 @@ const Layout = ({children}) => {
             <Hidden mdDown={true}>
                 <DesktopLayout>
                     <DesktopHeader/>
-                    <Container>
+                    <Container className={classes.desktopContent}>
                         {children}
                     </Container>
                 </DesktopLayout>

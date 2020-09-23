@@ -11,7 +11,7 @@ import store from "./redux/store";
 
 const theme = createMuiTheme({
     typography: {
-        fontFamily: 'Hepta Slab'
+        fontFamily: 'IBM Plex Mono'
     },
     palette: {
         primary: {
