@@ -39,7 +39,7 @@ const DesktopHeader = () => {
 
                             <Grid item={true}>
                                 <Button startIcon={<AddCircleRounded className={classes.button} />}>
-                                    <Link className={classes.link} to="/trending">
+                                    <Link className={classes.link} to="/article/new">
                                         Create
                                     </Link>
                                 </Button>

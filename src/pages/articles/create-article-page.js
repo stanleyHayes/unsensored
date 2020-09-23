@@ -88,9 +88,12 @@ const CreateArticlePage = () => {
             }
         }
     });
+    
+    const handleTextChange = (content, editor) => {
+        setArticle({...article, text: content});
+    }
 
     const classes = useStyles();
-
 
     return (
         <Layout>
@@ -113,28 +116,22 @@ const CreateArticlePage = () => {
                                 className={classes.textField}
                             />
 
-                            <Box  className={classes.box}>
-                                <Typography variant="body1" gutterBottom={true}>Article Summary</Typography>
-                                <Editor
-                                    value={summary}
-                                    tagName="summary"
-                                    textareaName="summary"
-                                    apiKey="4k98mzlrjhgnes2exbqtgbhevplum3c0c6czfodsu2s5mpqk"
-                                    initialValue=""
-                                    init={{
-                                        height: 200,
-                                        menubar: false,
-                                        plugins: [
-                                            'advlist autolink lists link image',
-                                            'charmap print preview anchor help',
-                                            'searchreplace visualblocks code',
-                                            'insertdatetime media table paste wordcount'
-                                        ],
-                                        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'
-                                    }}
-                                    onChange={handleArticleChange}
-                                />
-                            </Box>
+                            <TextField
+                                value={summary}
+                                label="Article Summary"
+                                placeholder="Enter article summary"
+                                onChange={handleArticleChange}
+                                fullWidth={true}
+                                name="summary"
+                                required={true}
+                                multiline={true}
+                                rows={5}
+                                margin="normal"
+                                helperText={error.summary || ''}
+                                error={Boolean(error.summary)}
+                                variant="outlined"
+                                className={classes.textField}
+                            />
 
                             <Box className={classes.box}>
                                 <Typography variant="body1" gutterBottom={true}>Article Detail</Typography>
@@ -155,7 +152,7 @@ const CreateArticlePage = () => {
                                         ],
                                         toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'
                                     }}
-                                    onChange={handleArticleChange}
+                                    onEditorChange={handleTextChange}
                                 />
                             </Box>
 

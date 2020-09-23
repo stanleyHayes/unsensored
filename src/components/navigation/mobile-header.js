@@ -37,7 +37,7 @@ const MobileHeader = ({handleOpen}) => {
                     </Grid>
 
                     <Grid item={true} xs={4}>
-                        <Link to="/articles/new" className={classes.link}>
+                        <Link to="/article/new" className={classes.link}>
                             <IconButton>
                                 <AddCircleRounded className={classes.icon}/>
                             </IconButton>

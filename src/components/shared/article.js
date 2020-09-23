@@ -13,6 +13,13 @@ import {
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
+import {Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
+import createDisplay from 'number-display';
+
+const display = createDisplay({
+    length: 8,
+    decimal: 0,
+});
 
 const Article = ({article}) => {
 
@@ -28,13 +35,17 @@ const Article = ({article}) => {
             },
             grid: {
                 marginBottom: 8
+            },
+            dot: {
+                fontWeight: 900,
+                borderRadius: '50%'
             }
         }
     });
 
     const classes = useStyles();
 
-    const {title, summary, author, datePublished, banner, text, likes, comments, link} = article;
+    const {title, summary, author, datePublished, banner, text, likes, comments, link, views} = article;
     const {name, avatar} = author;
 
     return (
@@ -46,14 +57,15 @@ const Article = ({article}) => {
                 title={name}
                 subheader={moment(datePublished).fromNow()}
             />
-            <Divider variant="fullWidth" />
+            <Divider variant="fullWidth"/>
             <CardMedia component="img" src={banner} className={classes.banner}/>
-            <Divider variant="fullWidth" />
+            <Divider variant="fullWidth"/>
             <CardContent>
-                <Grid className={classes.grid} container={true} justify="flex-start" spacing={2}>
+                <Grid className={classes.grid} container={true} justify="flex-start" alignItems="center" spacing={1}>
                     <Grid item={true}>
                         <Typography variant="body2">{readingTime(text).text}</Typography>
                     </Grid>
+                    <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Typography variant="body2">{readingTime(text).words} words</Typography>
                     </Grid>
@@ -61,23 +73,44 @@ const Article = ({article}) => {
                 <Typography gutterBottom={true} variant="h6">{title}</Typography>
                 <Typography variant="body2">{summary}</Typography>
             </CardContent>
+            <CardActions>
+                <Grid container={true} justify="flex-start" alignItems="center">
+                    <Grid item={true}>
+                        <Button startIcon={<ThumbUp/>} size="small" variant="text">
+                            {display(likes.length)}
+                        </Button>
+                    </Grid>
+                    <span className={classes.dot}>&#xb7;</span>
+                    <Grid item={true}>
+                        <Button startIcon={<Comment/>} variant="text">
+                            {display(comments.length)}
+                        </Button>
+                    </Grid>
+                    <span className={classes.dot}>&#xb7;</span>
+                    <Grid item={true}>
+                        <Button size="small" startIcon={<Visibility/>} variant="text">
+                            {display(views.length)}
+                        </Button>
+                    </Grid>
+                </Grid>
+            </CardActions>
             <Divider variant="fullWidth"/>
             <CardActions>
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
-                        <Typography variant="overline">
-                            {likes.length} Likes
-                        </Typography>
+                        <Button startIcon={<ThumbUp/>} size="small" variant="text">
+                            Like
+                        </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Typography variant="overline">
-                            {comments.length} Comments
-                        </Typography>
+                        <Button startIcon={<Comment/>} variant="text">
+                            Comment
+                        </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Typography variant="overline">
+                        <Button size="small" startIcon={<Share/>} variant="text">
                             Share
-                        </Typography>
+                        </Button>
                     </Grid>
                 </Grid>
             </CardActions>

@@ -31,9 +31,9 @@ const SearchPage = ({loading, articles}) => {
             <Grid container={true} spacing={4}>
                 {
                     articles && articles.length ? (
-                        articles.map(article => {
+                        articles.map((article, index) => {
                             return (
-                                <Grid item={true} xs={12} md={6} lg={4}>
+                                <Grid key={index} item={true} xs={12} md={6} lg={4}>
                                     <Article article={article}/>
                                 </Grid>
                             )

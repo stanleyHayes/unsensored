@@ -31,9 +31,9 @@ const TimelinePage = ({loading, subscribedArticles}) => {
             <Grid container={true} spacing={4}>
                 {
                     subscribedArticles && subscribedArticles.length ? (
-                        subscribedArticles.map(article => {
+                        subscribedArticles.map((article, index) => {
                             return (
-                                <Grid item={true} xs={12} md={6} lg={4}>
+                                <Grid key={index} item={true} xs={12} md={6} lg={4}>
                                     <Article article={article}/>
                                 </Grid>
                             )

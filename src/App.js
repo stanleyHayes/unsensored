@@ -14,6 +14,7 @@ import SignUpPage from "./pages/authentication/sign-up-page";
 import SignInPage from "./pages/authentication/sign-in-page";
 import ForgotPasswordPage from "./pages/authentication/forgot-password-page";
 import ChangePasswordPage from "./pages/authentication/change-password-page";
+import ArticleDetailPage from "./pages/articles/article-detail-page";
 
 function App() {
   return (
@@ -27,8 +28,12 @@ function App() {
           <ExplorePage />
         </Route>
 
-        <Route path="/articles/new" exact={true}>
+        <Route path="/article/new" exact={true}>
           <CreateArticlePage />
+        </Route>
+
+        <Route path="/articles/:articleId" exact={true}>
+          <ArticleDetailPage />
         </Route>
 
         <Route path="/articles/:articleId/update" exact={true}>
