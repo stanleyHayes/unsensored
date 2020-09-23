@@ -19,15 +19,15 @@ const ForgotPasswordPage = () => {
                 paddingBottom: 16,
                 borderRadius: 0,
                 borderWidth: 2,
-                borderColor: "#777777",
+                borderColor: theme.palette.primary.light,
                 marginTop: 8,
                 marginBottom: 8,
-                color: "#555555",
-                backgroundColor: "white",
+                color: "white",
+                backgroundColor: theme.palette.primary.main,
                 transition: "all 500ms ease-in-out",
                 '&:hover': {
-                    backgroundColor: "#f0f2f5",
-                    color: "#333333"
+                    backgroundColor: theme.palette.primary.light,
+                    color: "white"
                 }
             },
             root: {
@@ -97,8 +97,8 @@ const ForgotPasswordPage = () => {
                         <form>
                             <Card square={true} variant="outlined" className={classes.card}>
                                 <CardContent>
-                                    <Typography className={classes.title} variant="h3" align="center">WeChat</Typography>
-                                    <Typography variant="h6" className={classes.subtitle} align="center">Change Password</Typography>
+                                    <Typography className={classes.title} variant="h3" align="center">Uncensored</Typography>
+                                    <Typography variant="h6" className={classes.subtitle} align="center">Forgot Password</Typography>
 
                                     <TextField
                                         fullWidth={true}

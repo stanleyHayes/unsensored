@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {CardContent, Container, Grid, Card, TextField, Button, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
+import Layout from "../../components/layout/layout";
 
 const ChangePasswordPage = () => {
 
@@ -18,15 +19,15 @@ const ChangePasswordPage = () => {
                 paddingBottom: 16,
                 borderRadius: 0,
                 borderWidth: 2,
-                borderColor: "#777777",
+                borderColor: theme.palette.primary.light,
                 marginTop: 8,
                 marginBottom: 8,
-                color: "#555555",
-                backgroundColor: "white",
+                color: "white",
+                backgroundColor: theme.palette.primary.main,
                 transition: "all 500ms ease-in-out",
                 '&:hover': {
-                    backgroundColor: "#f0f2f5",
-                    color: "#333333"
+                    backgroundColor: theme.palette.primary.light,
+                    color: "white"
                 }
             },
             root: {
@@ -65,31 +66,31 @@ const ChangePasswordPage = () => {
     const handleUserSubmit = event => {
         event.preventDefault();
 
-        if(!currentPassword){
+        if (!currentPassword) {
             setError({...error, password: 'password required'});
             return;
-        }else {
+        } else {
             setError({...error, password: null});
         }
 
-        if(!newPassword){
+        if (!newPassword) {
             setError({...error, password: 'password required'});
             return;
-        }else {
+        } else {
             setError({...error, password: null});
         }
 
-        if(!confirmPassword){
+        if (!confirmPassword) {
             setError({...error, confirmPassword: 'password required'});
             return;
-        }else {
+        } else {
             setError({...error, confirmPassword: null});
         }
 
-        if(confirmPassword !== newPassword){
+        if (confirmPassword !== newPassword) {
             setError({...error, confirmPassword: 'password mismatch', newPassword: 'password mismatch'});
             return;
-        }else {
+        } else {
             setError({...error, confirmPassword: null, newPassword: null});
         }
 
@@ -98,76 +99,80 @@ const ChangePasswordPage = () => {
 
 
     return (
-        <div className={classes.root}>
-            <Container className={classes.container}>
-                <Grid className={classes.gridContainer} container={true} justify="center" alignItems="center">
-                    <Grid item={true} xs={12} md={6} lg={5}>
-                        <form>
-                            <Card square={true} variant="outlined" className={classes.card}>
-                                <CardContent>
-                                    <Typography className={classes.title} variant="h3" align="center">WeChat</Typography>
-                                    <Typography variant="h6" className={classes.subtitle} align="center">Change Password</Typography>
+        <Layout>
+            <div className={classes.root}>
+                <Container className={classes.container}>
+                    <Grid className={classes.gridContainer} container={true} justify="center" alignItems="center">
+                        <Grid item={true} xs={12} md={6} lg={5}>
+                            <form>
+                                <Card square={true} variant="outlined" className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} variant="h3"
+                                                    align="center">Uncensored</Typography>
+                                        <Typography variant="h6" className={classes.subtitle} align="center">Change
+                                            Password</Typography>
 
-                                    <TextField
-                                        fullWidth={true}
-                                        onChange={handleUserChange}
-                                        name="currentPassword"
-                                        required={true}
-                                        helperText={error.password}
-                                        error={Boolean(error.password)}
-                                        label="Current Password"
-                                        type="password"
-                                        placeholder="Current password"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={currentPassword}
-                                    />
+                                        <TextField
+                                            fullWidth={true}
+                                            onChange={handleUserChange}
+                                            name="currentPassword"
+                                            required={true}
+                                            helperText={error.password}
+                                            error={Boolean(error.password)}
+                                            label="Current Password"
+                                            type="password"
+                                            placeholder="Current password"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                            margin="normal"
+                                            value={currentPassword}
+                                        />
 
-                                    <TextField
-                                        fullWidth={true}
-                                        onChange={handleUserChange}
-                                        name="newPassword"
-                                        required={true}
-                                        helperText={error.newPassword}
-                                        error={Boolean(error.newPassword)}
-                                        label="New Password"
-                                        type="password"
-                                        placeholder="New password"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={newPassword}
-                                    />
+                                        <TextField
+                                            fullWidth={true}
+                                            onChange={handleUserChange}
+                                            name="newPassword"
+                                            required={true}
+                                            helperText={error.newPassword}
+                                            error={Boolean(error.newPassword)}
+                                            label="New Password"
+                                            type="password"
+                                            placeholder="New password"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                            margin="normal"
+                                            value={newPassword}
+                                        />
 
-                                    <TextField
-                                        fullWidth={true}
-                                        onChange={handleUserChange}
-                                        name="confirmPassword"
-                                        required={true}
-                                        helperText={error.confirmPassword}
-                                        error={Boolean(error.confirmPassword)}
-                                        label="Confirm Password"
-                                        type="password"
-                                        placeholder="Confirm password"
-                                        variant="outlined"
-                                        className={classes.textField}
-                                        margin="normal"
-                                        value={confirmPassword}
-                                    />
+                                        <TextField
+                                            fullWidth={true}
+                                            onChange={handleUserChange}
+                                            name="confirmPassword"
+                                            required={true}
+                                            helperText={error.confirmPassword}
+                                            error={Boolean(error.confirmPassword)}
+                                            label="Confirm Password"
+                                            type="password"
+                                            placeholder="Confirm password"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                            margin="normal"
+                                            value={confirmPassword}
+                                        />
 
-                                    <Button fullWidth={true} onClick={handleUserSubmit} variant="outlined"
-                                            className={classes.button}
-                                            size="large">
-                                        Change Password
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </form>
+                                        <Button fullWidth={true} onClick={handleUserSubmit} variant="outlined"
+                                                className={classes.button}
+                                                size="large">
+                                            Change Password
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </form>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
-        </div>
+                </Container>
+            </div>
+        </Layout>
     )
 }
 
