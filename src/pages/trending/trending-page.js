@@ -33,7 +33,7 @@ const TrendingPage = ({loading, trending}) => {
                     trending && trending.length ? (
                         trending.map((article, index) => {
                             return (
-                                <Grid key={index} item={true} xs={12} md={6} lg={4}>
+                                <Grid key={index} item={true} xs={12} md={6} xl={4}>
                                     <Article article={article}/>
                                 </Grid>
                             )

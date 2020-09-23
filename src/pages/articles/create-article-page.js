@@ -6,6 +6,10 @@ import {Editor} from "@tinymce/tinymce-react";
 import ImageUploader from 'react-images-upload';
 import {red} from "@material-ui/core/colors";
 import {Close} from "@material-ui/icons";
+import {useDispatch} from "react-redux";
+import {createArticle} from "../../redux/articles/articles-action-creator";
+import {useHistory} from 'react-router-dom';
+
 
 const CreateArticlePage = () => {
 
@@ -15,6 +19,8 @@ const CreateArticlePage = () => {
     const [tags, setTags] = useState([]);
     const [tag, setTag] = useState("");
 
+    const dispatch = useDispatch();
+    const history = useHistory();
     const {title, summary, text} = article;
 
     const handleArticleChange = event => {
@@ -60,8 +66,11 @@ const CreateArticlePage = () => {
         formData.append("text", text);
         formData.append("summary", text);
         formData.append("title", title);
-        formData.append("tags", tags);
-        console.log(formData);
+        formData.append("tags", JSON.stringify(tags));
+        formData.append("published", true);
+        formData.append("publishedDate", Date.now());
+
+        dispatch(createArticle(formData, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjZhMjY4ZTdlZmE0NjU3ZGIxMWQyZmYiLCJpYXQiOjE2MDA3OTI0MzB9.kVuP0oQXI_uofjenGP2cUU6rAPKDCo9lt93vuOI_3S0', history))
     }
 
     const handleSave = event => {
