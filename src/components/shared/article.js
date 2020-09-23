@@ -39,6 +39,9 @@ const Article = ({article}) => {
             dot: {
                 fontWeight: 900,
                 borderRadius: '50%'
+            },
+            info: {
+                color: "#777777"
             }
         }
     });
@@ -76,19 +79,19 @@ const Article = ({article}) => {
             <CardActions>
                 <Grid container={true} justify="flex-start" alignItems="center">
                     <Grid item={true}>
-                        <Button startIcon={<ThumbUp/>} size="small" variant="text">
+                        <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>} size="small" variant="text">
                             {display(likes.length)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
-                        <Button startIcon={<Comment/>} variant="text">
+                        <Button size="small" className={classes.info} startIcon={<Comment className={classes.info}/>} variant="text">
                             {display(comments.length)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
-                        <Button size="small" startIcon={<Visibility/>} variant="text">
+                        <Button className={classes.info} size="small" startIcon={<Visibility className={classes.info}/>} variant="text">
                             {display(views.length)}
                         </Button>
                     </Grid>
