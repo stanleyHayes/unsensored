@@ -2,7 +2,7 @@ import React from "react";
 import {Grid, Toolbar, Typography, AppBar, Button, Container, IconButton} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {makeStyles} from "@material-ui/styles";
-import {ExitToApp, Lock, Person} from "@material-ui/icons";
+import {Add, AddCircleRounded, ExitToApp, Lock, Person} from "@material-ui/icons";
 
 const DesktopHeader = () => {
 
@@ -36,6 +36,15 @@ const DesktopHeader = () => {
                                     </Link>
                                 </Button>
                             </Grid>
+
+                            <Grid item={true}>
+                                <Button startIcon={<AddCircleRounded className={classes.button} />}>
+                                    <Link className={classes.link} to="/trending">
+                                        Create
+                                    </Link>
+                                </Button>
+                            </Grid>
+
                             <Grid item={true}>
                                 <Button>
                                     <Link className={classes.link} to="/trending">
