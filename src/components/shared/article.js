@@ -16,7 +16,6 @@ import readingTime from 'reading-time';
 import {Chat, Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
-import {getArticle} from "../../redux/articles/articles-action-creator";
 import {useDispatch} from "react-redux";
 const display = createDisplay({
     length: 8,
@@ -57,7 +56,6 @@ const Article = ({article}) => {
     });
 
     const classes = useStyles();
-    const dispatch = useDispatch();
     const {title, summary, author, datePublished, banner, text, likes, comments, link, views, _id} = article;
     const {name, avatar, username} = author;
     const history = useHistory();
@@ -129,7 +127,7 @@ const Article = ({article}) => {
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Button startIcon={<Chat/>} variant="text">
+                        <Button size="small" startIcon={<Chat/>} variant="text">
                             Comment
                         </Button>
                     </Grid>

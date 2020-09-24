@@ -9,7 +9,7 @@ import {
     CardHeader,
     Avatar,
     Chip,
-    Divider, Tabs, Tab, Paper
+    Divider, Tabs, Tab, Paper, Button
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
@@ -19,8 +19,9 @@ import {connect, useDispatch} from 'react-redux';
 import {useParams, useHistory} from 'react-router-dom';
 import {getArticle} from "../../redux/articles/articles-action-creator";
 import {TOKEN} from "../../constants/constants";
-import {Chat, ThumbUp, Visibility} from "@material-ui/icons";
+import {Chat, Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
+
 const display = createDisplay({
     length: 8,
     decimal: 0,
@@ -65,6 +66,9 @@ const ArticleDetailPage = ({articleDetail}) => {
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 color: '#555555'
+            },
+            dot: {
+                color: '#777777'
             }
         }
     });
@@ -78,6 +82,10 @@ const ArticleDetailPage = ({articleDetail}) => {
         history.push(`/profile/${username}`);
     }
 
+    const handleShareClicked = () => {
+
+    }
+
     return (
         <Layout>
             <Container maxWidth="md">
@@ -86,8 +94,12 @@ const ArticleDetailPage = ({articleDetail}) => {
                         <Card variant="elevation" elevation={0}>
                             <CardMedia component="img" src={banner}
                                        className={classes.banner}/>
+
+                            <Divider variant="fullWidth"/>
+
                             <CardContent>
-                                <Grid container={true} spacing={2}>
+
+                                <Grid container={true} spacing={2} className={classes.grid}>
                                     <Grid item={true}>
                                         <Typography
                                             variant="body2">{moment(datePublished).fromNow()}</Typography>
@@ -100,6 +112,8 @@ const ArticleDetailPage = ({articleDetail}) => {
                                             variant="body2">{articleDetail && readingTime(articleDetail.text).text}</Typography>
                                     </Grid>
                                 </Grid>
+
+                                <Divider variant="fullWidth"/>
 
                                 <Typography variant="h6" gutterBottom={true}
                                             className={classes.title}>{title}</Typography>
@@ -117,7 +131,9 @@ const ArticleDetailPage = ({articleDetail}) => {
                                 <CardHeader
                                     avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> : <Avatar>
                                         <Typography variant="h5" align="center"> {name[0][0]}</Typography>
-                                    </Avatar>} title={<Typography onClick={handleAuthorClicked} className={classes.name} variant="body1">{name}</Typography>} subheader={username}
+                                    </Avatar>} title={<Typography onClick={handleAuthorClicked} className={classes.name}
+                                                                  variant="body1">{name}</Typography>}
+                                    subheader={username}
                                 />
 
                                 <Divider variant="fullWidth"/>
@@ -133,31 +149,55 @@ const ArticleDetailPage = ({articleDetail}) => {
                                         })
                                     ) : null}
                                 </Grid>
-                                <Paper className={classes.container} variant="elevation" elevation={0}>
-                                    <Tabs value={index} onChange={(event, index) => handleSelectedTab(index)}
-                                          variant="fullWidth">
-                                        <Tab
-                                            value={0}
-                                            selected={index === 0}
-                                            icon={<Chat className={classes.icon}/>}
-                                            label={`${display(comments.length)} Comments`}
-                                        />
 
-                                        <Tab
-                                            value={1}
-                                            selected={index === 1}
-                                            icon={<ThumbUp className={classes.icon}/>}
-                                            label={`${display(likes.length)} Likes`}
-                                        />
+                                <Divider variant="fullWidth"/>
 
-                                        <Tab
-                                            value={2}
-                                            selected={index === 2}
-                                            icon={<Visibility className={classes.icon}/>}
-                                            label={`${display(views.length)} Views`}
-                                        />
-                                    </Tabs>
-                                </Paper>
+                                <Grid container={true} justify="flex-start" alignItems="center"
+                                      className={classes.grid}>
+                                    <Grid item={true}>
+                                        <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>}
+                                                size="small" variant="text">
+                                            {display(likes.length)}
+                                        </Button>
+                                    </Grid>
+                                    <span className={classes.dot}>&#xb7;</span>
+                                    <Grid item={true}>
+                                        <Button size="small" className={classes.info}
+                                                startIcon={<Comment className={classes.info}/>} variant="text">
+                                            {display(comments.length)}
+                                        </Button>
+                                    </Grid>
+                                    <span className={classes.dot}>&#xb7;</span>
+                                    <Grid item={true}>
+                                        <Button className={classes.info} size="small"
+                                                startIcon={<Visibility className={classes.info}/>} variant="text">
+                                            {display(views.length)}
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                                <Divider variant="fullWidth"/>
+
+                                <Grid container={true} justify="space-around" alignItems="center"
+                                      className={classes.grid}>
+                                    <Grid item={true}>
+                                        <Button startIcon={<ThumbUp/>} size="small" variant="text">
+                                            Like
+                                        </Button>
+                                    </Grid>
+                                    <Grid item={true}>
+                                        <Button startIcon={<Chat/>} size="small" variant="text">
+                                            Comment
+                                        </Button>
+                                    </Grid>
+                                    <Grid item={true}>
+                                        <Button onClick={handleShareClicked} size="small" startIcon={<Share/>}
+                                                variant="text">
+                                            Share
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
                             </CardContent>
                         </Card>
                     </Grid>
