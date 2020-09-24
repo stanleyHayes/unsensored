@@ -3,7 +3,7 @@ import './App.css';
 import ScrollToTop from "./components/shared/scroll-to-top";
 import {Switch, Route} from "react-router-dom";
 import TimelinePage from "./pages/timeline/timeline-page";
-import ExplorePage from "./pages/explore/explore-page";
+import ExplorePage from "./pages/articles/authored-articles-page";
 import CreateArticlePage from "./pages/articles/create-article-page";
 import UpdateArticlePage from "./pages/articles/update-article-page";
 import SearchPage from "./pages/search/search-page";
@@ -15,6 +15,7 @@ import SignInPage from "./pages/authentication/sign-in-page";
 import ForgotPasswordPage from "./pages/authentication/forgot-password-page";
 import ChangePasswordPage from "./pages/authentication/change-password-page";
 import ArticleDetailPage from "./pages/articles/article-detail-page";
+import AuthoredArticlesPage from "./pages/articles/authored-articles-page";
 
 function App() {
   return (
@@ -24,16 +25,16 @@ function App() {
           <TimelinePage />
         </Route>
 
-        <Route path="/explore" exact={true}>
-          <ExplorePage />
-        </Route>
-
         <Route path="/article/new" exact={true}>
           <CreateArticlePage />
         </Route>
 
         <Route path="/articles/:articleId" exact={true}>
           <ArticleDetailPage />
+        </Route>
+
+        <Route path="/articles" exact={true}>
+          <AuthoredArticlesPage />
         </Route>
 
         <Route path="/articles/:articleId/update" exact={true}>

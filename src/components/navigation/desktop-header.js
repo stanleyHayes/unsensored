@@ -2,7 +2,7 @@ import React from "react";
 import {Grid, Toolbar, Typography, AppBar, Button, Container, IconButton} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {makeStyles} from "@material-ui/styles";
-import {Add, AddCircleRounded, ExitToApp, Lock, Person} from "@material-ui/icons";
+import {AddCircleRounded, ExitToApp, Lock, Person} from "@material-ui/icons";
 
 const DesktopHeader = () => {
 
@@ -38,7 +38,15 @@ const DesktopHeader = () => {
                             </Grid>
 
                             <Grid item={true}>
-                                <Button startIcon={<AddCircleRounded className={classes.button} />}>
+                                <Button>
+                                    <Link className={classes.link} to="/articles">
+                                        My Articles
+                                    </Link>
+                                </Button>
+                            </Grid>
+
+                            <Grid item={true}>
+                                <Button startIcon={<AddCircleRounded className={classes.button}/>}>
                                     <Link className={classes.link} to="/article/new">
                                         Create
                                     </Link>
@@ -71,13 +79,13 @@ const DesktopHeader = () => {
                         </Grid>
                         <Grid item={true} lg={2}>
                             <IconButton>
-                                <Person className={classes.button} />
+                                <Person className={classes.button}/>
                             </IconButton>
                             <IconButton>
-                                <Lock className={classes.button} />
+                                <Lock className={classes.button}/>
                             </IconButton>
                             <IconButton>
-                                <ExitToApp className={classes.button} />
+                                <ExitToApp className={classes.button}/>
                             </IconButton>
                         </Grid>
                     </Grid>

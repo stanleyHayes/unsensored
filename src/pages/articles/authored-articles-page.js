@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
 
-const ExplorePage = ({loading, articles}) => {
+const AuthoredArticlesPage = ({loading, articles}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -69,4 +69,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ExplorePage);
+export default connect(mapStateToProps)(AuthoredArticlesPage);

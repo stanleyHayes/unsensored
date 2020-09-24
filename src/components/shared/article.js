@@ -13,9 +13,11 @@ import {
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
-import {Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
+import {Chat, Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
-
+import {useHistory} from 'react-router-dom';
+import {getArticle} from "../../redux/articles/articles-action-creator";
+import {useDispatch} from "react-redux";
 const display = createDisplay({
     length: 8,
     decimal: 0,
@@ -42,14 +44,35 @@ const Article = ({article}) => {
             },
             info: {
                 color: "#777777"
+            },
+            name: {
+                cursor: "pointer"
+            },
+            title: {
+                cursor: "pointer",
+                fontWeight: 400,
+                textTransform: 'uppercase'
             }
         }
     });
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const {title, summary, author, datePublished, banner, text, likes, comments, link, views, _id} = article;
+    const {name, avatar, username} = author;
+    const history = useHistory();
 
-    const {title, summary, author, datePublished, banner, text, likes, comments, link, views} = article;
-    const {name, avatar} = author;
+    const handleNameClick = () => {
+        history.push(`/profile/${username}`);
+    }
+
+    const handleTitleClicked = () => {
+        history.push(`/articles/${_id}`);
+    }
+
+    const handleShareClicked = () => {
+
+    }
 
     return (
         <Card variant="outlined" className={classes.card}>
@@ -57,7 +80,7 @@ const Article = ({article}) => {
                 avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> : <Avatar>
                     <Typography variant="h5" align="center"> {name[0][0]}</Typography>
                 </Avatar>}
-                title={name}
+                title={<Typography onClick={handleNameClick} variant="h6" className={classes.name}>{name}</Typography> }
                 subheader={moment(datePublished).fromNow()}
             />
             <Divider variant="fullWidth"/>
@@ -73,7 +96,7 @@ const Article = ({article}) => {
                         <Typography variant="body2">{readingTime(text).words} words</Typography>
                     </Grid>
                 </Grid>
-                <Typography gutterBottom={true} variant="h6">{title}</Typography>
+                <Typography onClick={handleTitleClicked} gutterBottom={true} variant="h6" className={classes.title}>{title}</Typography>
                 <Typography variant="body2">{summary}</Typography>
             </CardContent>
             <CardActions>
@@ -106,12 +129,12 @@ const Article = ({article}) => {
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Button startIcon={<Comment/>} variant="text">
+                        <Button startIcon={<Chat/>} variant="text">
                             Comment
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Button size="small" startIcon={<Share/>} variant="text">
+                        <Button onClick={handleShareClicked} size="small" startIcon={<Share/>} variant="text">
                             Share
                         </Button>
                     </Grid>
