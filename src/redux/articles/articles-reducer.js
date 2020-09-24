@@ -5,17 +5,17 @@ import {
     GET_ARTICLE_DETAIL,
     GET_ARTICLE_FAILURE,
     GET_ARTICLE_REQUEST,
-    GET_ARTICLE_SUCCESS
+    GET_ARTICLE_SUCCESS, GET_ARTICLES_FAILURE, GET_ARTICLES_REQUEST, GET_ARTICLES_SUCCESS
 
 } from "./articles-action-types";
 import {ARTICLES, AUTHORED_ARTICLES, SUBSCRIBED_ARTICLES, TRENDING_ARTICLES} from "./articles-data";
 
 const INITIAL_STATE = {
-    articles: ARTICLES,
-    trending: TRENDING_ARTICLES,
-    authoredArticles: AUTHORED_ARTICLES,
-    subscribedArticles: SUBSCRIBED_ARTICLES,
-    articleDetail: ARTICLES[0],
+    articles: [],
+    trending: [],
+    authoredArticles: [],
+    subscribedArticles: [],
+    articleDetail: null,
     loading: false,
     error: null,
 }
@@ -60,6 +60,28 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+
+        case GET_ARTICLES_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case GET_ARTICLES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                articles: action.payload
+            }
+
+        case GET_ARTICLES_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                articles: []
             }
         default:
             return state;

@@ -9,6 +9,7 @@ import {Close} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
 import {createArticle} from "../../redux/articles/articles-action-creator";
 import {useHistory} from 'react-router-dom';
+import {TOKEN} from "../../constants/constants";
 
 
 const CreateArticlePage = () => {
@@ -70,7 +71,7 @@ const CreateArticlePage = () => {
         formData.append("published", true);
         formData.append("publishedDate", Date.now());
 
-        dispatch(createArticle(formData, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjZhMjY4ZTdlZmE0NjU3ZGIxMWQyZmYiLCJpYXQiOjE2MDA3OTI0MzB9.kVuP0oQXI_uofjenGP2cUU6rAPKDCo9lt93vuOI_3S0', history))
+        dispatch(createArticle(formData, TOKEN, history));
     }
 
     const handleSave = event => {
@@ -137,9 +138,7 @@ const CreateArticlePage = () => {
                     backgroundColor: theme.palette.primary.main,
                 }
             },
-            noTags: {
-
-            },
+            noTags: {},
             card: {
                 width: '100%'
             }
@@ -260,7 +259,8 @@ const CreateArticlePage = () => {
                                         tags.map((tag, index) => {
                                             return (
                                                 <Grid key={index} item={true}>
-                                                    <Chip onClick={() => handleTagRemove(tag)} label={tag} clickable={true} icon={<Close/>}/>
+                                                    <Chip onClick={() => handleTagRemove(tag)} label={tag}
+                                                          clickable={true} icon={<Close/>}/>
                                                 </Grid>
                                             )
                                         })

@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Grid, LinearProgress, Typography} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
+import {getArticles} from "../../redux/articles/articles-action-creator";
+import {TOKEN} from "../../constants/constants";
 
 const TimelinePage = ({loading, subscribedArticles}) => {
 
@@ -24,6 +26,11 @@ const TimelinePage = ({loading, subscribedArticles}) => {
     });
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getArticles(TOKEN));
+    }, [dispatch]);
 
     return (
         <Layout>
@@ -62,9 +69,6 @@ const TimelinePage = ({loading, subscribedArticles}) => {
 }
 
 const mapStateToProps = state => {
-
-    console.log(state);
-
     return {
         loading: state.articles.loading,
         subscribedArticles: state.articles.subscribedArticles

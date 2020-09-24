@@ -2,7 +2,12 @@ import {
     CREATE_ARTICLE_FAILURE,
     CREATE_ARTICLE_REQUEST,
     CREATE_ARTICLE_SUCCESS,
-    GET_ARTICLE_DETAIL, GET_ARTICLE_REQUEST, GET_ARTICLE_SUCCESS,
+    GET_ARTICLE_DETAIL,
+    GET_ARTICLE_REQUEST,
+    GET_ARTICLE_SUCCESS,
+    GET_ARTICLES_FAILURE,
+    GET_ARTICLES_REQUEST,
+    GET_ARTICLES_SUCCESS,
 } from './articles-action-types';
 import axios from 'axios';
 import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
@@ -83,6 +88,44 @@ export const getArticle = (articleId, token, history) => {
             history.push(`/articles/${articleId}`);
         }).catch(error => {
             dispatch(getArticleFailure(error.data.error.error));
+        });
+    }
+}
+
+const getArticlesRequest = () => {
+    return {
+        type: GET_ARTICLES_REQUEST
+    }
+}
+
+const getArticlesSuccess = articles => {
+    return {
+        type: GET_ARTICLES_SUCCESS,
+        payload: articles
+    }
+}
+
+const getArticlesFailure = error => {
+    return {
+        type: GET_ARTICLES_FAILURE,
+        payload: error
+    }
+}
+
+export const getArticles = (token) => {
+    return dispatch => {
+        dispatch(getArticlesRequest());
+        axios({
+            method: 'get',
+            url: `${DEVELOPMENT_BASE_URL}/articles`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            const {data: articles} = response.data;
+            dispatch(getArticlesSuccess(articles));
+        }).catch(error => {
+            dispatch(getArticlesFailure(error.data.error.error));
         });
     }
 }

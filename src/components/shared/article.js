@@ -16,7 +16,6 @@ import readingTime from 'reading-time';
 import {Chat, Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
-import {useDispatch} from "react-redux";
 const display = createDisplay({
     length: 8,
     decimal: 0,
@@ -56,7 +55,7 @@ const Article = ({article}) => {
     });
 
     const classes = useStyles();
-    const {title, summary, author, datePublished, banner, text, likes, comments, link, views, _id} = article;
+    const {title, summary, author, datePublished, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
     const {name, avatar, username} = author;
     const history = useHistory();
 
@@ -71,6 +70,8 @@ const Article = ({article}) => {
     const handleShareClicked = () => {
 
     }
+
+    const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
 
     return (
         <Card variant="outlined" className={classes.card}>
@@ -101,19 +102,19 @@ const Article = ({article}) => {
                 <Grid container={true} justify="flex-start" alignItems="center">
                     <Grid item={true}>
                         <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>} size="small" variant="text">
-                            {display(likes.length)}
+                            {display(likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Button size="small" className={classes.info} startIcon={<Comment className={classes.info}/>} variant="text">
-                            {display(comments.length)}
+                            {display(commentCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Button className={classes.info} size="small" startIcon={<Visibility className={classes.info}/>} variant="text">
-                            {display(views.length)}
+                            {display(viewCount)}
                         </Button>
                     </Grid>
                 </Grid>
