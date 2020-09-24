@@ -60,7 +60,12 @@ const ArticleDetailPage = ({articleDetail}) => {
                 marginTop: 16,
                 marginBottom: 16
             },
-            icon: {}
+            icon: {},
+            name: {
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                color: '#555555'
+            }
         }
     });
 
@@ -68,6 +73,10 @@ const ArticleDetailPage = ({articleDetail}) => {
 
     const {title, summary, author, datePublished, banner, text, likes, comments, link, views, _id, tags} = articleDetail;
     const {name, avatar, username} = author;
+
+    const handleAuthorClicked = () => {
+        history.push(`/profile/${username}`);
+    }
 
     return (
         <Layout>
@@ -108,7 +117,7 @@ const ArticleDetailPage = ({articleDetail}) => {
                                 <CardHeader
                                     avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> : <Avatar>
                                         <Typography variant="h5" align="center"> {name[0][0]}</Typography>
-                                    </Avatar>} title={name} subheader={username}
+                                    </Avatar>} title={<Typography onClick={handleAuthorClicked} className={classes.name} variant="body1">{name}</Typography>} subheader={username}
                                 />
 
                                 <Divider variant="fullWidth"/>
@@ -131,7 +140,7 @@ const ArticleDetailPage = ({articleDetail}) => {
                                             value={0}
                                             selected={index === 0}
                                             icon={<Chat className={classes.icon}/>}
-                                            label={`${display(views.length)} Comments`}
+                                            label={`${display(comments.length)} Comments`}
                                         />
 
                                         <Tab
