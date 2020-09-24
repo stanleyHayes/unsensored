@@ -19,6 +19,7 @@ import LikeList from "../../components/shared/like-list";
 import CommentList from "../../components/shared/comment-list";
 import ReplyList from "../../components/shared/reply-list";
 import {Edit} from "@material-ui/icons";
+import {Link} from "react-router-dom";
 
 const ProfilePage = ({user}) => {
 
@@ -36,30 +37,11 @@ const ProfilePage = ({user}) => {
                 borderRadius: 8,
                 borderWidth: 2
             },
-            banner: {
-                height: 250,
-                objectFit: 'cover'
-            },
-            grid: {
-                marginBottom: 8
-            },
-            dot: {
-                fontWeight: 900,
-                borderRadius: '50%'
-            },
-            info: {
-                color: "#777777"
-            },
-            name: {
-                cursor: "pointer"
-            },
-            title: {
-                cursor: "pointer",
-                fontWeight: 400,
-                textTransform: 'uppercase'
-            },
             icon: {
                 color: '#aaaaaa'
+            },
+            link: {
+                textDecoration: "none"
             }
         }
     });
@@ -99,7 +81,13 @@ const ProfilePage = ({user}) => {
                                 </Avatar>}
                                 title={<Typography variant="h6" className={classes.name}>{name}</Typography>}
                                 subheader={username}
-                                action={<IconButton><Edit className={classes.icon} /></IconButton>}
+                                action={
+                                    <Link className={classes.link} to={`/edit-profile`}>
+                                        <IconButton>
+                                            <Edit className={classes.icon}/>
+                                        </IconButton>
+                                    </Link>
+                                }
                             />
                             <Divider variant="fullWidth"/>
                             <CardContent>
