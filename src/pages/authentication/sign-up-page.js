@@ -11,7 +11,9 @@ const SignUpPage = ({loading}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderWidth: 2
+                borderWidth: 2,
+                paddingTop: 32,
+                paddingBottom: 32
             },
             textField: {
                 marginTop: 8,
@@ -240,7 +242,7 @@ const SignUpPage = ({loading}) => {
 
                                     <Link className={classes.link} to="/auth/login">
                                         <Button fullWidth={true} variant="text" className={classes.textButton}
-                                                size="large">
+                                                size="small">
                                             Already have an account? Sign In
                                         </Button>
                                     </Link>

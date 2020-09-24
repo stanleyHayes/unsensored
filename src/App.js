@@ -16,6 +16,9 @@ import ForgotPasswordPage from "./pages/authentication/forgot-password-page";
 import ChangePasswordPage from "./pages/authentication/change-password-page";
 import ArticleDetailPage from "./pages/articles/article-detail-page";
 import AuthoredArticlesPage from "./pages/articles/authored-articles-page";
+import ArticleCommentsPage from "./pages/articles/article-comments-page";
+import ArticleViewsPage from "./pages/articles/article-views-page";
+import ArticleLikesPage from "./pages/articles/article-likes-page";
 
 function App() {
   return (
@@ -39,6 +42,18 @@ function App() {
 
         <Route path="/articles/:articleId/update" exact={true}>
           <UpdateArticlePage />
+        </Route>
+
+        <Route path="/articles/:articleId/comments" exact={true}>
+          <ArticleCommentsPage />
+        </Route>
+
+        <Route path="/articles/:articleId/likes" exact={true}>
+          <ArticleLikesPage />
+        </Route>
+
+        <Route path="/articles/:articleId/views" exact={true}>
+          <ArticleViewsPage />
         </Route>
 
         <Route path="/search" exact={true}>

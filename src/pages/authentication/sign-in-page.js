@@ -10,7 +10,9 @@ const SignInPage = ({loading}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderWidth: 2
+                borderWidth: 2,
+                paddingTop: 32,
+                paddingBottom: 32
             },
             textField: {
                 marginTop: 8,
@@ -151,7 +153,7 @@ const SignInPage = ({loading}) => {
 
                                     <Link className={classes.link} to="/auth/forgot-password">
                                         <Button fullWidth={true} variant="text" className={classes.textButton}
-                                                size="large">
+                                                size="small">
                                             Forgot Password?
                                         </Button>
                                     </Link>
@@ -165,7 +167,7 @@ const SignInPage = ({loading}) => {
 
                                     <Link className={classes.link} to="/auth/register">
                                         <Button fullWidth={true} variant="text" className={classes.textButton}
-                                                size="large">
+                                                size="small">
                                             Don't have an account? Sign Up
                                         </Button>
                                     </Link>

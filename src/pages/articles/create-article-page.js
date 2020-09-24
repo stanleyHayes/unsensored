@@ -236,7 +236,7 @@ const CreateArticlePage = () => {
                                         fullWidth={true}
                                         name="tag"
                                         required={true}
-                                        margin="dense"
+                                        margin="normal"
                                         helperText={error.tag || ''}
                                         error={Boolean(error.tag)}
                                         variant="outlined"

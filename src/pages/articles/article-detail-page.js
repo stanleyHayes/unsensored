@@ -9,14 +9,14 @@ import {
     CardHeader,
     Avatar,
     Chip,
-    Divider, Tabs, Tab, Paper, Button
+    Divider, Button
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import moment from 'moment';
 import readingTime from 'reading-time';
 import {connect, useDispatch} from 'react-redux';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams, useHistory, Link} from 'react-router-dom';
 import {getArticle} from "../../redux/articles/articles-action-creator";
 import {TOKEN} from "../../constants/constants";
 import {Chat, Comment, Share, ThumbUp, Visibility} from "@material-ui/icons";
@@ -69,6 +69,9 @@ const ArticleDetailPage = ({articleDetail}) => {
             },
             dot: {
                 color: '#777777'
+            },
+            link: {
+                textDecoration: 'none'
             }
         }
     });
@@ -155,24 +158,31 @@ const ArticleDetailPage = ({articleDetail}) => {
                                 <Grid container={true} justify="flex-start" alignItems="center"
                                       className={classes.grid}>
                                     <Grid item={true}>
-                                        <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>}
-                                                size="small" variant="text">
-                                            {display(likes.length)}
-                                        </Button>
+                                        <Link className={classes.link} to={`/articles/${_id}/likes`}>
+                                            <Button className={classes.info}
+                                                    startIcon={<ThumbUp className={classes.info}/>}
+                                                    size="small" variant="text">
+                                                {display(likes.length)}
+                                            </Button>
+                                        </Link>
                                     </Grid>
                                     <span className={classes.dot}>&#xb7;</span>
                                     <Grid item={true}>
-                                        <Button size="small" className={classes.info}
-                                                startIcon={<Comment className={classes.info}/>} variant="text">
-                                            {display(comments.length)}
-                                        </Button>
+                                        <Link className={classes.link} to={`/articles/${_id}/comments`}>
+                                            <Button size="small" className={classes.info}
+                                                    startIcon={<Comment className={classes.info}/>} variant="text">
+                                                {display(comments.length)}
+                                            </Button>
+                                        </Link>
                                     </Grid>
                                     <span className={classes.dot}>&#xb7;</span>
                                     <Grid item={true}>
-                                        <Button className={classes.info} size="small"
-                                                startIcon={<Visibility className={classes.info}/>} variant="text">
-                                            {display(views.length)}
-                                        </Button>
+                                        <Link className={classes.link} to={`/articles/${_id}/views`}>
+                                            <Button className={classes.info} size="small"
+                                                    startIcon={<Visibility className={classes.info}/>} variant="text">
+                                                {display(views.length)}
+                                            </Button>
+                                        </Link>
                                     </Grid>
                                 </Grid>
 
@@ -186,9 +196,11 @@ const ArticleDetailPage = ({articleDetail}) => {
                                         </Button>
                                     </Grid>
                                     <Grid item={true}>
-                                        <Button startIcon={<Chat/>} size="small" variant="text">
-                                            Comment
-                                        </Button>
+                                        <Link className={classes.link} to={`/articles/${_id}/comments`}>
+                                            <Button startIcon={<Chat/>} size="small" variant="text">
+                                                Comment
+                                            </Button>
+                                        </Link>
                                     </Grid>
                                     <Grid item={true}>
                                         <Button onClick={handleShareClicked} size="small" startIcon={<Share/>}

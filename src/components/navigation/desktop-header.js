@@ -63,14 +63,6 @@ const DesktopHeader = () => {
 
                             <Grid item={true}>
                                 <Button>
-                                    <Link className={classes.link} to="/explore">
-                                        Explore
-                                    </Link>
-                                </Button>
-                            </Grid>
-
-                            <Grid item={true}>
-                                <Button>
                                     <Link className={classes.link} to="/search">
                                         Search
                                     </Link>
@@ -79,13 +71,19 @@ const DesktopHeader = () => {
                         </Grid>
                         <Grid item={true} lg={2}>
                             <IconButton>
-                                <Person className={classes.button}/>
+                                <Link to={`/profile/sahayford`} className={classes.link}>
+                                    <Person className={classes.button}/>
+                                </Link>
                             </IconButton>
                             <IconButton>
-                                <Lock className={classes.button}/>
+                                <Link to={`/auth/change-password`} className={classes.link}>
+                                    <Lock className={classes.button}/>
+                                </Link>
                             </IconButton>
                             <IconButton>
-                                <ExitToApp className={classes.button}/>
+                                <Link to={`/auth/login`} className={classes.link}>
+                                    <ExitToApp className={classes.button}/>
+                                </Link>
                             </IconButton>
                         </Grid>
                     </Grid>
