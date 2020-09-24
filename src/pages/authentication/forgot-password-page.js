@@ -8,7 +8,9 @@ const ForgotPasswordPage = () => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderWidth: 2
+                borderWidth: 2,
+                marginTop: 64,
+                marginBottom: 64
             },
             textField: {
                 marginTop: 8,

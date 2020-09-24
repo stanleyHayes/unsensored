@@ -11,8 +11,8 @@ const SignInPage = ({loading}) => {
         return {
             card: {
                 borderWidth: 2,
-                paddingTop: 32,
-                paddingBottom: 32
+                marginTop: 64,
+                marginBottom: 64
             },
             textField: {
                 marginTop: 8,
