@@ -4,7 +4,7 @@ import Layout from "../../components/layout/layout";
 import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
-import {getArticles, getAuthoredArticles} from "../../redux/articles/articles-action-creator";
+import {getAuthoredArticles} from "../../redux/articles/articles-action-creator";
 
 const AuthoredArticlesPage = ({loading, articles, token}) => {
 
@@ -19,6 +19,9 @@ const AuthoredArticlesPage = ({loading, articles, token}) => {
             },
             imageContainer: {
                 textAlign: 'center',
+                marginTop: 32
+            },
+            container: {
                 marginTop: 32
             }
         }
@@ -35,7 +38,7 @@ const AuthoredArticlesPage = ({loading, articles, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Grid container={true} spacing={4}>
+            <Grid container={true} spacing={4} className={classes.container}>
                 {
                     articles && articles.length ? (
                         articles.map((article, index) => {

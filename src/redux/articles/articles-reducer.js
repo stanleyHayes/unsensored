@@ -19,6 +19,7 @@ import {
     DELETE_ARTICLE_REQUEST
 
 } from "./articles-action-types";
+import {ARTICLES} from "./articles-data";
 
 const INITIAL_STATE = {
     articles: [],
@@ -38,6 +39,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 loading: true
             }
         case CREATE_ARTICLE_SUCCESS:
+            console.log('create article', action.payload);
             return {
                 ...state,
                 loading: false,
@@ -76,12 +78,14 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 loading: true
             }
         case GET_ARTICLES_SUCCESS:
+            console.log('payload',action.payload)
             return {
                 ...state,
                 loading: false,
                 error: null,
                 articles: action.payload
             }
+
         case GET_ARTICLES_FAILURE:
             return {
                 ...state,
@@ -121,6 +125,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 }
                 return article;
             });
+
             return {
                 ...state,
                 loading: false,

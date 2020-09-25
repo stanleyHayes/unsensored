@@ -54,6 +54,10 @@ const Article = ({article, currentUser}) => {
                 cursor: "pointer",
                 fontWeight: 400,
                 textTransform: 'uppercase'
+            },
+            author: {
+                color: theme.palette.primary.light,
+                fontSize: 16
             }
         }
     });
@@ -75,7 +79,7 @@ const Article = ({article, currentUser}) => {
         document.execCommand("copy", true, link);
     }
 
-    const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
+    // const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
 
     return (
         <Card variant="outlined" className={classes.card}>
@@ -86,7 +90,7 @@ const Article = ({article, currentUser}) => {
                 title={<Typography onClick={handleNameClick} variant="body1"
                                    className={classes.name}>{name}</Typography>}
                 subheader={moment(datePublished).fromNow()}
-                action={currentUser && authorId === currentUser._id ? <VerifiedUser/> : null}
+                action={currentUser && authorId === currentUser._id ? <VerifiedUser className={classes.author}/> : null}
             />
             <Divider variant="fullWidth"/>
             <CardMedia component="img" src={`${process.env.PUBLIC_URL}/images/image-1.jpg`} className={classes.banner}/>

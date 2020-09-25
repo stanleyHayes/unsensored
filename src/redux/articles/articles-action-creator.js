@@ -46,7 +46,7 @@ export const createArticle = (article, token, history) => {
         dispatch(createArticleRequest());
         axios({
             method: 'post',
-            url: `${PRODUCTION_BASE_URL}/articles`,
+            url: `${DEVELOPMENT_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart-data'
@@ -87,7 +87,7 @@ export const getArticle = (articleId, token, history) => {
         dispatch(getArticleRequest());
         axios({
             method: 'get',
-            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
+            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -126,7 +126,7 @@ export const updateArticle = (articleId, article, token, history) => {
         dispatch(updateArticleRequest());
         axios({
             method: 'patch',
-            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
+            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -205,13 +205,13 @@ export const getArticles = (token, query) => {
         dispatch(getArticlesRequest());
         axios({
             method: 'get',
-            url: `${PRODUCTION_BASE_URL}/articles`,
+            url: `${DEVELOPMENT_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
-            console.log(data);
+            console.log('ARTICLES RETRIEVED',data);
             dispatch(getArticlesSuccess(data));
         }).catch(error => {
             // dispatch(getArticlesFailure(error.data.error.error));
@@ -244,7 +244,7 @@ export const getAuthoredArticles = (token) => {
         dispatch(getAuthoredArticlesRequest());
         axios({
             method: 'get',
-            url: `${PRODUCTION_BASE_URL}/articles/me`,
+            url: `${DEVELOPMENT_BASE_URL}/articles/me`,
             headers: {
                 Authorization: `Bearer ${token}`
             }

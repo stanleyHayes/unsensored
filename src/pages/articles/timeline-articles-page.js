@@ -20,6 +20,9 @@ const TimelineArticlesPage = ({loading, articles, token}) => {
             imageContainer: {
                 textAlign: 'center',
                 marginTop: 32
+            },
+            container: {
+                marginTop: 32
             }
         }
     });
@@ -34,7 +37,7 @@ const TimelineArticlesPage = ({loading, articles, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Grid container={true} spacing={4}>
+            <Grid container={true} spacing={4} className={classes.container}>
                 {
                     articles && articles.length ? (
                         articles.map((article, index) => {
@@ -69,7 +72,6 @@ const TimelineArticlesPage = ({loading, articles, token}) => {
 
 const mapStateToProps = state => {
 
-    console.log(state.articles)
     return {
         loading: state.articles.loading,
         articles: state.articles.articles,

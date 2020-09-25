@@ -20,6 +20,9 @@ const TrendingArticlesPage = ({loading, trending, token}) => {
             imageContainer: {
                 textAlign: 'center',
                 marginTop: 32
+            },
+            container: {
+                marginTop: 32
             }
         }
     });
@@ -35,7 +38,7 @@ const TrendingArticlesPage = ({loading, trending, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Grid container={true} spacing={4}>
+            <Grid container={true} spacing={4} className={classes.container}>
                 {
                     trending && trending.length ? (
                         trending.map((article, index) => {

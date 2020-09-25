@@ -18,10 +18,9 @@ import {Close} from "@material-ui/icons";
 import {useDispatch, connect} from "react-redux";
 import {createArticle} from "../../redux/articles/articles-action-creator";
 import {useHistory} from 'react-router-dom';
-import {TOKEN} from "../../constants/constants";
 
 
-const CreateArticlePage = ({loading}) => {
+const CreateArticlePage = ({loading, token}) => {
 
     const [article, setArticle] = useState({});
     const [banner, setBanner] = useState(null);
@@ -74,13 +73,13 @@ const CreateArticlePage = ({loading}) => {
         let formData = new FormData();
         formData.append("banner", banner);
         formData.append("text", text);
-        formData.append("summary", text);
+        formData.append("summary", summary);
         formData.append("title", title);
         formData.append("tags", JSON.stringify(tags));
         formData.append("published", true);
         formData.append("publishedDate", Date.now());
 
-        dispatch(createArticle(formData, TOKEN, history));
+        dispatch(createArticle(formData, token, history));
     }
 
     const handleSave = event => {
@@ -171,7 +170,7 @@ const CreateArticlePage = ({loading}) => {
                                 withPreview={true}
                                 onChange={handleArticleBannerChange}
                                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                                maxFileSize={5242880}
+                                maxFileSize={1242880}
                                 singleImage={true}
                                 buttonText="Choose article banner"
                                 buttonStyles={{backgroundColor: red["900"]}}
@@ -226,29 +225,6 @@ const CreateArticlePage = ({loading}) => {
                                 variant="outlined"
                                 className={classes.textField}
                             />
-
-                            {/*<Box className={classes.box}>*/}
-                            {/*    <Typography variant="body1" gutterBottom={true}>Article Detail</Typography>*/}
-                            {/*    <Editor*/}
-                            {/*        value={text}*/}
-                            {/*        tagName="text"*/}
-                            {/*        textareaName="text"*/}
-                            {/*        apiKey="4k98mzlrjhgnes2exbqtgbhevplum3c0c6czfodsu2s5mpqk"*/}
-                            {/*        initialValue=""*/}
-                            {/*        init={{*/}
-                            {/*            height: 500,*/}
-                            {/*            menubar: false,*/}
-                            {/*            plugins: [*/}
-                            {/*                'advlist autolink lists link image',*/}
-                            {/*                'charmap print preview anchor help',*/}
-                            {/*                'searchreplace visualblocks code',*/}
-                            {/*                'insertdatetime media table paste wordcount'*/}
-                            {/*            ],*/}
-                            {/*            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'*/}
-                            {/*        }}*/}
-                            {/*        onEditorChange={handleTextChange}*/}
-                            {/*    />*/}
-                            {/*</Box>*/}
 
                             <Grid container={true} spacing={2} alignItems="center">
                                 <Grid item={true} xs={10}>
@@ -326,7 +302,8 @@ const CreateArticlePage = ({loading}) => {
 
 const mapStateToProps = state => {
     return {
-        loading: state.articles.loading
+        loading: state.articles.loading,
+        token: state.auth.token
     }
 }
 

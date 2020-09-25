@@ -20,6 +20,9 @@ const SearchArticlesPage = ({loading, articles, token}) => {
             imageContainer: {
                 textAlign: 'center',
                 marginTop: 32
+            },
+            container: {
+                marginTop: 32
             }
         }
     });
@@ -36,7 +39,7 @@ const SearchArticlesPage = ({loading, articles, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Grid container={true} spacing={4}>
+            <Grid container={true} spacing={4} className={classes.container}>
                 {
                     articles && articles.length ? (
                         articles.map((article, index) => {
@@ -70,7 +73,6 @@ const SearchArticlesPage = ({loading, articles, token}) => {
 }
 
 const mapStateToProps = state => {
-console.log(state)
     return {
         loading: state.articles.loading,
         articles: state.articles.articles,
