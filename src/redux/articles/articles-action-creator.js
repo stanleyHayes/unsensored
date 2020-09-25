@@ -46,7 +46,7 @@ export const createArticle = (article, token, history) => {
         dispatch(createArticleRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/articles`,
+            url: `${PRODUCTION_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart-data'
@@ -87,7 +87,7 @@ export const getArticle = (articleId, token, history) => {
         dispatch(getArticleRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -126,7 +126,7 @@ export const updateArticle = (articleId, article, token, history) => {
         dispatch(updateArticleRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -205,7 +205,7 @@ export const getArticles = (token, query) => {
         dispatch(getArticlesRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles`,
+            url: `${PRODUCTION_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -244,7 +244,7 @@ export const getAuthoredArticles = (token) => {
         dispatch(getAuthoredArticlesRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/me`,
+            url: `${PRODUCTION_BASE_URL}/articles/me`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
