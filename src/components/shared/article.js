@@ -13,7 +13,7 @@ import {
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
-import {Chat, Comment, Share, ThumbUp, ThumbUpAltOutlined, VerifiedUser, Visibility} from "@material-ui/icons";
+import {Chat, Check, Comment, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -92,7 +92,7 @@ const Article = ({article, currentUser}) => {
                 title={<Typography onClick={handleNameClick} variant="body1"
                                    className={classes.name}>{name}</Typography>}
                 subheader={moment(datePublished).fromNow()}
-                action={currentUser && authorId === currentUser._id ? <VerifiedUser className={classes.author}/> : null}
+                action={currentUser && authorId === currentUser._id ? <Check className={classes.author}/> : null}
             />
             <Divider variant="fullWidth"/>
             <CardMedia component="img" src={banner} className={classes.banner}/>

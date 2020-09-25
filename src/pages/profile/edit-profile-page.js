@@ -5,8 +5,10 @@ import {makeStyles} from "@material-ui/styles";
 import {useHistory} from "react-router-dom";
 import {useDispatch, connect} from "react-redux";
 import validator from "validator";
+import ReactImageUploader from 'react-images-upload';
+import {updateUserProfile} from "../../redux/auth/auth-action-creator";
 
-const EditProfilePage = ({currentUser, loading}) => {
+const EditProfilePage = ({currentUser, loading, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -69,12 +71,18 @@ const EditProfilePage = ({currentUser, loading}) => {
             },
             imageContainer: {
                 textAlign: "center"
+            },
+            uploadButton: {
+                borderRadius: 24,
+                backgroundColor: theme.palette.primary.light,
+                color: "white"
             }
         }
     });
     const classes = useStyles();
 
     const [user, setUser] = useState({});
+    const [avatar, setAvatar] = useState(null);
     const [error, setError] = useState({});
     const {name, email, username} = user;
     const history = useHistory();
@@ -114,8 +122,20 @@ const EditProfilePage = ({currentUser, loading}) => {
             setError({...error, username: null});
         }
 
-        console.log(user);
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("username", username);
+        if (avatar) {
+            formData.append("avatar", avatar);
+        }
+        dispatch(updateUserProfile(formData, currentUser._id, token, history))
     }
+
+    const handleImageSelected = (files, pictures) => {
+        setAvatar(files[0]);
+    }
+
 
     return (
         <Layout>
@@ -123,9 +143,24 @@ const EditProfilePage = ({currentUser, loading}) => {
             <Container maxWidth="md">
                 <Grid container={true}>
                     <Grid item={true}>
-                        <form>
+                        <form onSubmit={handleUserSubmit}>
                             <Card elevation={0}>
                                 <CardContent>
+
+                                    <ReactImageUploader
+                                        withIcon={true}
+                                        maxFileSize={2000000}
+                                        withLabel={true}
+                                        withPreview={true}
+                                        singleImage={true}
+                                        onChange={handleImageSelected}
+                                        buttonText="upload avatar"
+                                        fileSizeError="File too large"
+                                        label="Avatar"
+                                        imgExtension={['.png', '.jpg', '.gif', '.jpeg']}
+                                        buttonStyles={classes.uploadButton}
+                                    />
+
                                     <TextField
                                         fullWidth={true}
                                         onChange={handleUserChange}
@@ -195,7 +230,8 @@ const EditProfilePage = ({currentUser, loading}) => {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        token: state.auth.token
     }
 }
 

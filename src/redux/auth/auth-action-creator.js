@@ -138,7 +138,7 @@ const updateUserProfileFailure = error => {
         payload: error
     }
 }
-export const updateUserProfile = (user, token) => {
+export const updateUserProfile = (user, userId, token, history) => {
     return dispatch => {
         dispatch(updateUserProfileRequest());
         axios({
@@ -152,6 +152,7 @@ export const updateUserProfile = (user, token) => {
         }).then(response => {
             const {data} = response.data;
             dispatch(updateUserProfileSuccess(data));
+            history.push(`/profile/${userId}`)
         }).catch(error => {
             dispatch(updateUserProfileFailure(error.data.error.error));
         })
