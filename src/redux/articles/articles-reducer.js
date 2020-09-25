@@ -22,7 +22,6 @@ import {
 
 const INITIAL_STATE = {
     articles: [],
-    authoredArticles: [],
     articleDetail: null,
     loading: false,
     error: null,
@@ -42,7 +41,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                authoredArticles: [...state.authoredArticles, action.payload],
                 articles: [...state.articles, action.payload],
                 error: null
             }
