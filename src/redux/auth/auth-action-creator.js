@@ -37,7 +37,7 @@ export const signUp = (history, user) => {
         dispatch(signUpRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/auth/register`,
+            url: `${PRODUCTION_BASE_URL}/auth/register`,
             data: {...user}
         }).then(response => {
             const {data, token} = response.data;
@@ -122,7 +122,7 @@ export const getLoggedInUser = (history, token) => {
             const {data, token} = response.data;
             dispatch(getLoggedInUserSuccess(data, token));
             localStorage.setItem(TOKEN_KEY, token);
-            history.push('/chat');
+            history.push('/');
         }).catch(error => {
             dispatch(getLoggedInUserError(error.response.data.error));
             history.push('/auth/login');

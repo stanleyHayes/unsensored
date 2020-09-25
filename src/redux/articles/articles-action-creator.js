@@ -19,7 +19,7 @@ import {
     UPDATE_ARTICLE_SUCCESS
 } from './articles-action-types';
 import axios from 'axios';
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 
 const createArticleRequest = () => {
     return {
@@ -46,15 +46,15 @@ export const createArticle = (article, token, history) => {
         dispatch(createArticleRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/articles`,
+            url: `${PRODUCTION_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart-data'
             },
             data: article
         }).then(response => {
-            const {data: article} = response.data;
-            dispatch(createArticleSuccess(article));
+            const {data} = response.data;
+            dispatch(createArticleSuccess(data));
             history.push('/');
         }).catch(error => {
             dispatch(createArticleFailure(error.data.error.error));
@@ -87,13 +87,13 @@ export const getArticle = (articleId, token, history) => {
         dispatch(getArticleRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
-            const {data: article} = response.data;
-            dispatch(getArticleSuccess(article));
+            const {data} = response.data;
+            dispatch(getArticleSuccess(data));
             history.push(`/articles/${articleId}`);
         }).catch(error => {
             dispatch(getArticleFailure(error.data.error.error));
@@ -126,14 +126,14 @@ export const updateArticle = (articleId, article, token, history) => {
         dispatch(updateArticleRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
             data: article
         }).then(response => {
-            const {data: article} = response.data;
-            dispatch(updateArticleSuccess(article));
+            const {data} = response.data;
+            dispatch(updateArticleSuccess(data));
             history.push(`/articles/${articleId}`);
         }).catch(error => {
             dispatch(updateArticleFailure(error.data.error.error));
@@ -205,15 +205,16 @@ export const getArticles = (token, query) => {
         dispatch(getArticlesRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles?${query}`,
+            url: `${PRODUCTION_BASE_URL}/articles`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
-            const {data: articles} = response.data;
-            dispatch(getArticlesSuccess(articles));
+            const {data} = response.data;
+            console.log(data);
+            dispatch(getArticlesSuccess(data));
         }).catch(error => {
-            dispatch(getArticlesFailure(error.data.error.error));
+            // dispatch(getArticlesFailure(error.data.error.error));
         });
     }
 }
@@ -243,15 +244,15 @@ export const getAuthoredArticles = (token) => {
         dispatch(getAuthoredArticlesRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/me`,
+            url: `${PRODUCTION_BASE_URL}/articles/me`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
-            const {data: articles} = response.data;
-            dispatch(getAuthoredArticlesSuccess(articles));
+            const {data} = response.data;
+            dispatch(getAuthoredArticlesSuccess(data));
         }).catch(error => {
-            dispatch(getAuthoredArticlesFailure(error.data.error.error));
+            // dispatch(getAuthoredArticlesFailure(error.data.error.error));
         });
     }
 }

@@ -19,17 +19,10 @@ import LikeList from "../../components/shared/like-list";
 import CommentList from "../../components/shared/comment-list";
 import ReplyList from "../../components/shared/reply-list";
 import {Edit} from "@material-ui/icons";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import {connect} from "react-redux";
 
-const ProfilePage = ({user}) => {
-
-    const dummyUser = {
-        name: 'Stanley Hayford',
-        username: 'sahayford',
-        avatar: '/images/swastika.svg'
-    }
-
-    const {name, username, avatar} = dummyUser;
+const ProfilePage = ({currentUser}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -69,6 +62,8 @@ const ProfilePage = ({user}) => {
         }
     }
 
+    const {userId} = useParams();
+
     return (
         <Layout>
             <Container maxWidth="md">
@@ -76,11 +71,11 @@ const ProfilePage = ({user}) => {
                     <Grid item={true}>
                         <Card elevation={0}>
                             <CardHeader
-                                avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> : <Avatar>
-                                    <Typography variant="h5" align="center"> {name[0][0]}</Typography>
+                                avatar={currentUser && currentUser.avatar ? <Avatar src={currentUser.avatar } className={classes.avatar}/> : <Avatar>
+                                    <Typography variant="h5" align="center"> {currentUser && currentUser.name[0][0]}</Typography>
                                 </Avatar>}
-                                title={<Typography variant="h6" className={classes.name}>{name}</Typography>}
-                                subheader={username}
+                                title={<Typography variant="h6" className={classes.name}>{currentUser && currentUser.name}</Typography>}
+                                subheader={currentUser && currentUser.username}
                                 action={
                                     <Link className={classes.link} to={`/edit-profile`}>
                                         <IconButton>
@@ -132,4 +127,10 @@ const ProfilePage = ({user}) => {
     )
 }
 
-export default ProfilePage;
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        currentUser: state.auth.currentUser
+    }
+}
+export default connect(mapStateToProps) (ProfilePage);

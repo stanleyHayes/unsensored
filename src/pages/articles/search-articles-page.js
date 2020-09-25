@@ -5,9 +5,8 @@ import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
 import {getArticles} from "../../redux/articles/articles-action-creator";
-import {TOKEN} from "../../constants/constants";
 
-const SearchPage = ({loading, articles}) => {
+const SearchArticlesPage = ({loading, articles, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -30,8 +29,8 @@ const SearchPage = ({loading, articles}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getArticles(TOKEN));
-    }, [dispatch]);
+        dispatch(getArticles(token, ``));
+    }, [dispatch, token]);
 
 
     return (
@@ -71,11 +70,13 @@ const SearchPage = ({loading, articles}) => {
 }
 
 const mapStateToProps = state => {
-
+console.log(state)
     return {
         loading: state.articles.loading,
-        articles: state.articles.articles
+        articles: state.articles.articles,
+        currentUser: state.auth.currentUser,
+        token: state.auth.token
     }
 }
 
-export default connect(mapStateToProps)(SearchPage);
+export default connect(mapStateToProps)(SearchArticlesPage);

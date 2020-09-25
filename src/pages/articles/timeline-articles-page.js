@@ -5,9 +5,8 @@ import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
 import {getArticles} from "../../redux/articles/articles-action-creator";
-import {TOKEN} from "../../constants/constants";
 
-const TimelinePage = ({loading, articles}) => {
+const TimelineArticlesPage = ({loading, articles, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -29,8 +28,8 @@ const TimelinePage = ({loading, articles}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getArticles(TOKEN));
-    }, [dispatch]);
+        dispatch(getArticles(token, ``));
+    }, [dispatch, token]);
 
     return (
         <Layout>
@@ -69,10 +68,13 @@ const TimelinePage = ({loading, articles}) => {
 }
 
 const mapStateToProps = state => {
+
+    console.log(state.articles)
     return {
         loading: state.articles.loading,
-        articles: state.articles.articles
+        articles: state.articles.articles,
+        token: state.auth.token
     }
 }
 
-export default connect(mapStateToProps)(TimelinePage);
+export default connect(mapStateToProps)(TimelineArticlesPage);

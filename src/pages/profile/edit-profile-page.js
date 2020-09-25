@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CardContent, Container, Grid, Card, TextField, Button} from "@material-ui/core";
+import {CardContent, Container, Grid, Card, TextField, Button, LinearProgress} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {useHistory} from "react-router-dom";
@@ -119,6 +119,7 @@ const EditProfilePage = ({currentUser, loading}) => {
 
     return (
         <Layout>
+            {loading && <LinearProgress variant="query"/>}
             <Container maxWidth="md">
                 <Grid container={true}>
                     <Grid item={true}>
@@ -198,4 +199,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps) (EditProfilePage);
+export default connect(mapStateToProps)(EditProfilePage);

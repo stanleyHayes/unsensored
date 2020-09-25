@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Grid, LinearProgress, Typography} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
+import {getArticles} from "../../redux/articles/articles-action-creator";
 
-const TrendingPage = ({loading, trending}) => {
+const TrendingArticlesPage = ({loading, trending, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -24,6 +25,12 @@ const TrendingPage = ({loading, trending}) => {
     });
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getArticles(token, ``));
+    }, [dispatch, token]);
 
     return (
         <Layout>
@@ -62,13 +69,11 @@ const TrendingPage = ({loading, trending}) => {
 }
 
 const mapStateToProps = state => {
-
-    console.log(state);
-
     return {
         loading: state.articles.loading,
-        trending: state.articles.trending
+        trending: state.articles.trending,
+        token: state.auth.token
     }
 }
 
-export default connect(mapStateToProps)(TrendingPage);
+export default connect(mapStateToProps)(TrendingArticlesPage);

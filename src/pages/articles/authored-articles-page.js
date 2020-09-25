@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Grid, LinearProgress, Typography} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
 import {makeStyles} from "@material-ui/styles";
+import {getArticles, getAuthoredArticles} from "../../redux/articles/articles-action-creator";
 
-const AuthoredArticlesPage = ({loading, articles}) => {
+const AuthoredArticlesPage = ({loading, articles, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -24,6 +25,12 @@ const AuthoredArticlesPage = ({loading, articles}) => {
     });
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAuthoredArticles(token));
+    }, [dispatch, token]);
 
     return (
         <Layout>
@@ -65,7 +72,8 @@ const mapStateToProps = state => {
 
     return {
         loading: state.articles.loading,
-        articles: state.articles.articles
+        articles: state.articles.articles,
+        token: state.auth.token
     }
 }
 

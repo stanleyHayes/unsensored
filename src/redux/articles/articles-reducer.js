@@ -19,18 +19,18 @@ import {
     DELETE_ARTICLE_REQUEST
 
 } from "./articles-action-types";
-import {ARTICLES} from "./articles-data";
 
 const INITIAL_STATE = {
     articles: [],
     authoredArticles: [],
-    articleDetail: ARTICLES[0],
+    articleDetail: null,
     loading: false,
     error: null,
 }
 
 const articlesReducer = (state = INITIAL_STATE, action) => {
     let updatedArticles = [];
+
     switch (action.type) {
 
         case CREATE_ARTICLE_REQUEST:
@@ -88,8 +88,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
-                articles: []
+                error: action.payload
             }
 
         case GET_AUTHORED_ARTICLES_REQUEST:
@@ -108,8 +107,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
-                articles: []
+                error: action.payload
             }
 
         case UPDATE_ARTICLE_REQUEST:
@@ -154,7 +152,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
         case DELETE_ARTICLE_FAILURE:
             return {
                 ...state,
-                loading: true
+                loading: false
             }
         default:
             return state;
