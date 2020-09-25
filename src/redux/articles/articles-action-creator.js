@@ -211,7 +211,7 @@ export const getArticles = (token, query) => {
             }
         }).then(response => {
             const {data} = response.data;
-            console.log('ARTICLES RETRIEVED',data);
+            console.log('articles',data);
             dispatch(getArticlesSuccess(data));
         }).catch(error => {
             // dispatch(getArticlesFailure(error.data.error.error));
@@ -250,6 +250,7 @@ export const getAuthoredArticles = (token) => {
             }
         }).then(response => {
             const {data} = response.data;
+            console.log('articles',data);
             dispatch(getAuthoredArticlesSuccess(data));
         }).catch(error => {
             // dispatch(getAuthoredArticlesFailure(error.data.error.error));

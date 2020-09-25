@@ -19,7 +19,6 @@ import {useDispatch, connect} from "react-redux";
 import {createArticle} from "../../redux/articles/articles-action-creator";
 import {useHistory} from 'react-router-dom';
 
-
 const CreateArticlePage = ({loading, token}) => {
 
     const [article, setArticle] = useState({});

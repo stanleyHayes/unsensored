@@ -79,8 +79,6 @@ const Article = ({article, currentUser}) => {
         document.execCommand("copy", true, link);
     }
 
-    // const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
-
     const handleLikeClicked = event => {
 
     }
@@ -97,7 +95,7 @@ const Article = ({article, currentUser}) => {
                 action={currentUser && authorId === currentUser._id ? <VerifiedUser className={classes.author}/> : null}
             />
             <Divider variant="fullWidth"/>
-            <CardMedia component="img" src={`${process.env.PUBLIC_URL}/images/image-1.jpg`} className={classes.banner}/>
+            <CardMedia component="img" src={banner} className={classes.banner}/>
             <Divider variant="fullWidth"/>
             <CardContent>
                 <Grid className={classes.grid} container={true} justify="flex-start" alignItems="center" spacing={1}>
