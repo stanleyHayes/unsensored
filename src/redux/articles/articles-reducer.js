@@ -39,7 +39,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 loading: true
             }
         case CREATE_ARTICLE_SUCCESS:
-            console.log('create article', action.payload);
             return {
                 ...state,
                 loading: false,

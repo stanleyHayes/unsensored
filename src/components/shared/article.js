@@ -13,7 +13,7 @@ import {
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
-import {Chat, Comment, Share, ThumbUp, VerifiedUser, Visibility} from "@material-ui/icons";
+import {Chat, Comment, Share, ThumbUp, ThumbUpAltOutlined, VerifiedUser, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -81,6 +81,10 @@ const Article = ({article, currentUser}) => {
 
     // const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
 
+    const handleLikeClicked = event => {
+
+    }
+
     return (
         <Card variant="outlined" className={classes.card}>
             <CardHeader
@@ -137,7 +141,16 @@ const Article = ({article, currentUser}) => {
             <CardActions>
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
-                        <Button startIcon={<ThumbUp/>} size="small" variant="text">
+                        <Button
+                            onClick={handleLikeClicked}
+                            startIcon={
+                                currentUser && currentUser.likes.includes(_id) ?
+                                    <ThumbUp/>
+                                    :
+                                    <ThumbUpAltOutlined/>
+                            }
+                            size="small"
+                            variant="text">
                             Like
                         </Button>
                     </Grid>
