@@ -4,7 +4,7 @@ import {
     Button,
     Divider,
     Grid,
-    Typography
+    Typography, Avatar
 } from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {makeStyles} from "@material-ui/styles";
@@ -17,8 +17,9 @@ import {
     ShoppingCartOutlined,
     Warning
 } from "@material-ui/icons";
+import {connect} from 'react-redux';
 
-const DrawerContent = ({handleClose}) => {
+const DrawerContent = ({handleClose, currentUser}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -50,7 +51,7 @@ const DrawerContent = ({handleClose}) => {
                 paddingTop: 8,
                 paddingBottom: 8
             },
-            logo: {
+            avatar: {
                 height: 200,
                 width: 200,
                 borderRadius: '50%'
@@ -104,17 +105,17 @@ const DrawerContent = ({handleClose}) => {
                 justify="center"
                 alignItems="center">
                 <Grid item={true}>
-                    <img
-                        alt="Bracket Clothing Logo"
-                        className={classes.logo}
-                        src={`${process.env.PUBLIC_URL}/images/swastika.svg`}/>
+                    {currentUser && currentUser.avatar ? <Avatar src={currentUser.avatar} className={classes.avatar}/>
+                        :
+                        <Avatar src={`${process.env.PUBLIC_URL}/images/user.svg`} className={classes.avatar}/>
+                    }
                 </Grid>
             </Grid>
             <Grid container={true} justify="center">
                 <Grid item={true} xs={12}>
                     <Typography className={classes.brand} gutterBottom={true} align="center"
-                                variant="h5">Uncensored</Typography>
-                    <Typography align="center" variant="body2">Unrestricted Knowledge</Typography>
+                                variant="h5">{currentUser && currentUser.name}</Typography>
+                    <Typography align="center" variant="body2">{currentUser && currentUser.username}</Typography>
                 </Grid>
 
                 <Grid item={true} xs={12}>
@@ -198,4 +199,11 @@ const DrawerContent = ({handleClose}) => {
     )
 }
 
-export default DrawerContent;
+const mapStateToProps = state => {
+
+    return {
+        currentUser: state.auth.currentUser
+    }
+}
+
+export default connect(mapStateToProps)(DrawerContent);

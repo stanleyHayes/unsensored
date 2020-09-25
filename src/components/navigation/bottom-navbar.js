@@ -2,14 +2,10 @@ import React, {useEffect, useState} from "react";
 import {BottomNavigation, BottomNavigationAction, Paper} from "@material-ui/core";
 import {useRouteMatch, useHistory} from "react-router-dom";
 import {
-    Explore, ExploreOutlined,
-    Note,
     NotesOutlined,
-    Search, SearchOutlined,
-    Timeline,
+    SearchOutlined,
     TimelineOutlined,
     TrendingUp,
-    TrendingUpOutlined, TrendingUpRounded, TrendingUpSharp
 } from "@material-ui/icons";
 
 
@@ -21,7 +17,6 @@ const BottomNavBar = () => {
     const {path} = useRouteMatch();
 
     const handleNavigationChange = (event, path) => {
-        console.log(path);
         setActive(path);
         history.push(path);
     }
