@@ -1,18 +1,27 @@
 import React, {useState} from "react";
-import {Box, Button, Container, Grid, TextField, Typography, Chip, CardContent, Card} from "@material-ui/core";
+import {
+    Button,
+    Container,
+    Grid,
+    TextField,
+    Typography,
+    Chip,
+    CardContent,
+    Card,
+    LinearProgress
+} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
-import {Editor} from "@tinymce/tinymce-react";
 import ImageUploader from 'react-images-upload';
 import {red} from "@material-ui/core/colors";
 import {Close} from "@material-ui/icons";
-import {useDispatch} from "react-redux";
+import {useDispatch, connect} from "react-redux";
 import {createArticle} from "../../redux/articles/articles-action-creator";
 import {useHistory} from 'react-router-dom';
 import {TOKEN} from "../../constants/constants";
 
 
-const CreateArticlePage = () => {
+const CreateArticlePage = ({loading}) => {
 
     const [article, setArticle] = useState({});
     const [banner, setBanner] = useState(null);
@@ -78,9 +87,6 @@ const CreateArticlePage = () => {
         event.preventDefault();
 
 
-    }
-    const handleTextChange = (content, editor) => {
-        setArticle({...article, text: content});
     }
 
     const useStyles = makeStyles(theme => {
@@ -153,6 +159,7 @@ const CreateArticlePage = () => {
 
     return (
         <Layout>
+            {loading && <LinearProgress variant="query"/>}
             <Container>
                 <Grid container={true} justify="center">
                     <Grid item={true} xs={12} md={8}>
@@ -202,28 +209,46 @@ const CreateArticlePage = () => {
                                 className={classes.textField}
                             />
 
-                            <Box className={classes.box}>
-                                <Typography variant="body1" gutterBottom={true}>Article Detail</Typography>
-                                <Editor
-                                    value={text}
-                                    tagName="text"
-                                    textareaName="text"
-                                    apiKey="4k98mzlrjhgnes2exbqtgbhevplum3c0c6czfodsu2s5mpqk"
-                                    initialValue=""
-                                    init={{
-                                        height: 500,
-                                        menubar: false,
-                                        plugins: [
-                                            'advlist autolink lists link image',
-                                            'charmap print preview anchor help',
-                                            'searchreplace visualblocks code',
-                                            'insertdatetime media table paste wordcount'
-                                        ],
-                                        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'
-                                    }}
-                                    onEditorChange={handleTextChange}
-                                />
-                            </Box>
+
+                            <TextField
+                                value={text}
+                                label="Article Detail"
+                                placeholder="Enter article detail"
+                                onChange={handleArticleChange}
+                                fullWidth={true}
+                                name="text"
+                                required={true}
+                                multiline={true}
+                                rows={20}
+                                margin="normal"
+                                helperText={error.text || ''}
+                                error={Boolean(error.text)}
+                                variant="outlined"
+                                className={classes.textField}
+                            />
+
+                            {/*<Box className={classes.box}>*/}
+                            {/*    <Typography variant="body1" gutterBottom={true}>Article Detail</Typography>*/}
+                            {/*    <Editor*/}
+                            {/*        value={text}*/}
+                            {/*        tagName="text"*/}
+                            {/*        textareaName="text"*/}
+                            {/*        apiKey="4k98mzlrjhgnes2exbqtgbhevplum3c0c6czfodsu2s5mpqk"*/}
+                            {/*        initialValue=""*/}
+                            {/*        init={{*/}
+                            {/*            height: 500,*/}
+                            {/*            menubar: false,*/}
+                            {/*            plugins: [*/}
+                            {/*                'advlist autolink lists link image',*/}
+                            {/*                'charmap print preview anchor help',*/}
+                            {/*                'searchreplace visualblocks code',*/}
+                            {/*                'insertdatetime media table paste wordcount'*/}
+                            {/*            ],*/}
+                            {/*            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'*/}
+                            {/*        }}*/}
+                            {/*        onEditorChange={handleTextChange}*/}
+                            {/*    />*/}
+                            {/*</Box>*/}
 
                             <Grid container={true} spacing={2} alignItems="center">
                                 <Grid item={true} xs={10}>
@@ -299,4 +324,10 @@ const CreateArticlePage = () => {
     )
 }
 
-export default CreateArticlePage;
+const mapStateToProps = state => {
+    return {
+        loading: state.articles.loading
+    }
+}
+
+export default connect(mapStateToProps)(CreateArticlePage);
