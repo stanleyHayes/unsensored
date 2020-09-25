@@ -114,7 +114,7 @@ export const getLoggedInUser = (history, token) => {
         dispatch(getLoggedInUserRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/auth/me`,
+            url: `${PRODUCTION_BASE_URL}/auth/me`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -124,8 +124,7 @@ export const getLoggedInUser = (history, token) => {
             localStorage.setItem(TOKEN_KEY, token);
             history.push('/chat');
         }).catch(error => {
-            console.log(error.response)
-            // dispatch(getLoggedInUserError(error.response.data.error));
+            dispatch(getLoggedInUserError(error.response.data.error));
             history.push('/auth/login');
         });
     }

@@ -19,77 +19,59 @@ import AuthoredArticlesPage from "./pages/articles/authored-articles-page";
 import ArticleCommentsPage from "./pages/articles/article-comments-page";
 import ArticleViewsPage from "./pages/articles/article-views-page";
 import ArticleLikesPage from "./pages/articles/article-likes-page";
+import PageNotFound from "./pages/404/404-page-not-found-page";
+import ProtectedRoute from "./components/shared/protected-route";
 
 function App() {
-  return (
-    <ScrollToTop>
-      <Switch>
-        <Route path="/" exact={true}>
-          <TimelinePage />
-        </Route>
+    return (
+        <ScrollToTop>
+            <Switch>
+                <ProtectedRoute component={TimelinePage} path="/" exact={true}/>
 
-        <Route path="/article/new" exact={true}>
-          <CreateArticlePage />
-        </Route>
+                <ProtectedRoute component={CreateArticlePage} path="/article/new" exact={true}/>
 
-        <Route path="/articles/:articleId" exact={true}>
-          <ArticleDetailPage />
-        </Route>
+                <ProtectedRoute component={ArticleDetailPage} path="/articles/:articleId" exact={true}/>
 
-        <Route path="/articles" exact={true}>
-          <AuthoredArticlesPage />
-        </Route>
+                <ProtectedRoute component={AuthoredArticlesPage} path="/articles" exact={true}/>
 
-        <Route path="/articles/:articleId/update" exact={true}>
-          <UpdateArticlePage />
-        </Route>
+                <ProtectedRoute component={UpdateArticlePage} path="/articles/:articleId/update" exact={true}/>
 
-        <Route path="/articles/:articleId/comments" exact={true}>
-          <ArticleCommentsPage />
-        </Route>
+                <ProtectedRoute component={ArticleCommentsPage} path="/articles/:articleId/comments" exact={true}/>
 
-        <Route path="/articles/:articleId/likes" exact={true}>
-          <ArticleLikesPage />
-        </Route>
+                <ProtectedRoute component={ArticleLikesPage} path="/articles/:articleId/likes" exact={true}/>
 
-        <Route path="/articles/:articleId/views" exact={true}>
-          <ArticleViewsPage />
-        </Route>
+                <ProtectedRoute component={ArticleViewsPage} path="/articles/:articleId/views" exact={true}/>
 
-        <Route path="/search" exact={true}>
-          <SearchPage />
-        </Route>
+                <ProtectedRoute component={SearchPage} path="/search" exact={true}/>
 
-        <Route path="/profile/:username" exact={true}>
-          <ProfilePage />
-        </Route>
+                <ProtectedRoute component={ProfilePage} path="/profile/:username" exact={true}/>
 
-        <Route path="/edit-profile" exact={true}>
-          <EditProfilePage />
-        </Route>
+                <ProtectedRoute component={EditProfilePage} path="/edit-profile" exact={true}/>
 
-        <Route path="/trending" exact={true}>
-          <TrendingPage />
-        </Route>
+                <ProtectedRoute component={TrendingPage} path="/trending" exact={true}/>
 
-        <Route path="/auth/register" exact={true}>
-          <SignUpPage />
-        </Route>
+                <ProtectedRoute path="/auth/forgot-password" component={ForgotPasswordPage}/>
 
-        <Route path="/auth/login" exact={true}>
-          <SignInPage />
-        </Route>
+                <Route path="/auth/register" exact={true}>
+                    <SignUpPage/>
+                </Route>
 
-        <Route path="/auth/forgot-password" exact={true}>
-          <ForgotPasswordPage />
-        </Route>
+                <Route path="/auth/login" exact={true}>
+                    <SignInPage/>
+                </Route>
 
-        <Route path="/auth/change-password" exact={true}>
-          <ChangePasswordPage />
-        </Route>
-      </Switch>
-    </ScrollToTop>
-  );
+                <Route path="/auth/forgot-password" exact={true}>
+                    <ForgotPasswordPage/>
+                </Route>
+
+                <ProtectedRoute component={ChangePasswordPage} path="/auth/change-password" exact={true}/>
+
+                <Route path="*">
+                    <PageNotFound/>
+                </Route>
+            </Switch>
+        </ScrollToTop>
+    );
 }
 
 export default App;
