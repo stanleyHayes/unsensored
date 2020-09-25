@@ -33,13 +33,13 @@ const ChangePasswordPage = () => {
                 }
             },
             root: {
-                minHeight: "100vh"
+                minHeight: "86vh"
             },
             container: {
-                height: "100vh"
+                height: "86vh"
             },
             gridContainer: {
-                height: '100vh'
+                height: '86vh'
             },
             title: {
                 color: "#333333",

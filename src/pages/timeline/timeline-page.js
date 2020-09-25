@@ -7,7 +7,7 @@ import {makeStyles} from "@material-ui/styles";
 import {getArticles} from "../../redux/articles/articles-action-creator";
 import {TOKEN} from "../../constants/constants";
 
-const TimelinePage = ({loading, subscribedArticles}) => {
+const TimelinePage = ({loading, articles}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -37,8 +37,8 @@ const TimelinePage = ({loading, subscribedArticles}) => {
             {loading && <LinearProgress variant="query"/>}
             <Grid container={true} spacing={4}>
                 {
-                    subscribedArticles && subscribedArticles.length ? (
-                        subscribedArticles.map((article, index) => {
+                    articles && articles.length ? (
+                        articles.map((article, index) => {
                             return (
                                 <Grid key={index} item={true} xs={12} md={6} xl={4}>
                                     <Article article={article}/>
@@ -71,7 +71,7 @@ const TimelinePage = ({loading, subscribedArticles}) => {
 const mapStateToProps = state => {
     return {
         loading: state.articles.loading,
-        subscribedArticles: state.articles.subscribedArticles
+        articles: state.articles.articles
     }
 }
 

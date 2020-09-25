@@ -26,7 +26,9 @@ const DesktopHeader = () => {
                 <Container>
                     <Grid container={true} justify="space-between" alignItems="center">
                         <Grid item={true} lg={2}>
-                            <Typography variant="h5">Uncensored</Typography>
+                            <Typography variant="h5">
+                                <Link className={classes.link} to="/">Uncensored</Link>
+                            </Typography>
                         </Grid>
                         <Grid item={true} container={true} justify="center" alignItems="center" lg={8} spacing={1}>
                             <Grid item={true}>

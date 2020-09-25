@@ -10,7 +10,7 @@ import {
 } from "./auth-action-types";
 
 import axios from "axios";
-import {DEVELOPMENT_BASE_URL, TOKEN_KEY} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL, TOKEN_KEY} from "../../constants/constants";
 
 export const signUpRequest = () => {
     return {
@@ -75,7 +75,7 @@ export const signIn = (history, user) => {
         dispatch(signInRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/auth/login`,
+            url: `${PRODUCTION_BASE_URL}/auth/login`,
             data: {...user}
         }).then(response => {
             const {data, token} = response.data;

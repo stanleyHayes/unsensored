@@ -3,10 +3,10 @@ import {CardContent, Container, Grid, Card, TextField, Button} from "@material-u
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {useHistory} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, connect} from "react-redux";
 import validator from "validator";
 
-const EditProfilePage = () => {
+const EditProfilePage = ({currentUser, loading}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -133,6 +133,7 @@ const EditProfilePage = () => {
                                         helperText={error.name}
                                         error={Boolean(error.name)}
                                         label="Name"
+                                        defaultValue={currentUser && currentUser.name}
                                         placeholder="Enter name"
                                         variant="outlined"
                                         className={classes.textField}
@@ -148,6 +149,7 @@ const EditProfilePage = () => {
                                         helperText={error.email}
                                         error={Boolean(error.email)}
                                         label="Email"
+                                        defaultValue={currentUser && currentUser.email}
                                         type="email"
                                         placeholder="Enter email"
                                         variant="outlined"
@@ -164,6 +166,7 @@ const EditProfilePage = () => {
                                         helperText={error.username}
                                         error={Boolean(error.username)}
                                         label="Username"
+                                        defaultValue={currentUser && currentUser.username}
                                         placeholder="Enter username"
                                         variant="outlined"
                                         className={classes.textField}
@@ -188,4 +191,11 @@ const EditProfilePage = () => {
     )
 }
 
-export default EditProfilePage;
+const mapStateToProps = state => {
+    return {
+        loading: state.auth.loading,
+        currentUser: state.auth.currentUser
+    }
+}
+
+export default connect(mapStateToProps) (EditProfilePage);

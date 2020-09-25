@@ -44,7 +44,8 @@ const Article = ({article}) => {
                 color: "#777777"
             },
             name: {
-                cursor: "pointer"
+                cursor: "pointer",
+                fontWeight: 500
             },
             title: {
                 cursor: "pointer",
@@ -68,7 +69,7 @@ const Article = ({article}) => {
     }
 
     const handleShareClicked = () => {
-
+        document.execCommand("copy", true, link);
     }
 
     const image = `data:image/png;charset=utf-8;base64${banner.data.toString('base64')}`
@@ -79,7 +80,7 @@ const Article = ({article}) => {
                 avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> : <Avatar>
                     <Typography variant="h5" align="center"> {name[0][0]}</Typography>
                 </Avatar>}
-                title={<Typography onClick={handleNameClick} variant="h6" className={classes.name}>{name}</Typography> }
+                title={<Typography onClick={handleNameClick} variant="body1" className={classes.name}>{name}</Typography> }
                 subheader={moment(datePublished).fromNow()}
             />
             <Divider variant="fullWidth"/>
