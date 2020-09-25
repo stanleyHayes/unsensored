@@ -6,7 +6,7 @@ import {
     SIGN_IN_SUCCESS,
     SIGN_UP_FAILURE,
     SIGN_UP_REQUEST,
-    SIGN_UP_SUCCESS
+    SIGN_UP_SUCCESS, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS
 } from "./auth-action-types";
 
 import axios from "axios";
@@ -17,21 +17,18 @@ export const signUpRequest = () => {
         type: SIGN_UP_REQUEST
     }
 }
-
 export const signUpSuccess = (user, token) => {
     return {
         type: SIGN_UP_SUCCESS,
         payload: {user, token}
     }
 }
-
 export const signUpError = (error) => {
     return {
         type: SIGN_UP_FAILURE,
         payload: {error}
     }
 }
-
 export const signUp = (history, user) => {
     return dispatch => {
         dispatch(signUpRequest());
@@ -55,21 +52,18 @@ export const signInRequest = () => {
         type: SIGN_IN_REQUEST
     }
 }
-
 export const signInSuccess = (user, token) => {
     return {
         type: SIGN_IN_SUCCESS,
         payload: {user, token}
     }
 }
-
 export const signInError = (error) => {
     return {
         type: SIGN_IN_FAILURE,
         payload: {error}
     }
 }
-
 export const signIn = (history, user) => {
     return dispatch => {
         dispatch(signInRequest());
@@ -94,21 +88,18 @@ export const getLoggedInUserRequest = () => {
         type: GET_LOGGED_IN_USER_REQUEST
     }
 }
-
 export const getLoggedInUserSuccess = (user, token) => {
     return {
         type: GET_LOGGED_IN_USER_SUCCESS,
         payload: {user, token}
     }
 }
-
 export const getLoggedInUserError = (error) => {
     return {
         type: GET_LOGGED_IN_USER_FAILURE,
         payload: {error}
     }
 }
-
 export const getLoggedInUser = (history, token) => {
     return dispatch => {
         dispatch(getLoggedInUserRequest());
@@ -127,5 +118,42 @@ export const getLoggedInUser = (history, token) => {
             dispatch(getLoggedInUserError(error.response.data.error));
             history.push('/auth/login');
         });
+    }
+}
+
+const updateUserProfileRequest = () => {
+    return {
+        type: UPDATE_PROFILE_REQUEST
+    }
+}
+const updateUserProfileSuccess = user => {
+    return {
+        type: UPDATE_PROFILE_SUCCESS,
+        payload: user
+    }
+}
+const updateUserProfileFailure = error => {
+    return {
+        type: UPDATE_PROFILE_REQUEST,
+        payload: error
+    }
+}
+export const updateUserProfile = (user, token) => {
+    return dispatch => {
+        dispatch(updateUserProfileRequest());
+        axios({
+            url: `${DEVELOPMENT_BASE_URL}/users/me`,
+            method: 'patch',
+            headers: {
+                'Content-Type': 'multipart/data',
+                Authorization: `Bearer ${token}`
+            },
+            data: user
+        }).then(response => {
+            const {data} = response.data;
+            dispatch(updateUserProfileSuccess(data));
+        }).catch(error => {
+            dispatch(updateUserProfileFailure(error.data.error.error));
+        })
     }
 }

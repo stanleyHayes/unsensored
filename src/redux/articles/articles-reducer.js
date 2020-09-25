@@ -19,7 +19,6 @@ import {
     DELETE_ARTICLE_REQUEST
 
 } from "./articles-action-types";
-import {ARTICLES} from "./articles-data";
 
 const INITIAL_STATE = {
     articles: [],

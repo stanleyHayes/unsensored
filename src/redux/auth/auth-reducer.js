@@ -6,7 +6,7 @@ import {
     SIGN_IN_SUCCESS,
     SIGN_UP_FAILURE,
     SIGN_UP_REQUEST,
-    SIGN_UP_SUCCESS
+    SIGN_UP_SUCCESS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS
 } from "./auth-action-types";
 
 const INITIAL_STATE = {
@@ -23,7 +23,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: true
             }
-
         case SIGN_UP_SUCCESS:
             return {
                 ...state,
@@ -32,7 +31,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 token: action.payload.token,
                 error: null
             }
-
         case SIGN_UP_FAILURE:
             return {
                 ...state,
@@ -47,7 +45,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: true
             }
-
         case SIGN_IN_SUCCESS:
             return {
                 ...state,
@@ -56,7 +53,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 token: action.payload.token,
                 error: null
             }
-
         case SIGN_IN_FAILURE:
             return {
                 ...state,
@@ -71,7 +67,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: true
             }
-
         case GET_LOGGED_IN_USER_SUCCESS:
             return {
                 ...state,
@@ -80,7 +75,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 token: action.payload.token,
                 error: null
             }
-
         case GET_LOGGED_IN_USER_FAILURE:
             return {
                 ...state,
@@ -89,6 +83,28 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 token: null,
                 error: action.payload.error
             }
+
+        case UPDATE_PROFILE_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                currentUser: action.payload,
+                error: null
+            }
+
+        case UPDATE_PROFILE_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
         default:
             return state;
     }
