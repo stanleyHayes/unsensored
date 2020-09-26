@@ -66,7 +66,7 @@ const Article = ({article, currentUser}) => {
     });
 
     const classes = useStyles();
-    const {title, summary, author, datePublished, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
+    const {title, summary, author, updatedAt, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
     const {name, _id: authorId} = author;
     const history = useHistory();
 
@@ -100,7 +100,7 @@ const Article = ({article, currentUser}) => {
                         className={classes.name}>
                         {name}
                     </Typography>}
-                subheader={moment(datePublished).fromNow()}
+                subheader={moment(updatedAt).fromNow()}
                 action={currentUser && authorId === currentUser._id ? <CheckCircle className={classes.author}/> : null}
             />
             <Divider variant="fullWidth"/>

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Grid, LinearProgress, Typography} from "@material-ui/core";
+import {Container, Grid, LinearProgress, Typography} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {connect, useDispatch} from 'react-redux';
 import Article from "../../components/shared/article";
@@ -41,35 +41,37 @@ const SearchArticlesPage = ({loading, articles, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Grid container={true} spacing={4} className={classes.container}>
-                {
-                    articles && articles.length ? (
-                        articles.map((article, index) => {
-                            return (
-                                <Grid key={index} item={true} xs={12} md={6} xl={4}>
-                                    <Article article={article}/>
+            <Container maxWidth="md">
+                <Grid container={true} spacing={4} className={classes.container}>
+                    {
+                        articles && articles.length ? (
+                            articles.map((article, index) => {
+                                return (
+                                    <Grid key={index} item={true} xs={12}>
+                                        <Article article={article}/>
+                                    </Grid>
+                                )
+                            })
+                        ) : (
+                            <Grid item={true}
+                                  container={true}
+                                  alignItems="center"
+                                  className={classes.noArticlesContainer}>
+                                <Grid item={true} xs={12}>
+                                    <Typography align="center" variant="h6">No Articles</Typography>
+                                    <div className={classes.imageContainer}>
+                                        <img
+                                            className={classes.image}
+                                            alt="no articles icon"
+                                            src={`${process.env.PUBLIC_URL}/images/internet.svg`}
+                                        />
+                                    </div>
                                 </Grid>
-                            )
-                        })
-                    ) : (
-                        <Grid item={true}
-                              container={true}
-                              alignItems="center"
-                              className={classes.noArticlesContainer}>
-                            <Grid item={true} xs={12}>
-                                <Typography align="center" variant="h6">No Articles</Typography>
-                                <div className={classes.imageContainer}>
-                                    <img
-                                        className={classes.image}
-                                        alt="no articles icon"
-                                        src={`${process.env.PUBLIC_URL}/images/internet.svg`}
-                                    />
-                                </div>
                             </Grid>
-                        </Grid>
-                    )
-                }
-            </Grid>
+                        )
+                    }
+                </Grid>
+            </Container>
         </Layout>
     )
 }
