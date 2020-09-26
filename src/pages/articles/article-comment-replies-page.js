@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Container, Grid, TextField, Paper, Fab, LinearProgress} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {SendRounded} from "@material-ui/icons";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import ReplyList from "../../components/shared/reply-list";
+import {useParams} from "react-router-dom";
+import {createReply, getRepliesByComment} from "../../redux/replies/replies-action-creators";
 
-const ArticleCommentRepliesPage = ({replies, loading}) => {
+const ArticleCommentRepliesPage = ({replies, loading, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -41,10 +43,13 @@ const ArticleCommentRepliesPage = ({replies, loading}) => {
 
     const [text, setText] = useState("");
     const [error, setError] = useState({});
+    const dispatch = useDispatch();
 
     const handleTextChange = event => {
         setText(event.target.value);
     }
+
+    const {commentId, articleId} = useParams();
 
     const handleReplySubmit = event => {
 
@@ -56,8 +61,18 @@ const ArticleCommentRepliesPage = ({replies, loading}) => {
         } else {
             setError({...error, text: null});
         }
-        console.log(text);
+        let reply = {
+            comment: commentId,
+            article: articleId,
+            text
+        };
+        dispatch(createReply(reply, token));
+        setText("");
     }
+
+    useEffect(() => {
+        dispatch(getRepliesByComment(commentId, token));
+    }, [commentId, dispatch, token]);
 
 
     return (
@@ -112,7 +127,8 @@ const ArticleCommentRepliesPage = ({replies, loading}) => {
 const mapStateToProps = state => {
     return {
         replies: state.replies.replies,
-        loading: state.replies.loading
+        loading: state.replies.loading,
+        token: state.auth.token
     }
 }
 

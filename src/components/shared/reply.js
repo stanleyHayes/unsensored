@@ -128,11 +128,6 @@ const CommentReply = ({reply, currentUser}) => {
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Button size="small" startIcon={<Reply/>} variant="text">
-                            Reply
-                        </Button>
-                    </Grid>
-                    <Grid item={true}>
                         <Button onClick={handleShareClicked} size="small" startIcon={<Share/>} variant="text">
                             Share
                         </Button>

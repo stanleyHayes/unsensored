@@ -64,6 +64,7 @@ const commentsReducer = (state = INITIAL_STATE, action) => {
                 error: action.payload,
                 comments: []
             }
+
         default:
             return state;
     }

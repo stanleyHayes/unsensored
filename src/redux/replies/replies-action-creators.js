@@ -18,7 +18,7 @@ import {
 } from "./replies-action-types";
 
 import axios from 'axios';
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 
 const getRepliesByUserRequest = () => {
     return {
@@ -42,18 +42,19 @@ export const getRepliesByUser = (userId, token) => {
         dispatch(getRepliesByUserRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/users/:${userId}/replies`,
+            url: `${PRODUCTION_BASE_URL}/users/${userId}/replies`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
             dispatch(getRepliesByUserSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(getRepliesByUserFailure(error));
-            }
+        }).catch(error => {
+            console.log(error);
+            // const {error} = e.data.error;
+            // if (error) {
+            //     dispatch(getRepliesByUserFailure(error));
+            // }
         })
     }
 }
@@ -81,18 +82,19 @@ export const getRepliesByComment = (commentId, token) => {
         dispatch(getRepliesByCommentRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/comments/:${commentId}/replies`,
+            url: `${PRODUCTION_BASE_URL}/comments/${commentId}/replies`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
             dispatch(getRepliesByCommentSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(getRepliesByCommentFailure(error));
-            }
+        }).catch(error => {
+            // const {error} = e.data.error;
+            // if (error) {
+            //     dispatch(getRepliesByCommentFailure(error));
+            // }
+            console.log(error);
         })
     }
 }
@@ -120,18 +122,19 @@ export const deleteReply = (replyId, token) => {
         dispatch(deleteReplyRequest());
         axios({
             method: 'delete',
-            url: `${DEVELOPMENT_BASE_URL}/replies/${replyId}`,
+            url: `${PRODUCTION_BASE_URL}/replies/${replyId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
             dispatch(deleteReplySuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(deleteReplyFailure(error));
-            }
+        }).catch(error => {
+            console.log(error);
+            // const {error} = e.data.error;
+            // if (error) {
+            //     dispatch(deleteReplyFailure(error));
+            // }
         })
     }
 }
@@ -159,7 +162,7 @@ export const updateReply = (replyId, reply, token) => {
         dispatch(updateReplyRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/replies/:${replyId}`,
+            url: `${PRODUCTION_BASE_URL}/replies/${replyId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -167,11 +170,12 @@ export const updateReply = (replyId, reply, token) => {
         }).then(response => {
             const {data} = response.data;
             dispatch(updateReplySuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(updateReplyFailure(error));
-            }
+        }).catch(error => {
+            // const {error} = e.data.error;
+            // if (error) {
+            //     dispatch(updateReplyFailure(error));
+            // }
+            console.log(error);
         })
     }
 }
@@ -194,24 +198,25 @@ const createReplyFailure = error => {
         payload: error
     }
 }
-export const createReply = (comment, token) => {
+export const createReply = (reply, token) => {
     return dispatch => {
         dispatch(createReplyRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/replies`,
+            url: `${PRODUCTION_BASE_URL}/replies`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            data: comment
+            data: reply
         }).then(response => {
             const {data} = response.data;
             dispatch(createReplySuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(createReplyFailure(error));
-            }
+        }).catch(error => {
+            // const {error} = e.data.error;
+            // if (error) {
+            //     dispatch(createReplyFailure(error));
+            // }
+            console.log(error);
         })
     }
 }

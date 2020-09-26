@@ -25,6 +25,44 @@ const INITIAL_STATE = {
 const repliesReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
 
+        case CREATE_REPLY_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case CREATE_REPLY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                replies: [...state.replies, action.payload],
+                error: false
+            }
+        case CREATE_REPLY_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case GET_REPLIES_BY_COMMENT_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case GET_REPLIES_BY_COMMENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                replies: action.payload,
+                error: false
+            }
+        case GET_REPLIES_BY_COMMENT_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                replies: []
+            }
 
         default:
             return state;
