@@ -1,5 +1,5 @@
 import axios from "axios";
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 import {GET_USER_PROFILE_FAILURE, GET_USER_PROFILE_REQUEST, GET_USER_PROFILE_SUCCESS} from "./user-action-types";
 
 const getUserProfileRequest = () => {
@@ -24,7 +24,7 @@ export const getUserProfile = (userId, token) => {
     return dispatch => {
         dispatch(getUserProfileRequest());
         axios({
-            url: `${DEVELOPMENT_BASE_URL}/users/${userId}`,
+            url: `${PRODUCTION_BASE_URL}/users/${userId}`,
             method: 'get',
             headers: {
                 Authorization: `Bearer ${token}`

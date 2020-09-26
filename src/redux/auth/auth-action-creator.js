@@ -142,7 +142,7 @@ export const updateUserProfile = (user, userId, token, history) => {
     return dispatch => {
         dispatch(updateUserProfileRequest());
         axios({
-            url: `${DEVELOPMENT_BASE_URL}/auth/me`,
+            url: `${PRODUCTION_BASE_URL}/auth/me`,
             method: 'patch',
             headers: {
                 'Content-Type': 'multipart/data',

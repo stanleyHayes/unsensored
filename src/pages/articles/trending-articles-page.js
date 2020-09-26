@@ -7,7 +7,7 @@ import {makeStyles} from "@material-ui/styles";
 import {getArticles} from "../../redux/articles/articles-action-creator";
 import {useHistory} from "react-router-dom";
 
-const TrendingArticlesPage = ({loading, trending, token}) => {
+const TrendingArticlesPage = ({loading, articles, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -42,8 +42,8 @@ const TrendingArticlesPage = ({loading, trending, token}) => {
             {loading && <LinearProgress variant="query"/>}
             <Grid container={true} spacing={4} className={classes.container}>
                 {
-                    trending && trending.length ? (
-                        trending.map((article, index) => {
+                    articles && articles.length ? (
+                        articles.map((article, index) => {
                             return (
                                 <Grid key={index} item={true} xs={12} md={6} xl={4}>
                                     <Article article={article}/>
@@ -76,7 +76,7 @@ const TrendingArticlesPage = ({loading, trending, token}) => {
 const mapStateToProps = state => {
     return {
         loading: state.articles.loading,
-        trending: state.articles.trending,
+        articles: state.articles.articles,
         token: state.auth.token
     }
 }
