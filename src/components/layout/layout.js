@@ -14,7 +14,7 @@ const Layout = ({children}) => {
         return {
             content: {
                 flexGrow: 1,
-                paddingTop: 72,
+                paddingTop: 48,
                 paddingBottom: 72
             },
             desktopContent: {
@@ -50,9 +50,9 @@ const Layout = ({children}) => {
                             <MobileHeader handleOpen={handleOpen}/>
                         </Grid>
                         <Grid item={true} className={classes.content} xs={12}>
-                            <Container>
+                            <div>
                                 {children}
-                            </Container>
+                            </div>
                         </Grid>
                         <Grid item={true} className={classes.bottom} xs={12}>
                             <Divider variant="fullWidth"/>
