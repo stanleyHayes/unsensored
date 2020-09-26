@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     CardContent,
     Container,
@@ -20,9 +20,10 @@ import CommentList from "../../components/shared/comment-list";
 import ReplyList from "../../components/shared/reply-list";
 import {Edit} from "@material-ui/icons";
 import {Link, useParams} from "react-router-dom";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
+import {getUserProfile} from "../../redux/users/user-action-creators";
 
-const ProfilePage = ({currentUser}) => {
+const ProfilePage = ({currentUser, token, user}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -63,6 +64,12 @@ const ProfilePage = ({currentUser}) => {
     }
 
     const {userId} = useParams();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getUserProfile(userId, token));
+    }, [dispatch, token, userId]);
+
+    const isLoggedInUser = !!(user && currentUser && user._id === currentUser._id);
 
     return (
         <Layout>
@@ -87,11 +94,14 @@ const ProfilePage = ({currentUser}) => {
                                                    className={classes.name}>{currentUser && currentUser.name}</Typography>}
                                 subheader={currentUser && currentUser.username}
                                 action={
-                                    <Link className={classes.link} to={`/edit-profile`}>
-                                        <IconButton>
-                                            <Edit className={classes.icon}/>
-                                        </IconButton>
-                                    </Link>
+                                    isLoggedInUser ?
+                                        <Link className={classes.link} to={`/edit-profile`}>
+                                            <IconButton>
+                                                <Edit className={classes.icon}/>
+                                            </IconButton>
+                                        </Link>
+                                        :
+                                        null
                                 }
                             />
                             <Divider variant="fullWidth"/>
@@ -140,7 +150,9 @@ const ProfilePage = ({currentUser}) => {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        token: state.auth.token,
+        user: state.auth.user
     }
 }
 export default connect(mapStateToProps)(ProfilePage);
