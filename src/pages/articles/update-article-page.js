@@ -16,12 +16,11 @@ import ImageUploader from 'react-images-upload';
 import {red} from "@material-ui/core/colors";
 import {Close} from "@material-ui/icons";
 import {useDispatch, connect} from "react-redux";
-import {createArticle} from "../../redux/articles/articles-action-creator";
-import {useHistory} from 'react-router-dom';
-import {TOKEN} from "../../constants/constants";
+import { updateArticle} from "../../redux/articles/articles-action-creator";
+import {useHistory, useParams} from 'react-router-dom';
 
 
-const UpdateArticlePage = ({loading, articleDetail}) => {
+const UpdateArticlePage = ({loading, articleDetail, token}) => {
 
     const [article, setArticle] = useState({});
     const [banner, setBanner] = useState(null);
@@ -31,6 +30,8 @@ const UpdateArticlePage = ({loading, articleDetail}) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const {articleId} = useParams();
+
     const {title, summary, text} = article;
 
     const handleArticleChange = event => {
@@ -80,7 +81,7 @@ const UpdateArticlePage = ({loading, articleDetail}) => {
         formData.append("published", true);
         formData.append("publishedDate", Date.now());
 
-        dispatch(createArticle(formData, TOKEN, history));
+        dispatch(updateArticle(articleId,formData, token, history));
     }
 
     const handleSave = event => {
@@ -156,6 +157,7 @@ const UpdateArticlePage = ({loading, articleDetail}) => {
     const handleArticleBannerChange = (picture) => {
         setBanner(picture[0]);
     }
+
 
     return (
         <Layout>
@@ -307,7 +309,8 @@ const UpdateArticlePage = ({loading, articleDetail}) => {
 const mapStateToProps = state => {
     return {
         loading: state.articles.loading,
-        articleDetail: state.articles.articleDetail
+        articleDetail: state.articles.articleDetail,
+        token: state.auth.token
     }
 }
 

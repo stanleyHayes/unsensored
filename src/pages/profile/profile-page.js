@@ -51,15 +51,15 @@ const ProfilePage = ({currentUser, token, user}) => {
     const getTabDetail = index => {
         switch (index) {
             case 0:
-                return <ArticleList/>
+                return <ArticleList articles={[]}/>
             case 1:
-                return <LikeList/>
+                return <LikeList likes={[]}/>
             case 2:
-                return <CommentList/>
+                return <CommentList comments={[]}/>
             case 3:
-                return <ReplyList/>
+                return <ReplyList replies={[]}/>
             default:
-                return <ArticleList/>
+                return <ArticleList articles={[]}/>
         }
     }
 
@@ -70,6 +70,8 @@ const ProfilePage = ({currentUser, token, user}) => {
     }, [dispatch, token, userId]);
 
     const isLoggedInUser = !!(user && currentUser && user._id === currentUser._id);
+
+    console.log(user);
 
     return (
         <Layout>
