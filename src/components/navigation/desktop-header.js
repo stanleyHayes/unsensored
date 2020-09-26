@@ -39,13 +39,6 @@ const DesktopHeader = () => {
                                 </Button>
                             </Grid>
 
-                            <Grid item={true}>
-                                <Button>
-                                    <Link className={classes.link} to="/articles">
-                                        My Articles
-                                    </Link>
-                                </Button>
-                            </Grid>
 
                             <Grid item={true}>
                                 <Button startIcon={<AddCircleRounded className={classes.button}/>}>
