@@ -1,12 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Container, Grid, TextField, Paper, Fab, LinearProgress} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {SendRounded} from "@material-ui/icons";
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import CommentList from "../../components/shared/comment-list";
+import {createComment, getCommentsByArticle} from "../../redux/comments/comments-action-creators";
+import {useParams} from "react-router-dom";
 
-const ArticleCommentsPage = ({comments, loading}) => {
+
+const ArticleCommentsPage = ({comments, loading, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -26,7 +29,13 @@ const ArticleCommentsPage = ({comments, loading}) => {
                 minHeight: '90vh'
             },
             fab: {
-                backgroundColor: theme.palette.primary.light
+                backgroundColor: theme.palette.primary.main,
+                '&:hover': {
+                    backgroundColor: theme.palette.primary.light
+                },
+                '&:active':{
+                    backgroundColor: theme.palette.primary.light,
+                }
             },
             icon: {
                 color: "white"
@@ -41,10 +50,12 @@ const ArticleCommentsPage = ({comments, loading}) => {
 
     const [text, setText] = useState("");
     const [error, setError] = useState({});
-
+    const dispatch = useDispatch();
     const handleTextChange = event => {
         setText(event.target.value);
     }
+
+    const {articleId} = useParams();
 
     const handleCommentSubmit = event => {
 
@@ -56,15 +67,23 @@ const ArticleCommentsPage = ({comments, loading}) => {
         } else {
             setError({...error, text: null});
         }
-        console.log(text);
+        let comment = {
+            article: articleId,
+            text
+        }
+        dispatch(createComment(comment, token));
+        setText("");
     }
 
+    useEffect(() => {
+        dispatch(getCommentsByArticle(articleId, token));
+    }, [articleId, dispatch, token]);
 
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
             <Container maxWidth="md" className={classes.container}>
-                <Grid container={true} className={classes.gridContainer}>
+                <Grid container={true} className={classes.gridContainer} justify="center">
                     <Grid item={true}>
                         <CommentList comments={comments}/>
                     </Grid>
@@ -112,7 +131,8 @@ const ArticleCommentsPage = ({comments, loading}) => {
 const mapStateToProps = state => {
     return {
         comments: state.comments.comments,
-        loading: state.comments.loading
+        loading: state.comments.loading,
+        token: state.auth.token
     }
 }
 

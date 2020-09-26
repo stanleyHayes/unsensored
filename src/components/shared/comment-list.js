@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Container, Grid, Typography} from "@material-ui/core";
+import {Box, Grid, Typography} from "@material-ui/core";
 import Comment from "./comment";
 import {makeStyles} from "@material-ui/styles";
 
@@ -29,7 +29,7 @@ const CommentList = ({comments}) => {
     const classes = useStyles();
 
     return (
-        <Container className={classes.root}>
+        <div className={classes.root}>
             <Grid container={true} className={classes.container} spacing={2}>
                 {
                     comments.length ? (
@@ -67,7 +67,7 @@ const CommentList = ({comments}) => {
                     )
                 }
             </Grid>
-        </Container>
+        </div>
     )
 }
 

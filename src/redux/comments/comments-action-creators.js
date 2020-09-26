@@ -41,18 +41,16 @@ export const getCommentsByUser = (userId, token) => {
         dispatch(getCommentsByUserRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/users/:${userId}/comments`,
+            url: `${DEVELOPMENT_BASE_URL}/users/${userId}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
             dispatch(getCommentsByUserSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(getCommentsByUserFailure(error));
-            }
+        }).catch(error => {
+            console.log(error)
+            // dispatch(getCommentsByArticleFailure(error));
         })
     }
 }
@@ -80,18 +78,16 @@ export const getCommentsByArticle = (articleId, token) => {
         dispatch(getCommentsByArticleRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/:${articleId}/comments`,
+            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(response => {
             const {data} = response.data;
             dispatch(getCommentsByArticleSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(getCommentsByArticleFailure(error));
-            }
+        }).catch(error => {
+            console.log(error)
+            // dispatch(getCommentsByArticleFailure(error));
         })
     }
 }
@@ -126,11 +122,9 @@ export const deleteComment = (commentId, token) => {
         }).then(response => {
             const {data} = response.data;
             dispatch(deleteCommentSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(deleteCommentFailure(error));
-            }
+        }).catch(error => {
+            console.log(error)
+            // dispatch(getCommentsByArticleFailure(error));
         })
     }
 }
@@ -158,7 +152,7 @@ export const updateComment = (commentId, comment, token) => {
         dispatch(updateCommentRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/comments/:${commentId}`,
+            url: `${DEVELOPMENT_BASE_URL}/comments/${commentId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -166,11 +160,9 @@ export const updateComment = (commentId, comment, token) => {
         }).then(response => {
             const {data} = response.data;
             dispatch(updateCommentSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(updateCommentFailure(error));
-            }
+        }).catch(error => {
+            console.log(error)
+            // dispatch(getCommentsByArticleFailure(error));
         })
     }
 }
@@ -206,11 +198,9 @@ export const createComment = (comment, token) => {
         }).then(response => {
             const {data} = response.data;
             dispatch(createCommentSuccess(data));
-        }).catch(e => {
-            const {error} = e.data.error;
-            if (error) {
-                dispatch(createCommentFailure(error));
-            }
+        }).catch(error => {
+            console.log(error)
+            // dispatch(getCommentsByArticleFailure(error));
         })
     }
 }
