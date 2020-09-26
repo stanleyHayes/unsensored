@@ -17,7 +17,7 @@ import {
 } from "./comments-action-types";
 
 import axios from 'axios';
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 
 const getCommentsByUserRequest = () => {
     return {
@@ -41,7 +41,7 @@ export const getCommentsByUser = (userId, token) => {
         dispatch(getCommentsByUserRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/users/${userId}/comments`,
+            url: `${PRODUCTION_BASE_URL}/users/${userId}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -78,7 +78,7 @@ export const getCommentsByArticle = (articleId, token) => {
         dispatch(getCommentsByArticleRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}/comments`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -115,7 +115,7 @@ export const deleteComment = (commentId, token) => {
         dispatch(deleteCommentRequest());
         axios({
             method: 'delete',
-            url: `${DEVELOPMENT_BASE_URL}/comments/${commentId}`,
+            url: `${PRODUCTION_BASE_URL}/comments/${commentId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -152,7 +152,7 @@ export const updateComment = (commentId, comment, token) => {
         dispatch(updateCommentRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/comments/${commentId}`,
+            url: `${PRODUCTION_BASE_URL}/comments/${commentId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -190,7 +190,7 @@ export const createComment = (comment, token) => {
         dispatch(createCommentRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/comments`,
+            url: `${PRODUCTION_BASE_URL}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
