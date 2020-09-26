@@ -14,7 +14,7 @@ const Layout = ({children}) => {
         return {
             content: {
                 flexGrow: 1,
-                paddingTop: 48,
+                paddingTop: 64,
                 paddingBottom: 72
             },
             desktopContent: {

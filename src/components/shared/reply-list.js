@@ -53,12 +53,12 @@ const ReplyList = ({replies}) => {
                                     className={classes.text}
                                     variant="h6"
                                     align="center">
-                                    Be the first to comment
+                                    Be the first to reply
                                 </Typography>
                                 <Box className={classes.imageContainer}>
                                     <img
                                         className={classes.image}
-                                        alt="no comments logo"
+                                        alt="no replies logo"
                                         src={`${process.env.PUBLIC_URL}/images/404.svg`}
                                     />
                                 </Box>

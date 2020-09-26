@@ -72,10 +72,10 @@ const ArticleCommentsPage = ({comments, loading}) => {
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
                     <form onSubmit={handleCommentSubmit}>
                         <Grid
-                            spacing={2}
+                            spacing={1}
                             container={true}
                             alignItems="center"
-                            justify="space-around">
+                            justify="space-between">
                             <Grid xs={10} item={true}>
                                 <TextField
                                     fullWidth={true}

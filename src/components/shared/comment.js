@@ -50,6 +50,9 @@ const Comment = ({comment, currentUser}) => {
             },
             text: {
                 pointer: "cursor"
+            },
+            link: {
+                textDecoration: "none"
             }
         }
     });

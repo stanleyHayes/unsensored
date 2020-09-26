@@ -20,7 +20,7 @@ import ArticleViewsPage from "./pages/articles/article-views-page";
 import ArticleLikesPage from "./pages/articles/article-likes-page";
 import PageNotFound from "./pages/404/404-page-not-found-page";
 import ProtectedRoute from "./components/shared/protected-route";
-import ArticleCommentRepliesPage from "./pages/articles/article-comment-replies";
+import ArticleCommentRepliesPage from "./pages/articles/article-comment-replies-page";
 
 function App() {
     return (
@@ -38,7 +38,7 @@ function App() {
 
                 <ProtectedRoute component={ArticleCommentsPage} path="/articles/:articleId/comments" exact={true}/>
 
-                <ProtectedRoute component={ArticleCommentRepliesPage} path="/articles/:articleId/comments/:commentId" exact={true}/>
+                <ProtectedRoute component={ArticleCommentRepliesPage} path="/articles/:articleId/comments/:commentId/replies" exact={true}/>
 
                 <ProtectedRoute component={ArticleLikesPage} path="/articles/:articleId/likes" exact={true}/>
 

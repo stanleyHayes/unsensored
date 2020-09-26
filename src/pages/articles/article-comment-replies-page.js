@@ -64,7 +64,7 @@ const ArticleCommentRepliesPage = ({replies, loading}) => {
         <Layout>
             {loading && <LinearProgress variant="query"/>}
             <Container maxWidth="md" className={classes.container}>
-                <Grid container={true} className={classes.gridContainer}>
+                <Grid container={true} className={classes.gridContainer} justify="center">
                     <Grid item={true}>
                         <ReplyList replies={replies}/>
                     </Grid>
@@ -72,17 +72,17 @@ const ArticleCommentRepliesPage = ({replies, loading}) => {
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
                     <form onSubmit={handleReplySubmit}>
                         <Grid
-                            spacing={2}
+                            spacing={1}
                             container={true}
                             alignItems="center"
-                            justify="space-around">
+                            justify="space-between">
                             <Grid xs={10} item={true}>
                                 <TextField
                                     fullWidth={true}
                                     required={true}
                                     type="text"
-                                    placeholder="Type comment here..."
-                                    label="Comment"
+                                    placeholder="Type reply here..."
+                                    label="Reply"
                                     multiline={true}
                                     className={classes.textField}
                                     onChange={handleTextChange}

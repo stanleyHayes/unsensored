@@ -39,8 +39,8 @@ const AuthoredArticlesPage = ({loading, articles, token}) => {
 
     return (
         <Layout>
-            {loading && <LinearProgress variant="query"/>}
             <Container maxWidth="md">
+                {loading && <LinearProgress variant="query"/>}
                 <Grid container={true} spacing={4} className={classes.container}>
                     {
                         articles && articles.length ? (
