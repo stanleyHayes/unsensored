@@ -4,9 +4,9 @@ import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {SendRounded} from "@material-ui/icons";
 import {connect} from 'react-redux';
-import CommentList from "../../components/shared/comment-list";
+import ReplyList from "../../components/shared/reply-list";
 
-const ArticleCommentsPage = ({comments, loading}) => {
+const ArticleCommentRepliesPage = ({replies, loading}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -46,12 +46,12 @@ const ArticleCommentsPage = ({comments, loading}) => {
         setText(event.target.value);
     }
 
-    const handleCommentSubmit = event => {
+    const handleReplySubmit = event => {
 
         event.preventDefault();
 
         if (!text) {
-            setError({...error, text: 'comment field required'});
+            setError({...error, text: 'reply field required'});
             return;
         } else {
             setError({...error, text: null});
@@ -66,11 +66,11 @@ const ArticleCommentsPage = ({comments, loading}) => {
             <Container maxWidth="md" className={classes.container}>
                 <Grid container={true} className={classes.gridContainer}>
                     <Grid item={true}>
-                        <CommentList comments={comments}/>
+                        <ReplyList replies={replies}/>
                     </Grid>
                 </Grid>
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
-                    <form onSubmit={handleCommentSubmit}>
+                    <form onSubmit={handleReplySubmit}>
                         <Grid
                             spacing={2}
                             container={true}
@@ -97,7 +97,7 @@ const ArticleCommentsPage = ({comments, loading}) => {
                                     variant="round"
                                     className={classes.fab}
                                     fullWidth={true}
-                                    onClick={handleCommentSubmit}>
+                                    onClick={handleReplySubmit}>
                                     <SendRounded className={classes.icon}/>
                                 </Fab>
                             </Grid>
@@ -111,9 +111,9 @@ const ArticleCommentsPage = ({comments, loading}) => {
 
 const mapStateToProps = state => {
     return {
-        comments: state.comments.comments,
-        loading: state.comments.loading
+        replies: state.replies.replies,
+        loading: state.replies.loading
     }
 }
 
-export default connect(mapStateToProps)(ArticleCommentsPage);
+export default connect(mapStateToProps)(ArticleCommentRepliesPage);

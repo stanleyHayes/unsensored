@@ -15,7 +15,7 @@ import moment from "moment";
 import readingTime from 'reading-time';
 import {Chat, CheckCircle, Comment, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 
@@ -58,13 +58,16 @@ const Article = ({article, currentUser}) => {
             author: {
                 color: theme.palette.primary.light,
                 fontSize: 16
+            },
+            link: {
+                textDecoration: "none"
             }
         }
     });
 
     const classes = useStyles();
     const {title, summary, author, datePublished, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
-    const {name, avatar, username, _id: authorId} = author;
+    const {name, _id: authorId} = author;
     const history = useHistory();
 
     const handleNameClick = () => {
@@ -120,14 +123,20 @@ const Article = ({article, currentUser}) => {
             <CardActions>
                 <Grid container={true} justify="flex-start" alignItems="center">
                     <Grid item={true}>
-                        <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>} size="small"
-                                variant="text">
+                        <Button
+                            className={classes.info}
+                            startIcon={<ThumbUp className={classes.info}/>}
+                            size="small"
+                            variant="text">
                             {display(likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
-                        <Button size="small" className={classes.info} startIcon={<Comment className={classes.info}/>}
+                        <Button
+                            size="small"
+                            className={classes.info}
+                            startIcon={<Comment className={classes.info}/>}
                                 variant="text">
                             {display(commentCount)}
                         </Button>
@@ -159,9 +168,11 @@ const Article = ({article, currentUser}) => {
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Button size="small" startIcon={<Chat/>} variant="text">
-                            Comment
-                        </Button>
+                        <Link className={classes.link} to={`/articles/${article && article._id}/comments`}>
+                            <Button size="small" startIcon={<Chat/>} variant="text">
+                                Comment
+                            </Button>
+                        </Link>
                     </Grid>
                     <Grid item={true}>
                         <Button onClick={handleShareClicked} size="small" startIcon={<Share/>} variant="text">

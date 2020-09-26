@@ -81,7 +81,6 @@ const ArticleDetailPage = ({articleDetail}) => {
         document.execCommand("copy", true, articleDetail && articleDetail.link);
     }
 
-    console.log(articleDetail)
     return (
         <Layout>
             <Container maxWidth="md">
