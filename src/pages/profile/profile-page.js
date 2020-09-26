@@ -79,20 +79,20 @@ const ProfilePage = ({currentUser, token, user}) => {
                         <Card elevation={0}>
                             <CardHeader
                                 avatar={
-                                    currentUser && currentUser.avatar ?
-                                        <Avatar src={currentUser.avatar} className={classes.avatar}/>
+                                    user && user.avatar ?
+                                        <Avatar src={user.avatar} className={classes.avatar}/>
                                         :
                                         <Avatar>
                                             <Typography
                                                 variant="h5"
                                                 align="center">
-                                                {currentUser && currentUser.name[0][0]}
+                                                {user && user.name[0][0]}
                                             </Typography>
                                         </Avatar>
                                 }
                                 title={<Typography variant="h6"
-                                                   className={classes.name}>{currentUser && currentUser.name}</Typography>}
-                                subheader={currentUser && currentUser.username}
+                                                   className={classes.name}>{user && user.name}</Typography>}
+                                subheader={user && user.username}
                                 action={
                                     isLoggedInUser ?
                                         <Link className={classes.link} to={`/edit-profile`}>
@@ -152,7 +152,7 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         currentUser: state.auth.currentUser,
         token: state.auth.token,
-        user: state.auth.user
+        user: state.users.user
     }
 }
 export default connect(mapStateToProps)(ProfilePage);

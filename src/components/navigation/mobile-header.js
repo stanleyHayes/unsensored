@@ -3,8 +3,9 @@ import {AppBar, Grid, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {AddCircleRounded, Menu, Person} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux';
 
-const MobileHeader = ({handleOpen}) => {
+const MobileHeader = ({handleOpen, currentUser}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -12,7 +13,8 @@ const MobileHeader = ({handleOpen}) => {
                 color: 'white'
             },
             link: {
-                textDecoration: "none"
+                textDecoration: "none",
+                color: "white"
             }
         }
     });
@@ -33,7 +35,11 @@ const MobileHeader = ({handleOpen}) => {
                         </IconButton>
                     </Grid>
                     <Grid item={true} xs={6}>
-                        <Typography variant="h6">Uncensored</Typography>
+                        <Typography variant="h6">
+                            <Link to="/" className={classes.link}>
+                                Uncensored
+                            </Link>
+                        </Typography>
                     </Grid>
 
                     <Grid item={true} xs={4}>
@@ -43,7 +49,7 @@ const MobileHeader = ({handleOpen}) => {
                             </IconButton>
                         </Link>
 
-                        <Link to={`/profile/stanley`} className={classes.link}>
+                        <Link to={`/profile/${currentUser && currentUser._id}`} className={classes.link}>
                             <IconButton>
                                 <Person className={classes.icon}/>
                             </IconButton>
@@ -56,4 +62,10 @@ const MobileHeader = ({handleOpen}) => {
     )
 }
 
-export default MobileHeader;
+
+const mapStateToProps = state => {
+    return {
+        currentUser: state.auth.currentUser
+    }
+}
+export default connect(mapStateToProps)(MobileHeader);

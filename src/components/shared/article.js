@@ -68,7 +68,7 @@ const Article = ({article, currentUser}) => {
     const history = useHistory();
 
     const handleNameClick = () => {
-        history.push(`/profile/${username}`);
+        history.push(`/profile/${authorId}`);
     }
 
     const handleTitleClicked = () => {
@@ -88,10 +88,15 @@ const Article = ({article, currentUser}) => {
             <CardHeader
                 avatar={author && author.avatar ? <Avatar src={author.avatar} className={classes.avatar}/> :
                     <Avatar>
-                    <Typography variant="h5" align="center"> {name[0][0]}</Typography>
-                </Avatar>}
-                title={<Typography onClick={handleNameClick} variant="body1"
-                                   className={classes.name}>{name}</Typography>}
+                        <Typography variant="h5" align="center"> {name[0][0]}</Typography>
+                    </Avatar>}
+                title={
+                    <Typography
+                        onClick={handleNameClick}
+                        variant="body1"
+                        className={classes.name}>
+                        {name}
+                    </Typography>}
                 subheader={moment(datePublished).fromNow()}
                 action={currentUser && authorId === currentUser._id ? <CheckCircle className={classes.author}/> : null}
             />

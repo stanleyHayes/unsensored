@@ -24,7 +24,7 @@ export const getUserProfile = (userId, token) => {
     return dispatch => {
         dispatch(getUserProfileRequest());
         axios({
-            url: `${PRODUCTION_BASE_URL}/users/${userId}`,
+            url: `${DEVELOPMENT_BASE_URL}/users/${userId}`,
             method: 'get',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -33,7 +33,7 @@ export const getUserProfile = (userId, token) => {
             const {data} = response.data;
             dispatch(getUserProfileSuccess(data));
         }).catch(error => {
-            dispatch(getUserProfileFailure(error.data.error.error));
+            // dispatch(getUserProfileFailure(error.data.error.error));
         })
     }
 }

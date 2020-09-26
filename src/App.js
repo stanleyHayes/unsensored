@@ -43,7 +43,7 @@ function App() {
 
                 <ProtectedRoute component={SearchPage} path="/search" exact={true}/>
 
-                <ProtectedRoute component={ProfilePage} path="/profile/:username" exact={true}/>
+                <ProtectedRoute component={ProfilePage} path="/profile/:userId" exact={true}/>
 
                 <ProtectedRoute component={EditProfilePage} path="/edit-profile" exact={true}/>
 
