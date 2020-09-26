@@ -97,7 +97,7 @@ const Comment = ({comment, currentUser}) => {
                         {comment && comment.author && comment.author.name}
                     </Typography>
                 }
-                subheader={comment && moment(comment.dateCreated).fromNow()}
+                subheader={comment && moment(comment.createdAt).fromNow()}
                 action={currentUser && comment && comment.author && comment._id === currentUser._id ?
                     <CheckCircle className={classes.author}/> : null}
             />

@@ -87,7 +87,7 @@ const CommentReply = ({reply, currentUser}) => {
                         {reply && reply.author && reply.author.name}
                     </Typography>
                 }
-                subheader={reply && moment(reply.dateCreated).fromNow()}
+                subheader={reply && moment(reply.createdAt).fromNow()}
                 action={currentUser && reply && reply.author && reply._id === currentUser._id ?
                     <CheckCircle className={classes.author}/> : null}
             />

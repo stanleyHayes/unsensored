@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Container, Grid, TextField, Paper, Fab, LinearProgress} from "@material-ui/core";
+import {Container, Grid, TextField, Paper, Fab, LinearProgress, Divider} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {SendRounded} from "@material-ui/icons";
@@ -22,13 +22,20 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                 right: 0,
                 left: 0,
                 paddingLeft: 8,
-                paddingRight: 8
+                paddingRight: 8,
+                backgroundColor: '#efefef'
             },
             container: {
                 minHeight: '90vh'
             },
             fab: {
-                backgroundColor: theme.palette.primary.light
+                backgroundColor: theme.palette.primary.light,
+                '&:hover': {
+                    backgroundColor: theme.palette.primary.light
+                },
+                '&:active': {
+                    backgroundColor: theme.palette.primary.light,
+                }
             },
             icon: {
                 color: "white"
@@ -84,42 +91,43 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                         <ReplyList replies={replies}/>
                     </Grid>
                 </Grid>
-                <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
-                    <form onSubmit={handleReplySubmit}>
-                        <Grid
-                            spacing={1}
-                            container={true}
-                            alignItems="center"
-                            justify="space-between">
-                            <Grid xs={10} item={true}>
-                                <TextField
-                                    fullWidth={true}
-                                    required={true}
-                                    type="text"
-                                    placeholder="Type reply here..."
-                                    label="Reply"
-                                    multiline={true}
-                                    className={classes.textField}
-                                    onChange={handleTextChange}
-                                    margin="normal"
-                                    name="text"
-                                    value={text}
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item={true} xs={2}>
-                                <Fab
-                                    variant="round"
-                                    className={classes.fab}
-                                    fullWidth={true}
-                                    onClick={handleReplySubmit}>
-                                    <SendRounded className={classes.icon}/>
-                                </Fab>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Paper>
             </Container>
+            <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
+                <Divider variant="fullWidth" />
+                <form onSubmit={handleReplySubmit}>
+                    <Grid
+                        spacing={1}
+                        container={true}
+                        alignItems="center"
+                        justify="space-between">
+                        <Grid xs={10} item={true}>
+                            <TextField
+                                fullWidth={true}
+                                required={true}
+                                type="text"
+                                placeholder="Type reply here..."
+                                label="Reply"
+                                multiline={true}
+                                className={classes.textField}
+                                onChange={handleTextChange}
+                                margin="normal"
+                                name="text"
+                                value={text}
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item={true} xs={2}>
+                            <Fab
+                                variant="round"
+                                className={classes.fab}
+                                fullWidth={true}
+                                onClick={handleReplySubmit}>
+                                <SendRounded className={classes.icon}/>
+                            </Fab>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
         </Layout>
     )
 }
