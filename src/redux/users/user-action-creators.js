@@ -24,7 +24,7 @@ export const getUserProfile = (userId, token) => {
     return dispatch => {
         dispatch(getUserProfileRequest());
         axios({
-            url: `${DEVELOPMENT_BASE_URL}/users/${userId}`,
+            url: `${PRODUCTION_BASE_URL}/users/${userId}`,
             method: 'get',
             headers: {
                 Authorization: `Bearer ${token}`
