@@ -19,15 +19,16 @@ import {connect, useDispatch} from 'react-redux';
 import {useParams, useHistory, Link} from 'react-router-dom';
 import {getArticle} from "../../redux/articles/articles-action-creator";
 import {TOKEN} from "../../constants/constants";
-import {Chat, Comment, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
+import {Chat, Comment, DeleteForever, Edit, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
+import {blue, red} from "@material-ui/core/colors";
 
 const display = createDisplay({
     length: 8,
     decimal: 0,
 });
 
-const ArticleDetailPage = ({articleDetail}) => {
+const ArticleDetailPage = ({articleDetail, currentUser}) => {
 
     const {articleId} = useParams();
     const dispatch = useDispatch();
@@ -67,6 +68,23 @@ const ArticleDetailPage = ({articleDetail}) => {
             },
             link: {
                 textDecoration: 'none'
+            },
+            deleteButton: {
+                borderRadius: 0,
+                borderWidth: 2,
+                borderColor: red["900"],
+                paddingTop: 8,
+                paddingBottom: 8
+            },
+            editButton: {
+                borderRadius: 0,
+                borderWidth: 2,
+                borderColor: blue["900"],
+                paddingTop: 8,
+                paddingBottom: 8
+            },
+            actionContainer: {
+                marginBottom: 16
             }
         }
     });
@@ -81,6 +99,8 @@ const ArticleDetailPage = ({articleDetail}) => {
         document.execCommand("copy", true, articleDetail && articleDetail.link);
     }
 
+    const isLoggedInUser = !!(articleDetail && currentUser && articleDetail.author._id === currentUser._id);
+
     return (
         <Layout>
             <Container maxWidth="md">
@@ -93,7 +113,6 @@ const ArticleDetailPage = ({articleDetail}) => {
                             <Divider variant="fullWidth"/>
 
                             <CardContent>
-
                                 <Grid container={true} spacing={2} className={classes.grid}>
                                     <Grid item={true}>
                                         <Typography
@@ -151,6 +170,32 @@ const ArticleDetailPage = ({articleDetail}) => {
                                         })
                                     ) : null}
                                 </Grid>
+
+                                {isLoggedInUser ? (
+                                    <Grid container={true} spacing={2} className={classes.actionContainer}>
+                                        <Grid item={true} xs={12}>
+                                            <Divider variant="fullWidth"/>
+                                        </Grid>
+                                        <Grid item={true}>
+                                            <Button
+                                                variant="outlined"
+                                                size="medium"
+                                                className={classes.editButton}
+                                                startIcon={<Edit />}>
+                                                Edit
+                                            </Button>
+                                        </Grid>
+                                        <Grid item={true}>
+                                            <Button
+                                                variant="outlined"
+                                                size="medium"
+                                                className={classes.deleteButton}
+                                                startIcon={<DeleteForever />}>
+                                                Delete
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                ):null}
 
                                 <Divider variant="fullWidth"/>
 
@@ -225,7 +270,8 @@ const ArticleDetailPage = ({articleDetail}) => {
 const mapStateToProps = state => {
     return {
         articleDetail: state.articles.articleDetail,
-        loading: state.articles.loading
+        loading: state.articles.loading,
+        currentUser: state.auth.currentUser
     }
 }
 

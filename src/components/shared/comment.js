@@ -1,7 +1,22 @@
-import React from "react";
-import {Avatar, Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, Typography} from "@material-ui/core";
+import React, {useState} from "react";
+import {
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Divider,
+    Grid,
+    MenuList,
+    Popper,
+    ClickAwayListener,
+    Typography,
+    MenuItem,
+    Paper
+} from "@material-ui/core";
 import moment from "moment";
-import {CheckCircle, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
+import {MoreVert, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
@@ -53,13 +68,18 @@ const Comment = ({comment, currentUser}) => {
             },
             link: {
                 textDecoration: "none"
+            },
+            more: {
+                cursor: "pointer"
             }
         }
     });
 
     const classes = useStyles();
-
     const history = useHistory();
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [anchorElement, setAnchorElement] = useState(null);
 
     const handleNameClick = () => {
         history.push(`/profile/${comment && comment.author && comment.author._id}`);
@@ -75,6 +95,26 @@ const Comment = ({comment, currentUser}) => {
 
     const handleLikeClicked = event => {
 
+    }
+
+    const handleMenuClicked = event => {
+        setAnchorElement(event.currentTarget);
+        setMenuOpen(true);
+    }
+
+    const handleMenuClosed = () => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
+    const handleEditClicked = () => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
+    const handleDeleteClicked = () => {
+        setAnchorElement(null);
+        setMenuOpen(false);
     }
 
     return (
@@ -98,9 +138,19 @@ const Comment = ({comment, currentUser}) => {
                     </Typography>
                 }
                 subheader={comment && moment(comment.createdAt).fromNow()}
-                action={currentUser && comment && comment.author && comment._id === currentUser._id ?
-                    <CheckCircle className={classes.author}/> : null}
+                action={currentUser && comment && comment.author && comment.author._id === currentUser._id ?
+                    <MoreVert onClick={handleMenuClicked} className={classes.more}/> : null}
             />
+            <Popper open={menuOpen} anchorEl={anchorElement}>
+                <Paper>
+                    <ClickAwayListener onClickAway={handleMenuClosed}>
+                        <MenuList>
+                            <MenuItem onClick={handleEditClicked}>Edit</MenuItem>
+                            <MenuItem onClick={handleDeleteClicked}>Delete</MenuItem>
+                        </MenuList>
+                    </ClickAwayListener>
+                </Paper>
+            </Popper>
             <Divider variant="fullWidth"/>
             <CardContent>
                 <Typography
@@ -146,7 +196,8 @@ const Comment = ({comment, currentUser}) => {
                         </Button>
                     </Grid>
                     <Grid item={true}>
-                        <Link className={classes.link} to={`/articles/${comment && comment.article}/comments/${comment && comment._id}/replies`}>
+                        <Link className={classes.link}
+                              to={`/articles/${comment && comment.article}/comments/${comment && comment._id}/replies`}>
                             <Button size="small" startIcon={<Reply/>} variant="text">
                                 Reply
                             </Button>

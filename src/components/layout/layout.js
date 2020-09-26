@@ -19,7 +19,7 @@ const Layout = ({children}) => {
             },
             desktopContent: {
                 paddingTop: 96,
-                paddingBottom: 32
+                paddingBottom: 72
             },
             bottom: {
                 position: 'fixed',

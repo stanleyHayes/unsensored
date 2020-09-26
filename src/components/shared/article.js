@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     CardContent,
     Card,
@@ -8,12 +8,18 @@ import {
     Typography,
     Grid,
     CardActions,
-    Divider, Button
+    Divider,
+    Button,
+    ClickAwayListener,
+    MenuItem,
+    Popper,
+    Paper,
+    MenuList
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
-import {Chat, CheckCircle, Comment, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
+import {Chat, Comment, MoreVert, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -61,12 +67,17 @@ const Article = ({article, currentUser}) => {
             },
             link: {
                 textDecoration: "none"
+            },
+            more: {
+                cursor: "pointer"
             }
         }
     });
 
     const classes = useStyles();
     const {title, summary, author, updatedAt, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
+    const [anchorElement, setAnchorElement] = useState(null);
+    const [openMenu, setMenuOpen] = useState(false);
     const {name, _id: authorId} = author;
     const history = useHistory();
 
@@ -86,6 +97,26 @@ const Article = ({article, currentUser}) => {
 
     }
 
+    const handleMenuClose = () => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
+    const handleMenuOpen = event => {
+        setAnchorElement(event.currentTarget);
+        setMenuOpen(true);
+    }
+
+    const handleDeleteClicked = event => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
+    const handleEditClicked = event => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
     return (
         <Card variant="outlined" className={classes.card}>
             <CardHeader
@@ -101,8 +132,21 @@ const Article = ({article, currentUser}) => {
                         {name}
                     </Typography>}
                 subheader={moment(updatedAt).fromNow()}
-                action={currentUser && authorId === currentUser._id ? <CheckCircle className={classes.author}/> : null}
+                action={currentUser && authorId === currentUser._id ?
+                    <MoreVert className={classes.more} onClick={handleMenuOpen} />
+                    : null}
             />
+            <Popper open={openMenu} anchorEl={anchorElement}>
+                <Paper>
+                    <ClickAwayListener onClickAway={handleMenuClose}>
+                        <MenuList>
+                            <MenuItem onClick={handleEditClicked}>Edit</MenuItem>
+                            <MenuItem onClick={handleDeleteClicked}>Delete</MenuItem>
+                        </MenuList>
+                    </ClickAwayListener>
+                </Paper>
+            </Popper>
+
             <Divider variant="fullWidth"/>
             <CardMedia component="img" src={banner} className={classes.banner}/>
             <Divider variant="fullWidth"/>

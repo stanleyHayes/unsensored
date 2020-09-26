@@ -87,47 +87,47 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
             {loading && <LinearProgress variant="query"/>}
             <Container maxWidth="md" className={classes.container}>
                 <Grid container={true} className={classes.gridContainer} justify="center">
-                    <Grid item={true}>
+                    <Grid item={true} xs={12}>
                         <ReplyList replies={replies}/>
                     </Grid>
                 </Grid>
+                <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
+                    <Divider variant="fullWidth"/>
+                    <form onSubmit={handleReplySubmit}>
+                        <Grid
+                            spacing={1}
+                            container={true}
+                            alignItems="center"
+                            justify="space-between">
+                            <Grid xs={10} item={true}>
+                                <TextField
+                                    fullWidth={true}
+                                    required={true}
+                                    type="text"
+                                    placeholder="Type reply here..."
+                                    label="Reply"
+                                    multiline={true}
+                                    className={classes.textField}
+                                    onChange={handleTextChange}
+                                    margin="normal"
+                                    name="text"
+                                    value={text}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item={true} xs={2}>
+                                <Fab
+                                    variant="round"
+                                    className={classes.fab}
+                                    fullWidth={true}
+                                    onClick={handleReplySubmit}>
+                                    <SendRounded className={classes.icon}/>
+                                </Fab>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </Paper>
             </Container>
-            <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
-                <Divider variant="fullWidth" />
-                <form onSubmit={handleReplySubmit}>
-                    <Grid
-                        spacing={1}
-                        container={true}
-                        alignItems="center"
-                        justify="space-between">
-                        <Grid xs={10} item={true}>
-                            <TextField
-                                fullWidth={true}
-                                required={true}
-                                type="text"
-                                placeholder="Type reply here..."
-                                label="Reply"
-                                multiline={true}
-                                className={classes.textField}
-                                onChange={handleTextChange}
-                                margin="normal"
-                                name="text"
-                                value={text}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item={true} xs={2}>
-                            <Fab
-                                variant="round"
-                                className={classes.fab}
-                                fullWidth={true}
-                                onClick={handleReplySubmit}>
-                                <SendRounded className={classes.icon}/>
-                            </Fab>
-                        </Grid>
-                    </Grid>
-                </form>
-            </Paper>
         </Layout>
     )
 }

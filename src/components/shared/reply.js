@@ -1,7 +1,22 @@
-import React from "react";
-import {Avatar, Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, Typography} from "@material-ui/core";
+import React, {useState} from "react";
+import {
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Divider,
+    Grid,
+    Typography,
+    Paper,
+    Popper,
+    MenuList,
+    ClickAwayListener,
+    MenuItem
+} from "@material-ui/core";
 import moment from "moment";
-import {CheckCircle, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
+import {MoreHoriz, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
@@ -47,6 +62,9 @@ const CommentReply = ({reply, currentUser}) => {
             author: {
                 color: theme.palette.primary.light,
                 fontSize: 16
+            },
+            more: {
+                cursor: "pointer"
             }
         }
     });
@@ -67,6 +85,26 @@ const CommentReply = ({reply, currentUser}) => {
 
     }
 
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [anchorElement, setAnchorElement] = useState(null);
+
+    const handleMenuClicked = event => {
+        setAnchorElement(event.currentTarget);
+        setMenuOpen(true);
+    }
+
+    const handleMenuClosed = () => {
+        setMenuOpen(false);
+    }
+
+    const handleEditClicked = () => {
+
+    }
+
+    const handleDeleteClicked = () => {
+
+    }
+
     return (
         <Card variant="outlined" className={classes.card} square={true} elevation={1}>
             <CardHeader
@@ -83,14 +121,26 @@ const CommentReply = ({reply, currentUser}) => {
                     <Typography
                         onClick={handleNameClick}
                         variant="body1"
+                        display="initial"
                         className={classes.name}>
                         {reply && reply.author && reply.author.name}
                     </Typography>
                 }
                 subheader={reply && moment(reply.createdAt).fromNow()}
-                action={currentUser && reply && reply.author && reply._id === currentUser._id ?
-                    <CheckCircle className={classes.author}/> : null}
+                action={currentUser && reply && reply.author && reply.author._id === currentUser._id ?
+                    <MoreHoriz onClick={handleMenuClicked} className={classes.more}/> : null}
             />
+
+            <Popper open={menuOpen} anchorEl={anchorElement}>
+                <Paper>
+                    <ClickAwayListener onClickAway={handleMenuClosed}>
+                        <MenuList>
+                            <MenuItem onClick={handleEditClicked}>Edit</MenuItem>
+                            <MenuItem onClick={handleDeleteClicked}>Delete</MenuItem>
+                        </MenuList>
+                    </ClickAwayListener>
+                </Paper>
+            </Popper>
             <Divider variant="fullWidth"/>
             <CardContent>
                 <Typography
