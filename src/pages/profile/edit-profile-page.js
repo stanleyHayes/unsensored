@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CardContent, Container, Grid, Card, TextField, Button, LinearProgress} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
@@ -7,6 +7,7 @@ import {useDispatch, connect} from "react-redux";
 import validator from "validator";
 import ReactImageUploader from 'react-images-upload';
 import {updateUserProfile} from "../../redux/auth/auth-action-creator";
+import {red} from "@material-ui/core/colors";
 
 const EditProfilePage = ({currentUser, loading, token}) => {
 
@@ -136,6 +137,11 @@ const EditProfilePage = ({currentUser, loading, token}) => {
         setAvatar(files[0]);
     }
 
+    useEffect(() => {
+        if(currentUser){
+            setUser(currentUser);
+        }
+    }, [currentUser]);
 
     return (
         <Layout>
@@ -158,7 +164,13 @@ const EditProfilePage = ({currentUser, loading, token}) => {
                                         fileSizeError="File too large"
                                         label="Avatar"
                                         imgExtension={['.png', '.jpg', '.gif', '.jpeg']}
-                                        buttonStyles={classes.uploadButton}
+                                        buttonStyles={{
+                                            borderRadius: 24,
+                                            backgroundColor: red["700"],
+                                            color: "white",
+                                            paddingTop: 8,
+                                            paddingBottom: 8
+                                        }}
                                     />
 
                                     <TextField

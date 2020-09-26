@@ -142,7 +142,7 @@ export const updateUserProfile = (user, userId, token, history) => {
     return dispatch => {
         dispatch(updateUserProfileRequest());
         axios({
-            url: `${DEVELOPMENT_BASE_URL}/users/me`,
+            url: `${DEVELOPMENT_BASE_URL}/auth/me`,
             method: 'patch',
             headers: {
                 'Content-Type': 'multipart/data',
@@ -154,7 +154,7 @@ export const updateUserProfile = (user, userId, token, history) => {
             dispatch(updateUserProfileSuccess(data));
             history.push(`/profile/${userId}`)
         }).catch(error => {
-            dispatch(updateUserProfileFailure(error.data.error.error));
+            // dispatch(updateUserProfileFailure(error.data.error.error));
         })
     }
 }

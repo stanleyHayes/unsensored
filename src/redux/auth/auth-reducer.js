@@ -91,6 +91,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
             }
 
         case UPDATE_PROFILE_SUCCESS:
+            console.log(action.payload);
             return {
                 ...state,
                 loading: false,

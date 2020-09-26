@@ -71,10 +71,20 @@ const ProfilePage = ({currentUser}) => {
                     <Grid item={true}>
                         <Card elevation={0}>
                             <CardHeader
-                                avatar={currentUser && currentUser.avatar ? <Avatar src={currentUser.avatar } className={classes.avatar}/> : <Avatar>
-                                    <Typography variant="h5" align="center"> {currentUser && currentUser.name[0][0]}</Typography>
-                                </Avatar>}
-                                title={<Typography variant="h6" className={classes.name}>{currentUser && currentUser.name}</Typography>}
+                                avatar={
+                                    currentUser && currentUser.avatar ?
+                                        <Avatar src={currentUser.avatar} className={classes.avatar}/>
+                                        :
+                                        <Avatar>
+                                            <Typography
+                                                variant="h5"
+                                                align="center">
+                                                {currentUser && currentUser.name[0][0]}
+                                            </Typography>
+                                        </Avatar>
+                                }
+                                title={<Typography variant="h6"
+                                                   className={classes.name}>{currentUser && currentUser.name}</Typography>}
                                 subheader={currentUser && currentUser.username}
                                 action={
                                     <Link className={classes.link} to={`/edit-profile`}>
@@ -133,4 +143,4 @@ const mapStateToProps = state => {
         currentUser: state.auth.currentUser
     }
 }
-export default connect(mapStateToProps) (ProfilePage);
+export default connect(mapStateToProps)(ProfilePage);
