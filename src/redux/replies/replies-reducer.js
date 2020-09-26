@@ -1,5 +1,7 @@
+import {REPLIES} from "./replies-data";
+
 const INITIAL_STATE = {
-    replies: [],
+    replies: REPLIES,
     loading: false,
     error: null,
     commentDetail: null
