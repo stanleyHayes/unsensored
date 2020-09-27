@@ -89,13 +89,16 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
                 borderWidth: 2,
                 borderColor: grey["600"],
                 backgroundColor: grey["900"],
+                color: "white",
                 paddingTop: 8,
                 paddingBottom: 8,
                 '&:hover': {
                     backgroundColor: grey["700"],
+                    color: "black"
                 },
                 '&:active': {
                     backgroundColor: grey["700"],
+                    color: "black"
                 }
             },
             actionContainer: {
@@ -112,6 +115,10 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
 
     const handleShareClicked = () => {
         document.execCommand("copy", true, articleDetail && articleDetail.link);
+    }
+
+    const handleArticleDelete = () => {
+
     }
 
     const isLoggedInUser = !!(articleDetail && currentUser && articleDetail.author._id === currentUser._id);
@@ -192,16 +199,19 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
                                             <Divider variant="fullWidth"/>
                                         </Grid>
                                         <Grid item={true}>
-                                            <Button
-                                                variant="outlined"
-                                                size="medium"
-                                                className={classes.editButton}
-                                                startIcon={<Edit/>}>
-                                                Edit
-                                            </Button>
+                                            <Link className={classes.link} to={`/articles/${articleDetail && articleDetail._id}/update`}>
+                                                <Button
+                                                    variant="outlined"
+                                                    size="medium"
+                                                    className={classes.editButton}
+                                                    startIcon={<Edit/>}>
+                                                    Edit
+                                                </Button>
+                                            </Link>
                                         </Grid>
                                         <Grid item={true}>
                                             <Button
+                                                onClick={handleArticleDelete}
                                                 variant="outlined"
                                                 size="medium"
                                                 className={classes.deleteButton}

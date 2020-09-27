@@ -172,8 +172,17 @@ const CreateArticlePage = ({loading, token}) => {
                                 maxFileSize={1242880}
                                 singleImage={true}
                                 buttonText="Choose article banner"
-                                buttonStyles={{backgroundColor: red["900"]}}
-                                fileContainerStyle={{borderWidth: 2, borderColor: "#777777", borderRadius: 32}}
+                                buttonStyles={{
+                                    paddingTop: 16,
+                                    paddingBottom: 16,
+                                    borderWidth: 2,
+                                    borderColor: red["600"],
+                                    backgroundColor: red["900"]
+                                }}
+                                fileContainerStyle={{
+
+                                    borderRadius: 32
+                                }}
                             />
                             <TextField
                                 value={title}

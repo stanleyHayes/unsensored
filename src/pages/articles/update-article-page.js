@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Button,
     Container,
@@ -13,10 +13,10 @@ import {
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import ImageUploader from 'react-images-upload';
-import {red} from "@material-ui/core/colors";
+import {blue, red} from "@material-ui/core/colors";
 import {Close} from "@material-ui/icons";
 import {useDispatch, connect} from "react-redux";
-import { updateArticle} from "../../redux/articles/articles-action-creator";
+import {updateArticle} from "../../redux/articles/articles-action-creator";
 import {useHistory, useParams} from 'react-router-dom';
 
 
@@ -51,7 +51,7 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
         setTag("");
     }
 
-    const handleArticleSubmit = event => {
+    const handleSave = event => {
         event.preventDefault();
 
         if (!title) {
@@ -75,19 +75,11 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
         let formData = new FormData();
         formData.append("banner", banner);
         formData.append("text", text);
-        formData.append("summary", text);
+        formData.append("summary", summary);
         formData.append("title", title);
         formData.append("tags", JSON.stringify(tags));
-        formData.append("published", true);
-        formData.append("publishedDate", Date.now());
 
-        dispatch(updateArticle(articleId,formData, token, history));
-    }
-
-    const handleSave = event => {
-        event.preventDefault();
-
-
+        dispatch(updateArticle(articleId, formData, token, history));
     }
 
     const useStyles = makeStyles(theme => {
@@ -117,14 +109,18 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
                 paddingBottom: 16,
                 borderRadius: 0,
                 borderWidth: 2,
-                borderColor: "#5555f5",
+                borderColor: blue["600"],
                 marginTop: 8,
                 marginBottom: 8,
                 color: "white",
-                backgroundColor: "darkblue",
+                backgroundColor: blue["900"],
                 transition: "all 500ms ease-in-out",
                 '&:hover': {
-                    backgroundColor: "#5555f5",
+                    backgroundColor: blue["700"],
+                    color: "white"
+                },
+                '&:active': {
+                    backgroundColor: blue["700"],
                     color: "white"
                 }
             },
@@ -158,6 +154,12 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
         setBanner(picture[0]);
     }
 
+    useEffect(() => {
+        if (articleDetail) {
+            setArticle(articleDetail);
+            setTags(articleDetail.tags);
+        }
+    }, [articleDetail]);
 
     return (
         <Layout>
@@ -165,7 +167,7 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
             <Container>
                 <Grid container={true} justify="center">
                     <Grid item={true} xs={12} md={8}>
-                        <form onSubmit={handleArticleSubmit}>
+                        <form onSubmit={handleSave}>
 
                             <ImageUploader
                                 withIcon={true}
@@ -176,8 +178,16 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
                                 maxFileSize={5242880}
                                 singleImage={true}
                                 buttonText="Choose article banner"
-                                buttonStyles={{backgroundColor: red["900"]}}
-                                fileContainerStyle={{borderWidth: 2, borderColor: "#777777", borderRadius: 32}}
+                                buttonStyles={{
+                                    paddingTop: 16,
+                                    paddingBottom: 16,
+                                    borderWidth: 2,
+                                    borderColor: red["600"],
+                                    backgroundColor: red["900"]
+                                }}
+                                fileContainerStyle={{
+                                    borderRadius: 32
+                                }}
                             />
                             <TextField
                                 value={title}
@@ -284,20 +294,14 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
                                 }
                             </Grid>
 
-                            <Grid container={true} spacing={2}>
-                                <Grid item={true} xs={4}>
-                                    <Button onClick={handleSave} fullWidth={true} size="large" variant="outlined"
-                                            className={classes.save}>
-                                        Save
-                                    </Button>
-                                </Grid>
-                                <Grid item={true} xs={8}>
-                                    <Button onClick={handleArticleSubmit} size="large" fullWidth={true}
-                                            variant="outlined" className={classes.button}>
-                                        Publish
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                            <Button
+                                onClick={handleSave}
+                                fullWidth={true}
+                                size="large"
+                                variant="outlined"
+                                className={classes.save}>
+                                Save
+                            </Button>
                         </form>
                     </Grid>
                 </Grid>
