@@ -154,7 +154,7 @@ export const updateUserProfile = (user, userId, token, history) => {
             dispatch(updateUserProfileSuccess(data));
             history.push(`/profile/${userId}`)
         }).catch(error => {
-            // dispatch(updateUserProfileFailure(error.data.error.error));
+            dispatch(updateUserProfileFailure(error.response.data.error));
         })
     }
 }

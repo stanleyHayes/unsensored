@@ -33,7 +33,7 @@ export const getUserProfile = (userId, token) => {
             const {data} = response.data;
             dispatch(getUserProfileSuccess(data));
         }).catch(error => {
-            // dispatch(getUserProfileFailure(error.data.error.error));
+            dispatch(getUserProfileFailure(error.response.data.error));
         })
     }
 }

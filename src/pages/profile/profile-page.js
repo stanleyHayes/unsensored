@@ -71,7 +71,6 @@ const ProfilePage = ({currentUser, token, user}) => {
 
     const isLoggedInUser = !!(user && currentUser && user._id === currentUser._id);
 
-    console.log(user);
 
     return (
         <Layout>

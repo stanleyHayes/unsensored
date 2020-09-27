@@ -35,8 +35,7 @@ const Article = ({article, currentUser}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 8,
-                borderWidth: 2
+                borderRadius: 0
             },
             banner: {
                 height: 250,

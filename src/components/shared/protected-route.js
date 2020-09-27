@@ -12,12 +12,12 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
     const history = useHistory();
 
     useEffect(() => {
-        if(!token){
+        if (!token) {
             return history.push('/auth/login')
         }
         dispatch(getLoggedInUser(history, token));
     }, [dispatch, history, token]);
-    
+
     return (
         <Route {...rest} render={({location, ...others}) => {
             if (token) {

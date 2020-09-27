@@ -49,8 +49,7 @@ export const getCommentsByUser = (userId, token) => {
             const {data} = response.data;
             dispatch(getCommentsByUserSuccess(data));
         }).catch(error => {
-            console.log(error)
-            // dispatch(getCommentsByArticleFailure(error));
+            dispatch(getCommentsByUserFailure(error.response.data.error));
         })
     }
 }
@@ -86,8 +85,7 @@ export const getCommentsByArticle = (articleId, token) => {
             const {data} = response.data;
             dispatch(getCommentsByArticleSuccess(data));
         }).catch(error => {
-            console.log(error)
-            // dispatch(getCommentsByArticleFailure(error));
+            dispatch(getCommentsByArticleFailure(error.response.data.error));
         })
     }
 }
@@ -123,8 +121,7 @@ export const deleteComment = (commentId, token) => {
             const {data} = response.data;
             dispatch(deleteCommentSuccess(data));
         }).catch(error => {
-            console.log(error)
-            // dispatch(getCommentsByArticleFailure(error));
+            dispatch(deleteCommentFailure(error.response.data.error));
         })
     }
 }
@@ -161,8 +158,7 @@ export const updateComment = (commentId, comment, token) => {
             const {data} = response.data;
             dispatch(updateCommentSuccess(data));
         }).catch(error => {
-            console.log(error)
-            // dispatch(getCommentsByArticleFailure(error));
+            dispatch(updateCommentFailure(error.response.data.error));
         })
     }
 }
@@ -200,7 +196,7 @@ export const createComment = (comment, token) => {
             dispatch(createCommentSuccess(data));
         }).catch(error => {
             console.log(error)
-            // dispatch(getCommentsByArticleFailure(error));
+            dispatch(createCommentFailure(error.response.data.error));
         })
     }
 }

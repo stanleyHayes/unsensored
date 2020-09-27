@@ -31,7 +31,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
     let updatedArticles = [];
 
     switch (action.type) {
-
         case CREATE_ARTICLE_REQUEST:
             return {
                 ...state,
@@ -82,7 +81,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 error: null,
                 articles: action.payload
             }
-
         case GET_ARTICLES_FAILURE:
             return {
                 ...state,
@@ -114,7 +112,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: true
             }
-
         case UPDATE_ARTICLE_SUCCESS:
             updatedArticles = state.articles.map(article => {
                 if(article._id === action.payload._id){
@@ -128,7 +125,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 articles: [...updatedArticles]
             }
-
         case UPDATE_ARTICLE_FAILURE:
             return {
                 ...state,
@@ -140,7 +136,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: true
             }
-
         case DELETE_ARTICLE_SUCCESS:
             updatedArticles = state.articles.filter(article => article._id !== action.payload._id);
             return {
@@ -148,7 +143,6 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 articles: [...updatedArticles]
             }
-
         case DELETE_ARTICLE_FAILURE:
             return {
                 ...state,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
     CardContent,
     Container,
@@ -21,7 +21,7 @@ import {getArticle} from "../../redux/articles/articles-action-creator";
 import {TOKEN} from "../../constants/constants";
 import {Chat, Comment, DeleteForever, Edit, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
-import {blue, red} from "@material-ui/core/colors";
+import {grey, red} from "@material-ui/core/colors";
 
 const display = createDisplay({
     length: 8,
@@ -72,16 +72,31 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
             deleteButton: {
                 borderRadius: 0,
                 borderWidth: 2,
-                borderColor: red["900"],
+                borderColor: red["600"],
+                backgroundColor: red["900"],
+                color: "white",
                 paddingTop: 8,
-                paddingBottom: 8
+                paddingBottom: 8,
+                '&:hover': {
+                    backgroundColor: red["700"],
+                },
+                '&:active': {
+                    backgroundColor: red["700"],
+                }
             },
             editButton: {
                 borderRadius: 0,
                 borderWidth: 2,
-                borderColor: blue["900"],
+                borderColor: grey["600"],
+                backgroundColor: grey["900"],
                 paddingTop: 8,
-                paddingBottom: 8
+                paddingBottom: 8,
+                '&:hover': {
+                    backgroundColor: grey["700"],
+                },
+                '&:active': {
+                    backgroundColor: grey["700"],
+                }
             },
             actionContainer: {
                 marginBottom: 16
@@ -92,7 +107,7 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
     const classes = useStyles();
 
     const handleAuthorClicked = () => {
-        history.push(`/profile/${articleDetail && articleDetail.author.username}`);
+        history.push(`/profile/${articleDetail && articleDetail.author._id}`);
     }
 
     const handleShareClicked = () => {
@@ -116,7 +131,7 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
                                 <Grid container={true} spacing={2} className={classes.grid}>
                                     <Grid item={true}>
                                         <Typography
-                                            variant="body2">{articleDetail && moment(articleDetail.datePublished).fromNow()}</Typography>
+                                            variant="body2">{articleDetail && moment(articleDetail.updatedAt).fromNow()}</Typography>
                                     </Grid>
                                     <Grid item={true}>
                                         &#xb7;
@@ -181,7 +196,7 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
                                                 variant="outlined"
                                                 size="medium"
                                                 className={classes.editButton}
-                                                startIcon={<Edit />}>
+                                                startIcon={<Edit/>}>
                                                 Edit
                                             </Button>
                                         </Grid>
@@ -190,12 +205,12 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
                                                 variant="outlined"
                                                 size="medium"
                                                 className={classes.deleteButton}
-                                                startIcon={<DeleteForever />}>
+                                                startIcon={<DeleteForever/>}>
                                                 Delete
                                             </Button>
                                         </Grid>
                                     </Grid>
-                                ):null}
+                                ) : null}
 
                                 <Divider variant="fullWidth"/>
 

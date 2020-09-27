@@ -57,7 +57,7 @@ export const createArticle = (article, token, history) => {
             dispatch(createArticleSuccess(data));
             history.push('/');
         }).catch(error => {
-            dispatch(createArticleFailure(error.data.error.error));
+            dispatch(createArticleFailure(error.response.data.error));
         });
     }
 }
@@ -213,7 +213,7 @@ export const getArticles = (token, query) => {
             const {data} = response.data;
             dispatch(getArticlesSuccess(data));
         }).catch(error => {
-            // dispatch(getArticlesFailure(error.data.error.error));
+            dispatch(getArticlesFailure(error.response.data.error));
         });
     }
 }
@@ -251,7 +251,7 @@ export const getAuthoredArticles = (token) => {
             const {data} = response.data;
             dispatch(getAuthoredArticlesSuccess(data));
         }).catch(error => {
-            // dispatch(getAuthoredArticlesFailure(error.data.error.error));
+            dispatch(getAuthoredArticlesFailure(error.response.data.error));
         });
     }
 }

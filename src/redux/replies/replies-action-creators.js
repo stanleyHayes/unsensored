@@ -50,12 +50,8 @@ export const getRepliesByUser = (userId, token) => {
             const {data} = response.data;
             dispatch(getRepliesByUserSuccess(data));
         }).catch(error => {
-            console.log(error);
-            // const {error} = e.data.error;
-            // if (error) {
-            //     dispatch(getRepliesByUserFailure(error));
-            // }
-        })
+            dispatch(getRepliesByUserFailure(error.response.data.error));
+        });
     }
 }
 
@@ -90,11 +86,7 @@ export const getRepliesByComment = (commentId, token) => {
             const {data} = response.data;
             dispatch(getRepliesByCommentSuccess(data));
         }).catch(error => {
-            // const {error} = e.data.error;
-            // if (error) {
-            //     dispatch(getRepliesByCommentFailure(error));
-            // }
-            console.log(error);
+            dispatch(getRepliesByCommentFailure(error.response.data.error));
         })
     }
 }
@@ -130,11 +122,7 @@ export const deleteReply = (replyId, token) => {
             const {data} = response.data;
             dispatch(deleteReplySuccess(data));
         }).catch(error => {
-            console.log(error);
-            // const {error} = e.data.error;
-            // if (error) {
-            //     dispatch(deleteReplyFailure(error));
-            // }
+            dispatch(deleteReplyFailure(error.response.data.error));
         })
     }
 }
@@ -171,11 +159,7 @@ export const updateReply = (replyId, reply, token) => {
             const {data} = response.data;
             dispatch(updateReplySuccess(data));
         }).catch(error => {
-            // const {error} = e.data.error;
-            // if (error) {
-            //     dispatch(updateReplyFailure(error));
-            // }
-            console.log(error);
+            dispatch(updateReplyFailure(error.response.data.error));
         })
     }
 }
@@ -212,11 +196,7 @@ export const createReply = (reply, token) => {
             const {data} = response.data;
             dispatch(createReplySuccess(data));
         }).catch(error => {
-            // const {error} = e.data.error;
-            // if (error) {
-            //     dispatch(createReplyFailure(error));
-            // }
-            console.log(error);
-        })
+            dispatch(createReplyFailure(error.response.data.error));
+        });
     }
 }

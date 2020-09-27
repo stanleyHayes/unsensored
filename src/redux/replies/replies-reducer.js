@@ -23,6 +23,7 @@ const INITIAL_STATE = {
 }
 
 const repliesReducer = (state = INITIAL_STATE, action) => {
+    let updatedReplies = [];
     switch (action.type) {
 
         case CREATE_REPLY_REQUEST:
@@ -62,6 +63,68 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
                 loading: false,
                 error: action.payload,
                 replies: []
+            }
+
+        case GET_REPLIES_BY_USER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case GET_REPLIES_BY_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                comments: action.payload,
+                error: false
+            }
+        case GET_REPLIES_BY_USER_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                comments: []
+            }
+
+        case UPDATE_REPLY_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case UPDATE_REPLY_SUCCESS:
+            updatedReplies = state.replies.map(reply => {
+                if(reply._id === action.payload._id){
+                    return action.payload;
+                }
+                return reply;
+            });
+
+            return {
+                ...state,
+                loading: false,
+                replies: [...updatedReplies]
+            }
+        case UPDATE_REPLY_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
+
+        case DELETE_REPLY_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case DELETE_REPLY_SUCCESS:
+            updatedReplies = state.replies.filter(reply => reply._id !== action.payload._id);
+            return {
+                ...state,
+                loading: false,
+                replies: [...updatedReplies]
+            }
+        case DELETE_REPLY_FAILURE:
+            return {
+                ...state,
+                loading: false
             }
 
         default:

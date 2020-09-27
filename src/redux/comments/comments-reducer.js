@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 }
 
 const commentsReducer = (state = INITIAL_STATE, action) => {
+    let updatedComments = [];
     switch (action.type) {
 
         case CREATE_COMMENT_REQUEST:
@@ -65,6 +66,67 @@ const commentsReducer = (state = INITIAL_STATE, action) => {
                 comments: []
             }
 
+        case GET_COMMENTS_BY_USER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case GET_COMMENTS_BY_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                comments: action.payload,
+                error: false
+            }
+        case GET_COMMENTS_BY_USER_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                comments: []
+            }
+
+        case UPDATE_COMMENT_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case UPDATE_COMMENT_SUCCESS:
+            updatedComments = state.comments.map(comment => {
+                if(comment._id === action.payload._id){
+                    return action.payload;
+                }
+                return comment;
+            });
+
+            return {
+                ...state,
+                loading: false,
+                comments: [...updatedComments]
+            }
+        case UPDATE_COMMENT_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
+
+        case DELETE_COMMENT_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case DELETE_COMMENT_SUCCESS:
+            updatedComments = state.comments.filter(comment => comment._id !== action.payload._id);
+            return {
+                ...state,
+                loading: false,
+                comments: [...updatedComments]
+            }
+        case DELETE_COMMENT_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
         default:
             return state;
     }
