@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {BottomNavigation, BottomNavigationAction, Paper} from "@material-ui/core";
 import {useRouteMatch, useHistory} from "react-router-dom";
 import {
+    Person,
     SearchOutlined,
     TimelineOutlined,
     TrendingUp,
@@ -46,6 +47,13 @@ const BottomNavBar = () => {
                     selected={active === '/search'}
                     label='search'
                     icon={<SearchOutlined/>}
+                />
+
+                <BottomNavigationAction
+                    value='/users'
+                    selected={active === '/users'}
+                    label='users'
+                    icon={<Person/>}
                 />
             </BottomNavigation>
         </Paper>
