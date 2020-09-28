@@ -126,7 +126,7 @@ export const updateArticle = (articleId, article, token, history) => {
         dispatch(updateArticleRequest());
         axios({
             method: 'patch',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
