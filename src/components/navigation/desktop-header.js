@@ -30,7 +30,7 @@ const DesktopHeader = () => {
                                 <Link className={classes.link} to="/">Uncensored</Link>
                             </Typography>
                         </Grid>
-                        <Grid item={true} container={true} justify="center" alignItems="center" lg={8} spacing={1}>
+                        <Grid item={true} container={true} justify="center" alignItems="center" lg={8} spacing={2}>
                             <Grid item={true}>
                                 <Button>
                                     <Link className={classes.link} to="/">
@@ -60,6 +60,14 @@ const DesktopHeader = () => {
                                 <Button>
                                     <Link className={classes.link} to="/search">
                                         Search
+                                    </Link>
+                                </Button>
+                            </Grid>
+
+                            <Grid item={true}>
+                                <Button>
+                                    <Link className={classes.link} to="/users">
+                                        Users
                                     </Link>
                                 </Button>
                             </Grid>

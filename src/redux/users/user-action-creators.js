@@ -5,8 +5,7 @@ import {
     GET_USER_PROFILE_REQUEST,
     GET_USER_PROFILE_SUCCESS,
     GET_USERS_FAILURE,
-    GET_USERS_REQUEST,
-    GET_USES_SUCCESS
+    GET_USERS_REQUEST, GET_USERS_SUCCESS,
 } from "./user-action-types";
 
 const getUserProfileRequest = () => {
@@ -51,7 +50,7 @@ const getUsersRequest = () => {
 }
 const getUsersSuccess = users => {
     return {
-        type: GET_USES_SUCCESS,
+        type: GET_USERS_SUCCESS,
         payload: users
     }
 }

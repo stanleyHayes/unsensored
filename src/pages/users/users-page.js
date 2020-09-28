@@ -44,7 +44,7 @@ const UsersPage = ({users, loading, token}) => {
                         users && users.length ? (
                             users.map((user, index) => {
                                 return (
-                                    <Grid key={index} item={true} xs={12}>
+                                    <Grid key={index} item={true} xs={12} md={6}>
                                         <User user={user}/>
                                     </Grid>
                                 )

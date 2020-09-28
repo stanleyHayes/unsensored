@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 
-import {Chat, Comment, Note, Reply, Share, ThumbUp, Visibility} from "@material-ui/icons";
+import {Chat, Comment, Info, Note, Reply, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 
@@ -31,8 +31,12 @@ const User = ({user}) => {
                 borderWidth: 2
             },
             banner: {
-                height: 250,
+                height: 300,
                 objectFit: 'cover'
+            },
+            noImage: {
+                height: 300,
+                objectFit: 'contain'
             },
             grid: {
                 marginBottom: 8
@@ -62,6 +66,9 @@ const User = ({user}) => {
             },
             more: {
                 cursor: "pointer"
+            },
+            imageContainer: {
+                textAlign: "center"
             }
         }
     });
@@ -116,7 +123,17 @@ const User = ({user}) => {
             />
 
             <Divider variant="fullWidth"/>
-            <CardMedia component="img" src={avatar} className={classes.banner}/>
+            {avatar ?
+                <CardMedia component="img" src={avatar} className={classes.banner}/>
+                :
+                <div className={classes.imageContainer}>
+                    <img
+                        className={classes.noImage}
+                        alt="default logo"
+                        src={`${process.env.PUBLIC_URL}/images/user.svg`}
+                    />
+                </div>
+            }
             <Divider variant="fullWidth"/>
             <CardContent>
                 <Typography
@@ -177,7 +194,7 @@ const User = ({user}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Link className={classes.link} to={`/profile/${_id}`}>
-                            <Button size="small" startIcon={<Chat/>} variant="text">
+                            <Button size="small" startIcon={<Info/>} variant="text">
                                 Profile
                             </Button>
                         </Link>
