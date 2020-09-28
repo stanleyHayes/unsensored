@@ -16,7 +16,7 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
             return history.push('/auth/login')
         }
         dispatch(getLoggedInUser(history, token));
-    }, [dispatch, history, token]);
+    }, [dispatch, token]);
 
     return (
         <Route {...rest} render={({location, ...others}) => {

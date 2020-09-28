@@ -42,6 +42,9 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
             },
             gridContainer: {
                 marginBottom: 16
+            },
+            textField: {
+                borderRadius: 32
             }
         }
     });
@@ -91,7 +94,7 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
                     <form onSubmit={handleCommentSubmit}>
                         <Grid
-                            spacing={1}
+                            spacing={2}
                             container={true}
                             alignItems="center"
                             justify="space-between">
@@ -103,12 +106,12 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
                                     placeholder="Type comment here..."
                                     label="Comment"
                                     multiline={true}
-                                    className={classes.textField}
                                     onChange={handleTextChange}
                                     margin="dense"
                                     name="text"
                                     value={text}
-                                    variant="standard"
+                                    variant="outlined"
+                                    style={{borderRadius: 32, borderWidth: 4}}
                                 />
                             </Grid>
                             <Grid item={true} xs={2}>

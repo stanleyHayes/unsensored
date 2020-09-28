@@ -93,7 +93,7 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
                     <form onSubmit={handleReplySubmit}>
                         <Grid
-                            spacing={1}
+                            spacing={2}
                             container={true}
                             alignItems="center"
                             justify="space-between">
