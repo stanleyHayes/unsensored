@@ -110,7 +110,7 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                                     margin="dense"
                                     name="text"
                                     value={text}
-                                    variant="outlined"
+                                    variant="standard"
                                 />
                             </Grid>
                             <Grid item={true} xs={2}>
