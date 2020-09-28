@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Container, Grid, TextField, Paper, Fab, LinearProgress, Divider} from "@material-ui/core";
+import {Container, Grid, TextField, Paper, Fab, LinearProgress} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {SendRounded} from "@material-ui/icons";
@@ -23,7 +23,6 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                 left: 0,
                 paddingLeft: 8,
                 paddingRight: 8,
-                backgroundColor: '#efefef'
             },
             container: {
                 minHeight: '90vh'
@@ -92,7 +91,6 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                     </Grid>
                 </Grid>
                 <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
-                    <Divider variant="fullWidth"/>
                     <form onSubmit={handleReplySubmit}>
                         <Grid
                             spacing={1}
@@ -109,7 +107,7 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                                     multiline={true}
                                     className={classes.textField}
                                     onChange={handleTextChange}
-                                    margin="normal"
+                                    margin="dense"
                                     name="text"
                                     value={text}
                                     variant="outlined"
@@ -117,6 +115,7 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                             </Grid>
                             <Grid item={true} xs={2}>
                                 <Fab
+                                    size="small"
                                     variant="round"
                                     className={classes.fab}
                                     fullWidth={true}

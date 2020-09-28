@@ -33,7 +33,7 @@ const CommentReply = ({reply, currentUser}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 8,
+                borderRadius: 0,
                 borderWidth: 2
             },
             banner: {
@@ -106,7 +106,7 @@ const CommentReply = ({reply, currentUser}) => {
     }
 
     return (
-        <Card variant="outlined" className={classes.card} square={true} elevation={1}>
+        <Card variant="outlined" className={classes.card} square={true} >
             <CardHeader
                 avatar={reply && reply.author && reply.author.avatar ?
                     <Avatar src={reply && reply.author.avatar} className={classes.avatar}/> :

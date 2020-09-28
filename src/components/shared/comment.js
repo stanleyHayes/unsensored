@@ -33,7 +33,7 @@ const Comment = ({comment, currentUser}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 8,
+                borderRadius: 0,
                 borderWidth: 2
             },
             banner: {
