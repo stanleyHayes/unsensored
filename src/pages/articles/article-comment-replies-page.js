@@ -17,12 +17,16 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
             },
             input: {
                 position: 'fixed',
-                bottom: 0,
+                bottom: 5,
                 zIndex: 10,
-                right: 0,
-                left: 0,
                 paddingLeft: 8,
                 paddingRight: 8,
+                left: 0,
+                right: 0,
+                [theme.breakpoints.up("lg")]: {
+                    left: '25%',
+                    right: '25%'
+                }
             },
             container: {
                 minHeight: '90vh'
@@ -84,20 +88,20 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Container maxWidth="md" className={classes.container}>
+            <Container maxWidth="sm" className={classes.container}>
                 <Grid container={true} className={classes.gridContainer} justify="center">
                     <Grid item={true} xs={12}>
                         <ReplyList replies={replies}/>
                     </Grid>
                 </Grid>
-                <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
-                    <form onSubmit={handleReplySubmit}>
+                <Paper className={classes.input} square={true} variant="outlined" elevation={1}>
+                    <form  onSubmit={handleReplySubmit}>
                         <Grid
                             spacing={2}
                             container={true}
                             alignItems="center"
-                            justify="space-between">
-                            <Grid xs={10} item={true}>
+                            justify="center">
+                            <Grid xs={10} lg={11} item={true}>
                                 <TextField
                                     fullWidth={true}
                                     required={true}
@@ -110,10 +114,10 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                                     margin="dense"
                                     name="text"
                                     value={text}
-                                    variant="standard"
+                                    variant="outlined"
                                 />
                             </Grid>
-                            <Grid item={true} xs={2}>
+                            <Grid item={true} xs={2} lg={1}>
                                 <Fab
                                     size="small"
                                     variant="round"

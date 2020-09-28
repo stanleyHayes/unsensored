@@ -18,12 +18,16 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
             },
             input: {
                 position: 'fixed',
-                bottom: 0,
+                bottom: 5,
                 zIndex: 10,
-                right: 0,
-                left: 0,
                 paddingLeft: 8,
                 paddingRight: 8,
+                left: 0,
+                right: 0,
+                [theme.breakpoints.up("lg")]: {
+                    left: '25%',
+                    right: '25%'
+                }
             },
             container: {
                 minHeight: '90vh'
@@ -91,14 +95,14 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
                         <CommentList comments={comments}/>
                     </Grid>
                 </Grid>
-                <Paper className={classes.input} square={true} variant="elevation" elevation={1}>
+                <Paper className={classes.input} square={true} variant="outlined" elevation={1}>
                     <form onSubmit={handleCommentSubmit}>
                         <Grid
                             spacing={2}
                             container={true}
                             alignItems="center"
                             justify="space-between">
-                            <Grid xs={10} item={true}>
+                            <Grid xs={10} lg={11} item={true}>
                                 <TextField
                                     fullWidth={true}
                                     required={true}
@@ -114,7 +118,7 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
                                     style={{borderRadius: 32, borderWidth: 4}}
                                 />
                             </Grid>
-                            <Grid item={true} xs={2}>
+                            <Grid item={true} xs={2} lg={1}>
                                 <Fab
                                     size="small"
                                     variant="round"
