@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 
-import {Chat, Comment,  Note, Reply, Share, Visibility} from "@material-ui/icons";
+import {Chat, Comment, Note, Reply, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 
@@ -76,7 +76,8 @@ const User = ({user}) => {
         commentCount,
         link,
         viewCount,
-        _id
+        _id,
+        likeCount
     } = user;
     const history = useHistory();
 
@@ -143,6 +144,16 @@ const User = ({user}) => {
                             startIcon={<Comment className={classes.info}/>}
                             variant="text">
                             {display(commentCount)}
+                        </Button>
+                    </Grid>
+                    <span className={classes.dot}>&#xb7;</span>
+                    <Grid item={true}>
+                        <Button
+                            size="small"
+                            className={classes.info}
+                            startIcon={<ThumbUp className={classes.info}/>}
+                            variant="text">
+                            {display(likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
