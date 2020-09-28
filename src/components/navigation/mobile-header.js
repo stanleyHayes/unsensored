@@ -15,6 +15,10 @@ const MobileHeader = ({handleOpen, currentUser}) => {
             link: {
                 textDecoration: "none",
                 color: "white"
+            },
+            brand: {
+                fontWeight: 900,
+                fontSize: 20
             }
         }
     });
@@ -35,7 +39,7 @@ const MobileHeader = ({handleOpen, currentUser}) => {
                         </IconButton>
                     </Grid>
                     <Grid container={true} justify="center" item={true} xs={7}>
-                        <Typography variant="body1">
+                        <Typography className={classes.brand} variant="body1">
                             <Link to="/" className={classes.link}>
                                 Uncensored
                             </Link>
