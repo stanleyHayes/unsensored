@@ -8,7 +8,7 @@ import {
 } from "./views-action-types";
 
 import axios from "axios";
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 
 const createArticleViewRequest = () => {
     return {
@@ -32,7 +32,7 @@ export const createArticleView = (articleId, token) => {
         dispatch(createArticleViewRequest());
         axios({
             method: 'post',
-            url: `${DEVELOPMENT_BASE_URL}/views`,
+            url: `${PRODUCTION_BASE_URL}/views`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -68,7 +68,7 @@ export const getViewsByArticle = (articleId, token) => {
         dispatch(getViewsByArticleRequest());
         axios({
             method: 'get',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}/views`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}/views`,
             headers: {
                 Authorization: `Bearer ${token}`
             },

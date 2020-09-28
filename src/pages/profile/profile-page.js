@@ -22,8 +22,12 @@ import {Edit} from "@material-ui/icons";
 import {Link, useParams} from "react-router-dom";
 import {connect, useDispatch} from "react-redux";
 import {getUserProfile} from "../../redux/users/user-action-creators";
+import {getLikesByUser} from "../../redux/likes/likes-action-creators";
+import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
+import {getCommentsByUser} from "../../redux/comments/comments-action-creators";
+import {getRepliesByUser} from "../../redux/replies/replies-action-creators";
 
-const ProfilePage = ({currentUser, token, user}) => {
+const ProfilePage = ({currentUser, token, user, replies, comments, articles, likes}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -51,23 +55,29 @@ const ProfilePage = ({currentUser, token, user}) => {
     const getTabDetail = index => {
         switch (index) {
             case 0:
-                return <ArticleList articles={[]}/>
+                return <ArticleList articles={articles}/>
             case 1:
-                return <LikeList likes={[]}/>
+                return <LikeList likes={likes}/>
             case 2:
-                return <CommentList comments={[]}/>
+                return <CommentList comments={comments}/>
             case 3:
-                return <ReplyList replies={[]}/>
+                return <ReplyList replies={replies}/>
             default:
-                return <ArticleList articles={[]}/>
+                return <ArticleList articles={articles}/>
         }
     }
 
     const {userId} = useParams();
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getUserProfile(userId, token));
+        dispatch(getLikesByUser(userId, token));
+        dispatch(getArticlesByUser(userId, token));
+        dispatch(getCommentsByUser(userId, token));
+        dispatch(getRepliesByUser(userId, token));
     }, [dispatch, token, userId]);
+
 
     const isLoggedInUser = !!(user && currentUser && user._id === currentUser._id);
 
@@ -149,11 +159,16 @@ const ProfilePage = ({currentUser, token, user}) => {
 }
 
 const mapStateToProps = state => {
+    console.log(state);
     return {
         loading: state.auth.loading,
         currentUser: state.auth.currentUser,
         token: state.auth.token,
-        user: state.users.user
+        user: state.users.user,
+        comments: state.comments.comments,
+        articles: state.articles.articles,
+        likes: state.likes.likes,
+        replies: state.replies.replies
     }
 }
 export default connect(mapStateToProps)(ProfilePage);

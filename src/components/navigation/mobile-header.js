@@ -28,14 +28,14 @@ const MobileHeader = ({handleOpen, currentUser}) => {
     return (
         <AppBar square={true} variant="outlined">
             <Toolbar variant="regular">
-                <Grid container={true} justify="space-around" alignItems="center" spacing={2}>
-                    <Grid item={true} xs={2}>
+                <Grid container={true} justify="space-between" alignItems="center" spacing={2}>
+                    <Grid item={true} xs={1}>
                         <IconButton>
                             <Menu className={classes.icon} onClick={handleClick}/>
                         </IconButton>
                     </Grid>
-                    <Grid item={true} xs={6}>
-                        <Typography variant="h6">
+                    <Grid container={true} justify="center" item={true} xs={7}>
+                        <Typography variant="body1">
                             <Link to="/" className={classes.link}>
                                 Uncensored
                             </Link>

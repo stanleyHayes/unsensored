@@ -19,7 +19,56 @@ const INITIAL_STATE = {
 const likesReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
 
+        case TOGGLE_LIKE_REQUEST:
+            return {
+                ...state
+            }
+        case TOGGLE_LIKE_SUCCESS:
+            return {
+                ...state,
+                likes: [...state.likes, action.payload]
+            }
+        case TOGGLE_LIKE_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            }
 
+        case GET_LIKES_BY_ARTICLE_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case GET_LIKES_BY_ARTICLE_SUCCESS:
+            return {
+                ...state,
+                likes: action.payload,
+                error: null
+            }
+        case GET_LIKES_BY_ARTICLE_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                likes: []
+            }
+
+        case GET_LIKES_BY_USER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case GET_LIKES_BY_USER_SUCCESS:
+            return {
+                ...state,
+                likes: action.payload,
+                error: null
+            }
+        case GET_LIKES_BY_USER_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                likes: []
+            }
         default:
             return state;
     }

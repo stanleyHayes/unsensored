@@ -22,13 +22,14 @@ import {TOKEN} from "../../constants/constants";
 import {Chat, Comment, DeleteForever, Edit, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {grey, red} from "@material-ui/core/colors";
+import {createArticleView} from "../../redux/views/views-action-creators";
 
 const display = createDisplay({
     length: 8,
     decimal: 0,
 });
 
-const ArticleDetailPage = ({articleDetail, currentUser}) => {
+const ArticleDetailPage = ({articleDetail, currentUser, token}) => {
 
     const {articleId} = useParams();
     const dispatch = useDispatch();
@@ -120,6 +121,10 @@ const ArticleDetailPage = ({articleDetail, currentUser}) => {
     const handleArticleDelete = () => {
 
     }
+
+    useEffect(() => {
+        dispatch(createArticleView(articleId, token));
+    }, [articleId, dispatch, token])
 
     const isLoggedInUser = !!(articleDetail && currentUser && articleDetail.author._id === currentUser._id);
 
@@ -296,7 +301,8 @@ const mapStateToProps = state => {
     return {
         articleDetail: state.articles.articleDetail,
         loading: state.articles.loading,
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        token: state.auth.token
     }
 }
 

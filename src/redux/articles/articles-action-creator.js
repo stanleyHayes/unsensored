@@ -16,7 +16,7 @@ import {
     GET_AUTHORED_ARTICLES_SUCCESS,
     UPDATE_ARTICLE_FAILURE,
     UPDATE_ARTICLE_REQUEST,
-    UPDATE_ARTICLE_SUCCESS
+    UPDATE_ARTICLE_SUCCESS, GET_ARTICLES_BY_USER_REQUEST, GET_ARTICLES_BY_USER_SUCCESS, GET_ARTICLES_BY_USER_FAILURE
 } from './articles-action-types';
 import axios from 'axios';
 import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
@@ -96,7 +96,7 @@ export const getArticle = (articleId, token, history) => {
             dispatch(getArticleSuccess(data));
             history.push(`/articles/${articleId}`);
         }).catch(error => {
-            dispatch(getArticleFailure(error.data.error.error));
+            dispatch(getArticleFailure(error.response.data.error));
         });
     }
 }
@@ -136,7 +136,7 @@ export const updateArticle = (articleId, article, token, history) => {
             dispatch(updateArticleSuccess(data));
             history.push(`/articles/${articleId}`);
         }).catch(error => {
-            dispatch(updateArticleFailure(error.data.error.error));
+            dispatch(updateArticleFailure(error.response.data.error));
         });
     }
 }
@@ -166,7 +166,7 @@ export const deleteArticle = (articleId, token, history) => {
         dispatch(deleteArticleRequest());
         axios({
             method: 'delete',
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}`,
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -252,6 +252,44 @@ export const getAuthoredArticles = (token) => {
             dispatch(getAuthoredArticlesSuccess(data));
         }).catch(error => {
             dispatch(getAuthoredArticlesFailure(error.response.data.error));
+        });
+    }
+}
+
+const getArticlesByUserRequest = () => {
+    return {
+        type: GET_ARTICLES_BY_USER_REQUEST
+    }
+}
+
+const getArticlesByUserSuccess = articles => {
+    return {
+        type: GET_ARTICLES_BY_USER_SUCCESS,
+        payload: articles
+    }
+}
+
+const getArticlesByUserFailure = error => {
+    return {
+        type: GET_ARTICLES_BY_USER_FAILURE,
+        payload: error
+    }
+}
+
+export const getArticlesByUser = (userId, token) => {
+    return dispatch => {
+        dispatch(getArticlesByUserRequest());
+        axios({
+            method: 'get',
+            url: `${PRODUCTION_BASE_URL}/users/${userId}/articles`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            const {data} = response.data;
+            dispatch(getArticlesByUserSuccess(data));
+        }).catch(error => {
+            dispatch(getArticlesByUserFailure(error.response.data.error));
         });
     }
 }
