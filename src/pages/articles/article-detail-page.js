@@ -9,7 +9,7 @@ import {
     CardHeader,
     Avatar,
     Chip,
-    Divider, Button
+    Divider, Button ,LinearProgress
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
@@ -29,7 +29,7 @@ const display = createDisplay({
     decimal: 0,
 });
 
-const ArticleDetailPage = ({articleDetail, currentUser, token}) => {
+const ArticleDetailPage = ({articleDetail, currentUser, token, loading}) => {
 
     const {articleId} = useParams();
     const dispatch = useDispatch();
@@ -131,9 +131,10 @@ const ArticleDetailPage = ({articleDetail, currentUser, token}) => {
     return (
         <Layout>
             <Container maxWidth="md">
+                {loading && <LinearProgress variant="query" /> }
                 <Grid container={true} justify="center">
                     <Grid item={true}>
-                        <Card variant="elevation" elevation={0}>
+                        <Card square={true} variant="elevation" elevation={0}>
                             <CardMedia component="img" src={articleDetail && articleDetail.banner}
                                        className={classes.banner}/>
 

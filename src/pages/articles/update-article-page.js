@@ -73,11 +73,13 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
         }
 
         let formData = new FormData();
-        formData.append("banner", banner);
+        if(banner){
+            formData.append("banner", banner);
+        }
         formData.append("text", text);
         formData.append("summary", summary);
         formData.append("title", title);
-        formData.append("tags", JSON.stringify(tags));
+        formData.append("tags", tags.join(','));
 
         dispatch(updateArticle(articleId, formData, token, history));
     }
@@ -133,8 +135,8 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
             },
             buttonTag: {
                 backgroundColor: theme.palette.primary.light,
-                paddingTop: 8,
-                paddingBottom: 8,
+                paddingTop: 12,
+                paddingBottom: 12,
                 color: "white",
                 borderRadius: 0,
                 '&:active': {
@@ -242,8 +244,8 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
                                 className={classes.textField}
                             />
 
-                            <Grid container={true} spacing={2} alignItems="center">
-                                <Grid item={true} xs={10}>
+                            <Grid container={true} justify="space-between" spacing={1} alignItems="center">
+                                <Grid item={true} xs={9}>
                                     <TextField
                                         value={tag}
                                         label="Article Tag"
@@ -258,11 +260,11 @@ const UpdateArticlePage = ({loading, articleDetail, token}) => {
                                         variant="outlined"
                                     />
                                 </Grid>
-                                <Grid item={true} xs={2}>
+                                <Grid item={true} xs={3}>
                                     <Button
                                         onClick={handleTagAdd}
                                         fullWidth={true}
-                                        size="large"
+                                        size="small"
                                         variant="outlined"
                                         className={classes.buttonTag}>
                                         Add
