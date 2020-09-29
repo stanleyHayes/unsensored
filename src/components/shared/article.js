@@ -22,7 +22,9 @@ import readingTime from 'reading-time';
 import {Chat, Comment, MoreVert, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
+import {toggleLike} from "../../redux/likes/likes-action-creators";
+import {blue} from "@material-ui/core/colors";
 
 
 const display = createDisplay({
@@ -30,7 +32,7 @@ const display = createDisplay({
     decimal: 0,
 });
 
-const Article = ({article, currentUser}) => {
+const Article = ({article, currentUser, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -70,16 +72,20 @@ const Article = ({article, currentUser}) => {
             },
             more: {
                 cursor: "pointer"
+            },
+            liked: {
+                color: blue["700"]
             }
         }
     });
 
     const classes = useStyles();
-    const {title, summary, author, updatedAt, banner, text, likeCount, commentCount, link, viewCount, _id} = article;
+    const {title, summary, author, updatedAt, banner, text, likeCount, commentCount, link, viewCount, _id, likes} = article;
     const [anchorElement, setAnchorElement] = useState(null);
     const [openMenu, setMenuOpen] = useState(false);
     const {name, _id: authorId} = author;
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const handleNameClick = () => {
         history.push(`/profile/${authorId}`);
@@ -93,8 +99,8 @@ const Article = ({article, currentUser}) => {
         document.execCommand("copy", true, link);
     }
 
-    const handleLikeClicked = event => {
-
+    const handleLikeClicked = () => {
+        dispatch(toggleLike({article: _id, type: 'ARTICLE'}, token));
     }
 
     const handleMenuClose = () => {
@@ -117,6 +123,15 @@ const Article = ({article, currentUser}) => {
         setMenuOpen(false);
     }
 
+    const liked = () => {
+        let hasLiked = false;
+        likes.forEach(like => {
+            if(like.author === currentUser._id){
+                hasLiked = true;
+            }
+        });
+        return hasLiked;
+    }
     return (
         <Card variant="outlined" className={classes.card}>
             <CardHeader
@@ -133,7 +148,7 @@ const Article = ({article, currentUser}) => {
                     </Typography>}
                 subheader={moment(updatedAt).fromNow()}
                 action={currentUser && authorId === currentUser._id ?
-                    <MoreVert className={classes.more} onClick={handleMenuOpen} />
+                    <MoreVert className={classes.more} onClick={handleMenuOpen}/>
                     : null}
             />
             <Popper open={openMenu} anchorEl={anchorElement}>
@@ -181,7 +196,7 @@ const Article = ({article, currentUser}) => {
                             size="small"
                             className={classes.info}
                             startIcon={<Comment className={classes.info}/>}
-                                variant="text">
+                            variant="text">
                             {display(commentCount)}
                         </Button>
                     </Grid>
@@ -201,8 +216,8 @@ const Article = ({article, currentUser}) => {
                         <Button
                             onClick={handleLikeClicked}
                             startIcon={
-                                currentUser && currentUser.likes.includes(_id) ?
-                                    <ThumbUp/>
+                                liked() ?
+                                    <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>
                             }

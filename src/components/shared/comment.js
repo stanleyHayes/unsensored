@@ -20,7 +20,9 @@ import {MoreVert, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/
 import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
+import {toggleLike} from "../../redux/likes/likes-action-creators";
+import {blue} from "@material-ui/core/colors";
 
 
 const display = createDisplay({
@@ -28,7 +30,7 @@ const display = createDisplay({
     decimal: 0,
 });
 
-const Comment = ({comment, currentUser}) => {
+const Comment = ({comment, currentUser, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -71,12 +73,16 @@ const Comment = ({comment, currentUser}) => {
             },
             more: {
                 cursor: "pointer"
+            },
+            liked: {
+                color: blue["700"]
             }
         }
     });
 
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [anchorElement, setAnchorElement] = useState(null);
@@ -93,8 +99,8 @@ const Comment = ({comment, currentUser}) => {
         document.execCommand("copy", true, comment && comment.link);
     }
 
-    const handleLikeClicked = event => {
-
+    const handleLikeClicked = () => {
+        dispatch(toggleLike({comment: comment._id, type: 'COMMENT'}, token));
     }
 
     const handleMenuClicked = event => {
@@ -186,7 +192,7 @@ const Comment = ({comment, currentUser}) => {
                             onClick={handleLikeClicked}
                             startIcon={
                                 currentUser && comment && currentUser.likes.includes(comment && comment._id) ?
-                                    <ThumbUp/>
+                                    <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>
                             }
@@ -216,7 +222,8 @@ const Comment = ({comment, currentUser}) => {
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        token: state.auth.token
     }
 }
 

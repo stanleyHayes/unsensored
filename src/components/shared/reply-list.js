@@ -1,9 +1,9 @@
 import React from "react";
-import {Box, Container, Grid, Typography} from "@material-ui/core";
+import {Box, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import CommentReply from "./reply";
 
-const ReplyList = ({replies}) => {
+const ReplyList = ({replies, message}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -52,7 +52,7 @@ const ReplyList = ({replies}) => {
                                 className={classes.text}
                                 variant="h6"
                                 align="center">
-                                Be the first to reply
+                                {message || 'Be the first to reply'}
                             </Typography>
                             <Box className={classes.imageContainer}>
                                 <img

@@ -20,7 +20,9 @@ import {MoreHoriz, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons"
 import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
+import {toggleLike} from "../../redux/likes/likes-action-creators";
+import {blue} from "@material-ui/core/colors";
 
 
 const display = createDisplay({
@@ -28,7 +30,7 @@ const display = createDisplay({
     decimal: 0,
 });
 
-const CommentReply = ({reply, currentUser}) => {
+const CommentReply = ({reply, currentUser, token}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -65,6 +67,9 @@ const CommentReply = ({reply, currentUser}) => {
             },
             more: {
                 cursor: "pointer"
+            },
+            liked: {
+                color: blue["700"]
             }
         }
     });
@@ -72,6 +77,7 @@ const CommentReply = ({reply, currentUser}) => {
     const classes = useStyles();
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const handleNameClick = () => {
         history.push(`/profile/${reply && reply.author && reply.author._id}`);
@@ -81,9 +87,10 @@ const CommentReply = ({reply, currentUser}) => {
         document.execCommand("copy", true, reply && reply.link);
     }
 
-    const handleLikeClicked = event => {
-
+    const handleLikeClicked = () => {
+        dispatch(toggleLike({reply: reply._id, type: 'REPLY'}, token));
     }
+
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [anchorElement, setAnchorElement] = useState(null);
@@ -168,7 +175,7 @@ const CommentReply = ({reply, currentUser}) => {
                             onClick={handleLikeClicked}
                             startIcon={
                                 currentUser && reply && currentUser.likes.includes(reply && reply._id) ?
-                                    <ThumbUp/>
+                                    <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>
                             }
