@@ -36,7 +36,7 @@ const User = ({user}) => {
                 objectFit: 'cover'
             },
             noImage: {
-                height: 300,
+                height: 150,
                 objectFit: 'contain'
             },
             grid: {
@@ -69,7 +69,10 @@ const User = ({user}) => {
                 cursor: "pointer"
             },
             imageContainer: {
-                textAlign: "center"
+                justifyContent: "center",
+                height: 300,
+                display: "flex",
+                alignItems: "center"
             }
         }
     });
