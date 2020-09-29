@@ -147,7 +147,7 @@ const User = ({user}) => {
                 <Typography variant="body2">Joined {moment(createdAt).fromNow()}</Typography>
                 {profile ? <Typography gutterBottom={true} variant="body2">{profile}</Typography> : null}
                 {birthday ?
-                    <Typography gutterBottom={true}  variant="body2">Born birthday {new Date(birthday).toDateString()}</Typography> : null}
+                    <Typography gutterBottom={true}  variant="body2">Born on {new Date(birthday).toDateString()}</Typography> : null}
             </CardContent>
             <Divider variant="fullWidth"/>
             <CardActions>
