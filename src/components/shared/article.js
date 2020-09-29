@@ -37,7 +37,7 @@ const Article = ({article, currentUser, token}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 0,
+                borderRadius: 24,
                 borderWidth: 2
             },
             banner: {
@@ -133,7 +133,7 @@ const Article = ({article, currentUser, token}) => {
         return hasLiked;
     }
     return (
-        <Card variant="outlined" className={classes.card}>
+        <Card variant="elevation" elevation={1} className={classes.card}>
             <CardHeader
                 avatar={author && author.avatar ? <Avatar src={author.avatar} className={classes.avatar}/> :
                     <Avatar>
@@ -215,12 +215,7 @@ const Article = ({article, currentUser, token}) => {
                     <Grid item={true}>
                         <Button
                             onClick={handleLikeClicked}
-                            startIcon={
-                                liked() ?
-                                    <ThumbUp className={classes.liked}/>
-                                    :
-                                    <ThumbUpAltOutlined/>
-                            }
+                            startIcon={liked() ? <ThumbUp className={classes.liked}/> : <ThumbUpAltOutlined/>}
                             size="small"
                             variant="text">
                             Like

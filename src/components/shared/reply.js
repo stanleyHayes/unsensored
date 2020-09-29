@@ -35,7 +35,7 @@ const CommentReply = ({reply, currentUser, token}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 0,
+                borderRadius: 24,
                 borderWidth: 2
             },
             banner: {
@@ -112,8 +112,18 @@ const CommentReply = ({reply, currentUser, token}) => {
 
     }
 
+    const liked = reply => {
+        let hasLiked = false;
+        reply.likes.forEach(like => {
+            if(like.author === currentUser._id){
+                hasLiked = true;
+            }
+        });
+        return hasLiked;
+    }
+
     return (
-        <Card variant="outlined" className={classes.card} square={true} >
+        <Card variant="elevation" className={classes.card}>
             <CardHeader
                 avatar={reply && reply.author && reply.author.avatar ?
                     <Avatar src={reply && reply.author.avatar} className={classes.avatar}/> :
@@ -174,7 +184,7 @@ const CommentReply = ({reply, currentUser, token}) => {
                         <Button
                             onClick={handleLikeClicked}
                             startIcon={
-                                currentUser && reply && currentUser.likes.includes(reply && reply._id) ?
+                                reply && liked(reply) ?
                                     <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>

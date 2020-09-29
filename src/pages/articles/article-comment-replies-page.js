@@ -110,7 +110,6 @@ const ArticleCommentRepliesPage = ({replies, loading, token}) => {
                                     label="Reply"
                                     multiline={true}
                                     rowsMax={5}
-                                    classes={{borderRadius: 32}}
                                     className={classes.textField}
                                     onChange={handleTextChange}
                                     margin="dense"

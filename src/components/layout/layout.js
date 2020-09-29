@@ -26,6 +26,9 @@ const Layout = ({children}) => {
                 bottom: 0,
                 left: 0,
                 right: 0
+            },
+            root: {
+                backgroundColor: "#f0f2f5"
             }
         }
     });
@@ -42,7 +45,7 @@ const Layout = ({children}) => {
         setOpen(true)
     }
     return (
-        <div>
+        <div className={classes.root}>
             <Hidden only={['lg', 'xl']}>
                 <MobileLayout>
                     <Grid container={true} direction="column">

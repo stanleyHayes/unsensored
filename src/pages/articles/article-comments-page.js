@@ -110,7 +110,6 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
                                     placeholder="Type comment here..."
                                     label="Comment"
                                     multiline={true}
-                                    classes={{borderRadius: 32}}
                                     rowsMax={5}
                                     onChange={handleTextChange}
                                     margin="dense"
