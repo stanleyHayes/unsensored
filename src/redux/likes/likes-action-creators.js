@@ -11,7 +11,7 @@ import {
 } from "./likes-action-types";
 
 import axios from "axios";
-import {DEVELOPMENT_BASE_URL} from "../../constants/constants";
+import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
 
 const toggleLikeRequest = () => {
     return {
@@ -38,7 +38,7 @@ export const toggleLike = (like, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${DEVELOPMENT_BASE_URL}/likes`
+            url: `${PRODUCTION_BASE_URL}/likes`
         }).then(response => {
             const {data} = response.data;
             dispatch(toggleLikeSuccess(data));
