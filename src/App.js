@@ -56,9 +56,9 @@ function App() {
 
                 <ProtectedRoute path="/auth/forgot-password" component={ForgotPasswordPage}/>
 
-                <ProtectedRoute path="/users" component={UsersPage}/>
+                <ProtectedRoute path="/users" exact={true} component={UsersPage}/>
 
-                <ProtectedRoute path="/users/:userId/activities" component={UserDetailPage}/>
+                <ProtectedRoute path="/users/:userId/activities" exact={true} component={UserDetailPage}/>
 
                 <Route path="/auth/register" exact={true}>
                     <SignUpPage/>

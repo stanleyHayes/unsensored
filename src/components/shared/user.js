@@ -28,7 +28,7 @@ const User = ({user}) => {
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 0,
+                borderRadius: 24,
                 borderWidth: 2
             },
             banner: {
@@ -110,7 +110,7 @@ const User = ({user}) => {
 
 
     return (
-        <Card variant="outlined" className={classes.card}>
+        <Card variant="elevation" elevation={1} className={classes.card}>
             <CardHeader
                 avatar={avatar ? <Avatar src={avatar} className={classes.avatar}/> :
                     <Avatar>
