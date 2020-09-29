@@ -54,7 +54,7 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
     const getTabDetail = index => {
         switch (index) {
             case 0:
-                return <ArticleList message={`No replies by ${user && user.username}`} articles={articles}/>
+                return <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
             case 1:
                 return <LikeList message={`No items liked by ${user && user.username}`}  likes={likes}/>
             case 2:

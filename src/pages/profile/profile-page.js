@@ -16,10 +16,7 @@ import {Edit, KeyboardArrowRight} from "@material-ui/icons";
 import {Link, useParams} from "react-router-dom";
 import {connect, useDispatch} from "react-redux";
 import {getUserProfile} from "../../redux/users/user-action-creators";
-import {getLikesByUser} from "../../redux/likes/likes-action-creators";
 import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
-import {getCommentsByUser} from "../../redux/comments/comments-action-creators";
-import {getRepliesByUser} from "../../redux/replies/replies-action-creators";
 import {grey} from "@material-ui/core/colors";
 
 const ProfilePage = ({currentUser, token, user, articles}) => {
