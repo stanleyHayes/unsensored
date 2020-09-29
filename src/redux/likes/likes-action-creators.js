@@ -73,7 +73,7 @@ export const getLikesByUser = (userId, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${DEVELOPMENT_BASE_URL}/users/${userId}/likes`
+            url: `${PRODUCTION_BASE_URL}/users/${userId}/likes`
         }).then(response => {
             const {data} = response.data;
             dispatch(getLikesByUserSuccess(data));
@@ -108,7 +108,7 @@ export const getLikesByArticle = (articleId, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}/likes`
+            url: `${PRODUCTION_BASE_URL}/articles/${articleId}/likes`
         }).then(response => {
             const {data} = response.data;
             dispatch(getLikesByArticleSuccess(data));
