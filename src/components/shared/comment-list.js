@@ -3,7 +3,7 @@ import {Box, Grid, Typography} from "@material-ui/core";
 import Comment from "./comment";
 import {makeStyles} from "@material-ui/styles";
 
-const CommentList = ({comments}) => {
+const CommentList = ({comments, message}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -53,7 +53,7 @@ const CommentList = ({comments}) => {
                                     className={classes.text}
                                     variant="h6"
                                     align="center">
-                                    Be the first to comment
+                                    {message || "Be the first to comment"}
                                 </Typography>
                                 <Box className={classes.imageContainer}>
                                     <img

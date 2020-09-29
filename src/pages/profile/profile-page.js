@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {
     CardContent,
     Container,
@@ -7,18 +7,12 @@ import {
     Card,
     Avatar,
     CardHeader,
-    Paper,
-    Tabs,
-    Tab,
-    Divider, IconButton
+    Divider, IconButton, Button
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import ArticleList from "../../components/shared/article-list";
-import LikeList from "../../components/shared/like-list";
-import CommentList from "../../components/shared/comment-list";
-import ReplyList from "../../components/shared/reply-list";
-import {Edit} from "@material-ui/icons";
+import {Edit, KeyboardArrowRight} from "@material-ui/icons";
 import {Link, useParams} from "react-router-dom";
 import {connect, useDispatch} from "react-redux";
 import {getUserProfile} from "../../redux/users/user-action-creators";
@@ -26,8 +20,9 @@ import {getLikesByUser} from "../../redux/likes/likes-action-creators";
 import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
 import {getCommentsByUser} from "../../redux/comments/comments-action-creators";
 import {getRepliesByUser} from "../../redux/replies/replies-action-creators";
+import {grey} from "@material-ui/core/colors";
 
-const ProfilePage = ({currentUser, token, user, replies, comments, articles, likes}) => {
+const ProfilePage = ({currentUser, token, user, articles}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -40,42 +35,21 @@ const ProfilePage = ({currentUser, token, user, replies, comments, articles, lik
             },
             link: {
                 textDecoration: "none"
+            },
+            textButton: {
+                color: grey["600"]
             }
         }
     });
 
     const classes = useStyles();
 
-    const [index, setSelectedIndex] = useState(0);
-
-    const handleSelectedTab = index => {
-        setSelectedIndex(index);
-    }
-
-    const getTabDetail = index => {
-        switch (index) {
-            case 0:
-                return <ArticleList articles={articles}/>
-            case 1:
-                return <LikeList likes={likes}/>
-            case 2:
-                return <CommentList comments={comments}/>
-            case 3:
-                return <ReplyList replies={replies}/>
-            default:
-                return <ArticleList articles={articles}/>
-        }
-    }
-
     const {userId} = useParams();
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getUserProfile(userId, token));
-        dispatch(getLikesByUser(userId, token));
         dispatch(getArticlesByUser(userId, token));
-        dispatch(getCommentsByUser(userId, token));
-        dispatch(getRepliesByUser(userId, token));
     }, [dispatch, token, userId]);
 
 
@@ -117,40 +91,21 @@ const ProfilePage = ({currentUser, token, user, replies, comments, articles, lik
                             />
                             <Divider variant="fullWidth"/>
                             <CardContent>
-                                <Paper className={classes.container} variant="elevation" elevation={0}>
-                                    <Tabs scrollButtons="on" value={index}
-                                          onChange={(event, index) => handleSelectedTab(index)}
-                                          variant="fullWidth">
-                                        <Tab
-                                            value={0}
-                                            selected={index === 0}
-                                            label="Articles"
-                                        />
-
-                                        <Tab
-                                            value={1}
-                                            selected={index === 1}
-                                            label="Likes"
-                                        />
-
-                                        <Tab
-                                            value={2}
-                                            selected={index === 2}
-                                            label="Comments"
-                                        />
-
-                                        <Tab
-                                            value={3}
-                                            selected={index === 3}
-                                            label="Replies"
-                                        />
-                                    </Tabs>
-                                </Paper>
-                                <div className={classes.scroll}>
-                                    {getTabDetail(index)}
-                                </div>
+                                <Link className={classes.link} to={`/users/${userId}/activities`}>
+                                    <Button
+                                        endIcon={<KeyboardArrowRight className={classes.icon}/>}
+                                        className={classes.textButton}
+                                        size="small"
+                                        fullWidth={true}>
+                                        comments, likes, views & replies by {user && user.username}
+                                    </Button>
+                                </Link>
                             </CardContent>
+                            <Divider variant="fullWidth"/>
                         </Card>
+                    </Grid>
+                    <Grid item={true}>
+                        <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
                     </Grid>
                 </Grid>
             </Container>
@@ -159,7 +114,6 @@ const ProfilePage = ({currentUser, token, user, replies, comments, articles, lik
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         loading: state.auth.loading,
         currentUser: state.auth.currentUser,

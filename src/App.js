@@ -22,6 +22,7 @@ import PageNotFound from "./pages/404/404-page-not-found-page";
 import ProtectedRoute from "./components/shared/protected-route";
 import ArticleCommentRepliesPage from "./pages/articles/article-comment-replies-page";
 import UsersPage from "./pages/users/users-page";
+import UserDetailPage from "./pages/profile/user-detail-page";
 
 function App() {
     return (
@@ -56,6 +57,8 @@ function App() {
                 <ProtectedRoute path="/auth/forgot-password" component={ForgotPasswordPage}/>
 
                 <ProtectedRoute path="/users" component={UsersPage}/>
+
+                <ProtectedRoute path="/users/:userId/activities" component={UserDetailPage}/>
 
                 <Route path="/auth/register" exact={true}>
                     <SignUpPage/>
