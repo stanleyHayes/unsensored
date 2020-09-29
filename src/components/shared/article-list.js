@@ -27,39 +27,37 @@ const ArticleList = ({articles, message}) => {
     const classes = useStyles();
 
     return (
-        <Container maxWidth="md">
-            <Grid container={true} spacing={4} className={classes.container}>
-                {
-                    articles && articles.length ? (
-                        articles.map((article, index) => {
-                            return (
-                                <Grid key={index} item={true} xs={12}>
-                                    <Article article={article}/>
-                                </Grid>
-                            )
-                        })
-                    ) : (
-                        <Grid item={true}
-                              container={true}
-                              alignItems="center"
-                              className={classes.noArticlesContainer}>
-                            <Grid item={true} xs={12}>
-                                <Typography align="center" variant="h6">
-                                    {message || 'no articles available'}
-                                </Typography>
-                                <div className={classes.imageContainer}>
-                                    <img
-                                        className={classes.image}
-                                        alt="no articles icon"
-                                        src={`${process.env.PUBLIC_URL}/images/internet.svg`}
-                                    />
-                                </div>
+        <Grid container={true} spacing={4} className={classes.container}>
+            {
+                articles && articles.length ? (
+                    articles.map((article, index) => {
+                        return (
+                            <Grid key={index} item={true} xs={12}>
+                                <Article article={article}/>
                             </Grid>
+                        )
+                    })
+                ) : (
+                    <Grid item={true}
+                          container={true}
+                          alignItems="center"
+                          className={classes.noArticlesContainer}>
+                        <Grid item={true} xs={12}>
+                            <Typography align="center" variant="h6">
+                                {message || 'no articles available'}
+                            </Typography>
+                            <div className={classes.imageContainer}>
+                                <img
+                                    className={classes.image}
+                                    alt="no articles icon"
+                                    src={`${process.env.PUBLIC_URL}/images/internet.svg`}
+                                />
+                            </div>
                         </Grid>
-                    )
-                }
-            </Grid>
-        </Container>
+                    </Grid>
+                )
+            }
+        </Grid>
     )
 }
 
