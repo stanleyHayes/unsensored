@@ -13,6 +13,7 @@ import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
 import {getCommentsByUser} from "../../redux/comments/comments-action-creators";
 import {getRepliesByUser} from "../../redux/replies/replies-action-creators";
 import {connect} from "react-redux";
+import Layout from "../../components/layout/layout";
 
 const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
 
@@ -56,7 +57,7 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
             case 0:
                 return <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
             case 1:
-                return <LikeList message={`No items liked by ${user && user.username}`}  likes={likes}/>
+                return <LikeList message={`No items liked by ${user && user.username}`} likes={likes}/>
             case 2:
                 return <CommentList message={`No comments by ${user && user.username}`} comments={comments}/>
             case 3:
@@ -67,40 +68,42 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
     }
 
     return (
-        <Container>
-            <Paper className={classes.container} variant="elevation" elevation={0}>
-                <Tabs scrollButtons="on" value={index}
-                      onChange={(event, index) => handleSelectedTab(index)}
-                      variant="fullWidth">
-                    <Tab
-                        value={0}
-                        selected={index === 0}
-                        label="Articles"
-                    />
+        <Layout>
+            <Container>
+                <Paper className={classes.container} variant="elevation" elevation={0}>
+                    <Tabs scrollButtons="on" value={index}
+                          onChange={(event, index) => handleSelectedTab(index)}
+                          variant="fullWidth">
+                        <Tab
+                            value={0}
+                            selected={index === 0}
+                            label="Articles"
+                        />
 
-                    <Tab
-                        value={1}
-                        selected={index === 1}
-                        label="Likes"
-                    />
+                        <Tab
+                            value={1}
+                            selected={index === 1}
+                            label="Likes"
+                        />
 
-                    <Tab
-                        value={2}
-                        selected={index === 2}
-                        label="Comments"
-                    />
+                        <Tab
+                            value={2}
+                            selected={index === 2}
+                            label="Comments"
+                        />
 
-                    <Tab
-                        value={3}
-                        selected={index === 3}
-                        label="Replies"
-                    />
-                </Tabs>
-            </Paper>
-            <div>
-                {getTabDetail(index)}
-            </div>
-        </Container>
+                        <Tab
+                            value={3}
+                            selected={index === 3}
+                            label="Replies"
+                        />
+                    </Tabs>
+                </Paper>
+                <div>
+                    {getTabDetail(index)}
+                </div>
+            </Container>
+        </Layout>
     )
 }
 

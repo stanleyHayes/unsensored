@@ -19,7 +19,7 @@ import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
 import {grey} from "@material-ui/core/colors";
 import {Skeleton} from "@material-ui/lab";
 
-const ProfilePage = ({currentUser, token, user, articles, loading, articleLoading}) => {
+const ProfilePage = ({currentUser, token, user, articles, loading, articleLoading, userLoading}) => {
 
     const useStyles = makeStyles(theme => {
         return {
@@ -63,7 +63,7 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
                         <Card className={classes.card} elevation={1}>
                             <CardHeader
                                 avatar={
-                                    loading ? <Skeleton variant="circle" animation="wave" /> :
+                                    userLoading ? <Skeleton variant="circle" animation="wave" /> :
                                     user && user.avatar ?
                                         <Avatar src={user.avatar} className={classes.avatar}/>
                                         :
@@ -102,6 +102,9 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
                             <Divider variant="fullWidth"/>
                         </Card>
                     </Grid>
+
+                    <Divider variant="fullWidth"/>
+
                     <Grid item={true}>
                         {articleLoading && <LinearProgress variant="query" />}
                         <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
@@ -122,7 +125,8 @@ const mapStateToProps = state => {
         articles: state.articles.articles,
         likes: state.likes.likes,
         replies: state.replies.replies,
-        articleLoading: state.articles.loading
+        articleLoading: state.articles.loading,
+        userLoading: state.users.loading
     }
 }
 export default connect(mapStateToProps)(ProfilePage);

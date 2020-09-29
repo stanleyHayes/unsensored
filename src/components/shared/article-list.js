@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Grid, Typography} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 import Article from "./article";
 import {makeStyles} from "@material-ui/styles";
 
@@ -27,7 +27,7 @@ const ArticleList = ({articles, message}) => {
     const classes = useStyles();
 
     return (
-        <Grid container={true} spacing={4} className={classes.container}>
+        <Grid container={true} spacing={2} className={classes.container}>
             {
                 articles && articles.length ? (
                     articles.map((article, index) => {

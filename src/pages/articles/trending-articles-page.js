@@ -34,7 +34,7 @@ const TrendingArticlesPage = ({loading, articles, token}) => {
     const history = useHistory();
 
     useEffect(() => {
-        dispatch(getArticles(token, ``));
+        dispatch(getArticles(token));
     }, [dispatch, token, history]);
 
     return (

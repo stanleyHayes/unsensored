@@ -67,8 +67,7 @@ const AuthoredArticlesPage = ({loading, articles, token}) => {
                                     </div>
                                 </Grid>
                             </Grid>
-                        )
-                    }
+                        )}
                 </Grid>
             </Container>
         </Layout>

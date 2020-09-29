@@ -17,8 +17,7 @@ import moment from 'moment';
 import readingTime from 'reading-time';
 import {connect, useDispatch} from 'react-redux';
 import {useParams, useHistory, Link} from 'react-router-dom';
-import {getArticle} from "../../redux/articles/articles-action-creator";
-import {TOKEN} from "../../constants/constants";
+import {deleteArticle, getArticle} from "../../redux/articles/articles-action-creator";
 import {Chat, Comment, DeleteForever, Edit, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {grey, red} from "@material-ui/core/colors";
@@ -36,7 +35,7 @@ const ArticleDetailPage = ({articleDetail, currentUser, token, loading}) => {
     const history = useHistory();
 
     useEffect(() => {
-        dispatch(getArticle(articleId, TOKEN, history));
+        dispatch(getArticle(articleId, token, history));
     }, [articleId, dispatch, history]);
 
     const useStyles = makeStyles(theme => {
@@ -119,7 +118,7 @@ const ArticleDetailPage = ({articleDetail, currentUser, token, loading}) => {
     }
 
     const handleArticleDelete = () => {
-
+        dispatch(deleteArticle(articleId, token, history));
     }
 
     useEffect(() => {

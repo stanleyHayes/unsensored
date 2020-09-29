@@ -38,7 +38,7 @@ const MobileHeader = ({handleOpen, currentUser}) => {
                             <Menu className={classes.icon} onClick={handleClick}/>
                         </IconButton>
                     </Grid>
-                    <Grid container={true} justify="center" item={true} xs={7}>
+                    <Grid container={true} justify="center" item={true} xs={6}>
                         <Typography className={classes.brand} variant="body1">
                             <Link to="/" className={classes.link}>
                                 Uncensored
@@ -46,7 +46,7 @@ const MobileHeader = ({handleOpen, currentUser}) => {
                         </Typography>
                     </Grid>
 
-                    <Grid item={true} xs={4}>
+                    <Grid item={true} xs={5}>
                         <Link to="/article/new" className={classes.link}>
                             <IconButton>
                                 <AddCircleRounded className={classes.icon}/>

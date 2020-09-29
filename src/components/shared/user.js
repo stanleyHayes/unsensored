@@ -107,11 +107,6 @@ const User = ({user}) => {
         document.execCommand("copy", true, link);
     }
 
-    const handleLikeClicked = event => {
-
-    }
-
-
     return (
         <Card variant="elevation" elevation={1} className={classes.card}>
             <CardHeader

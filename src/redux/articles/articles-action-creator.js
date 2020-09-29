@@ -213,6 +213,7 @@ export const getArticles = (token, query) => {
             const {data} = response.data;
             dispatch(getArticlesSuccess(data));
         }).catch(error => {
+            console.log(error.response.data.error)
             dispatch(getArticlesFailure(error.response.data.error));
         });
     }
