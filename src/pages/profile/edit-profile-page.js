@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {CardContent, Container, Grid, Card, TextField, Button, LinearProgress} from "@material-ui/core";
+import {CardContent, Container, Grid, Card, TextField, Button, LinearProgress, Box} from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
 import {useHistory} from "react-router-dom";
@@ -8,6 +8,8 @@ import validator from "validator";
 import ReactImageUploader from 'react-images-upload';
 import {updateUserProfile} from "../../redux/auth/auth-action-creator";
 import {red} from "@material-ui/core/colors";
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 
 const EditProfilePage = ({currentUser, loading, token}) => {
 
@@ -85,10 +87,14 @@ const EditProfilePage = ({currentUser, loading, token}) => {
     const [user, setUser] = useState({});
     const [avatar, setAvatar] = useState(null);
     const [error, setError] = useState({});
-    const {name, email, username} = user;
+    const [birthday, setBirthday] = useState(Date.now());
+    const {name, email, username, profile} = user;
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const handleBirthdaySelected = date => {
+        setBirthday(date);
+    }
     const handleUserChange = event => {
         setUser({...user, [event.target.name]: event.target.value});
     }
@@ -129,6 +135,12 @@ const EditProfilePage = ({currentUser, loading, token}) => {
         formData.append("username", username);
         if (avatar) {
             formData.append("avatar", avatar);
+        }
+        if(birthday){
+            formData.append("birthday", birthday);
+        }
+        if(profile){
+            formData.append("profile", profile);
         }
         dispatch(updateUserProfile(formData, currentUser._id, token, history))
     }
@@ -222,7 +234,33 @@ const EditProfilePage = ({currentUser, loading, token}) => {
                                         value={username}
                                     />
 
+                                    <TextField
+                                        fullWidth={true}
+                                        onChange={handleUserChange}
+                                        name="profile"
+                                        required={true}
+                                        multiline={true}
+                                        rows={5}
+                                        label="About yourself"
+                                        defaultValue={currentUser && currentUser.profile}
+                                        placeholder="How would you describe yourself"
+                                        variant="outlined"
+                                        className={classes.textField}
+                                        margin="normal"
+                                        value={username}
+                                    />
 
+                                    <Box>
+                                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                                            <DatePicker
+                                                value={birthday}
+                                                disableFuture={true}
+                                                emptyLabel="Select birthday"
+                                                inputVariant="outlined"
+                                                onChange={handleBirthdaySelected}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                    </Box>
                                     <Button fullWidth={true} onClick={handleUserSubmit} variant="outlined"
                                             className={classes.button}
                                             size="large">

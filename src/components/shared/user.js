@@ -13,9 +13,10 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 
-import {Chat, Comment, Info, Note, Reply, Share, ThumbUp, Visibility} from "@material-ui/icons";
+import {Comment, Info, Note, Reply, Share, ThumbUp, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
+import moment from "moment";
 
 const display = createDisplay({
     length: 8,
@@ -84,7 +85,10 @@ const User = ({user}) => {
         link,
         viewCount,
         _id,
-        likeCount
+        likeCount,
+        profile,
+        birthday,
+        createdAt
     } = user;
     const history = useHistory();
 
@@ -140,8 +144,12 @@ const User = ({user}) => {
                     onClick={handleTitleClicked}
                     gutterBottom={true} variant="h6"
                     className={classes.title}>{name}</Typography>
-                <Typography variant="body2">{username}</Typography>
+                <Typography variant="body2">Joined {moment(createdAt).fromNow()}</Typography>
+                {profile ? <Typography gutterBottom={true} variant="body2">{profile}</Typography> : null}
+                {birthday ?
+                    <Typography gutterBottom={true}  variant="body2">Born birthday {new Date(birthday).toDateString()}</Typography> : null}
             </CardContent>
+            <Divider variant="fullWidth"/>
             <CardActions>
                 <Grid container={true} justify="flex-start" alignItems="center">
                     <Grid item={true}>
