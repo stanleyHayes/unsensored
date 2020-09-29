@@ -247,13 +247,14 @@ const EditProfilePage = ({currentUser, loading, token}) => {
                                         variant="outlined"
                                         className={classes.textField}
                                         margin="normal"
-                                        value={username}
+                                        value={profile}
                                     />
 
                                     <Box>
                                         <MuiPickersUtilsProvider utils={MomentUtils}>
                                             <DatePicker
                                                 value={birthday}
+                                                fullWidth={true}
                                                 disableFuture={true}
                                                 emptyLabel="Select birthday"
                                                 inputVariant="outlined"
