@@ -46,9 +46,11 @@ const ProfilePage = ({currentUser, token, user, articles}) => {
 
     useEffect(() => {
         dispatch(getUserProfile(userId, token));
-        dispatch(getArticlesByUser(userId, token));
     }, [dispatch, token, userId]);
 
+    useEffect(() => {
+        dispatch(getArticlesByUser(userId, token));
+    }, [dispatch, token, userId]);
 
     const isLoggedInUser = !!(user && currentUser && user._id === currentUser._id);
 
@@ -87,17 +89,15 @@ const ProfilePage = ({currentUser, token, user, articles}) => {
                                 }
                             />
                             <Divider variant="fullWidth"/>
-                            <CardContent>
-                                <Link className={classes.link} to={`/users/${userId}/activities`}>
-                                    <Button
-                                        endIcon={<KeyboardArrowRight className={classes.icon}/>}
-                                        className={classes.textButton}
-                                        size="small"
-                                        fullWidth={true}>
-                                        comments, likes, views & replies by {user && user.username}
-                                    </Button>
-                                </Link>
-                            </CardContent>
+                            <Link className={classes.link} to={`/users/${userId}/activities`}>
+                                <Button
+                                    endIcon={<KeyboardArrowRight className={classes.icon}/>}
+                                    className={classes.textButton}
+                                    size="small"
+                                    fullWidth={true}>
+                                    comments, likes, views & replies by {user && user.username}
+                                </Button>
+                            </Link>
                             <Divider variant="fullWidth"/>
                         </Card>
                     </Grid>
