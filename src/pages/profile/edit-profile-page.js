@@ -152,6 +152,9 @@ const EditProfilePage = ({currentUser, loading, token}) => {
     useEffect(() => {
         if(currentUser){
             setUser(currentUser);
+            if(currentUser.birthday){
+                setBirthday(currentUser.birthday);
+            }
         }
     }, [currentUser]);
 
@@ -262,7 +265,7 @@ const EditProfilePage = ({currentUser, loading, token}) => {
                                             />
                                         </MuiPickersUtilsProvider>
                                     </Box>
-                                    <Button fullWidth={true} onClick={handleUserSubmit} variant="outlined"
+                                    <Button disabled={loading} fullWidth={true} onClick={handleUserSubmit} variant="outlined"
                                             className={classes.button}
                                             size="large">
                                         Save Profile

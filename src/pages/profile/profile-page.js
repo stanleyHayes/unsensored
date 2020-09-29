@@ -1,13 +1,12 @@
 import React, {useEffect} from "react";
 import {
-    CardContent,
     Container,
     Grid,
     Typography,
     Card,
     Avatar,
     CardHeader,
-    Divider, IconButton, Button
+    Divider, IconButton, Button, LinearProgress
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
@@ -18,13 +17,14 @@ import {connect, useDispatch} from "react-redux";
 import {getUserProfile} from "../../redux/users/user-action-creators";
 import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
 import {grey} from "@material-ui/core/colors";
+import {Skeleton} from "@material-ui/lab";
 
-const ProfilePage = ({currentUser, token, user, articles}) => {
+const ProfilePage = ({currentUser, token, user, articles, loading, articleLoading}) => {
 
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 8,
+                borderRadius: 16,
                 borderWidth: 2
             },
             icon: {
@@ -60,9 +60,10 @@ const ProfilePage = ({currentUser, token, user, articles}) => {
             <Container maxWidth="md">
                 <Grid container={true} justify="center">
                     <Grid item={true}>
-                        <Card elevation={0}>
+                        <Card className={classes.card} elevation={1}>
                             <CardHeader
                                 avatar={
+                                    loading ? <Skeleton variant="circle" animation="wave" /> :
                                     user && user.avatar ?
                                         <Avatar src={user.avatar} className={classes.avatar}/>
                                         :
@@ -102,6 +103,7 @@ const ProfilePage = ({currentUser, token, user, articles}) => {
                         </Card>
                     </Grid>
                     <Grid item={true}>
+                        {articleLoading && <LinearProgress variant="query" />}
                         <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
                     </Grid>
                 </Grid>
@@ -119,7 +121,8 @@ const mapStateToProps = state => {
         comments: state.comments.comments,
         articles: state.articles.articles,
         likes: state.likes.likes,
-        replies: state.replies.replies
+        replies: state.replies.replies,
+        articleLoading: state.articles.loading
     }
 }
 export default connect(mapStateToProps)(ProfilePage);
