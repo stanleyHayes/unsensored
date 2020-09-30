@@ -30,7 +30,8 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
                 textDecoration: "none"
             },
             content: {
-                minHeight: "86vh"
+                minHeight: "86vh",
+                marginTop: 16
             }
         }
     });

@@ -31,7 +31,7 @@ const ReplyList = ({replies, message}) => {
     const classes = useStyles();
 
     return (
-        <Grid container={true} className={classes.container} spacing={2}>
+        <Grid container={true} alignItems="center" className={classes.container} spacing={2}>
             {
                 replies.length ? (
                     replies.map(reply => {
