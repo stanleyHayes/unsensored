@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Route, Redirect, useHistory, useRouteMatch} from "react-router-dom";
+import {Route, Redirect, useHistory} from "react-router-dom";
 import {TOKEN_KEY} from "../../constants/constants";
 import {useDispatch} from "react-redux";
 import {getLoggedInUser} from "../../redux/auth/auth-action-creator";
@@ -10,14 +10,13 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const {url} = useRouteMatch();
 
     useEffect(() => {
         if (!token) {
             return history.push('/auth/login');
         }
-        dispatch(getLoggedInUser(history, token, url));
-    }, [dispatch, history, token, url]);
+        dispatch(getLoggedInUser(history, token));
+    }, [dispatch, history, token]);
 
     return (
         <Route {...rest} render={({location, ...others}) => {

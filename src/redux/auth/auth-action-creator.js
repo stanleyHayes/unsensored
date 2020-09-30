@@ -101,7 +101,6 @@ export const getLoggedInUserError = (error) => {
     }
 }
 export const getLoggedInUser = (history, token, url) => {
-    console.log(url)
     return dispatch => {
         dispatch(getLoggedInUserRequest());
         axios({
