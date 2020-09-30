@@ -31,7 +31,7 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
             },
             content: {
                 minHeight: "86vh",
-                marginTop: 16
+                marginTop: 8
             }
         }
     });
