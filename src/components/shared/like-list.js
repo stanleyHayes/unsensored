@@ -45,7 +45,7 @@ const LikeList = ({likes, message}) => {
         <div className={classes.root}>
             <Grid container={true} className={classes.container} spacing={2}>
                 {
-                    likes.length ? (
+                    likes && likes.length ? (
                         likes.map((like, index) => {
                             return (
                                 <Grid key={index} item={true} xs={12}>

@@ -38,7 +38,7 @@ export const toggleLike = (like, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            url: `${PRODUCTION_BASE_URL}/likes`,
             data: like
         }).then(response => {
             const {data} = response.data;
