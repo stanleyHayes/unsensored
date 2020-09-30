@@ -112,9 +112,9 @@ const CommentReply = ({reply, currentUser, token}) => {
 
     }
 
-    const liked = reply => {
+    const liked = () => {
         let hasLiked = false;
-        reply.likes.forEach(like => {
+        reply && reply.likes.forEach(like => {
             if (like.author === currentUser._id) {
                 hasLiked = true;
             }
@@ -182,10 +182,10 @@ const CommentReply = ({reply, currentUser, token}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Button
-                            className={liked(reply) ? classes.liked : null}
+                            className={reply && liked() ? classes.liked : null}
                             onClick={handleLikeClicked}
                             startIcon={
-                                reply && liked(reply) ?
+                                reply && liked() ?
                                     <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>

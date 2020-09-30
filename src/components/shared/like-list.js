@@ -10,13 +10,13 @@ const LikeList = ({likes, message}) => {
     const getItemByType = (item) => {
         switch (item.type) {
             case 'ARTICLE':
-                return <Article article={item}/>;
+                return <Article article={item.article}/>;
             case 'COMMENT':
-                return <Comment comment={item}/>;
+                return <Comment comment={item.comment}/>;
             case 'REPLY':
-                return <CommentReply reply={item}/>;
+                return <CommentReply reply={item.reply}/>;
             default:
-                return <Article article={item}/>;
+                return <Article article={item.article}/>;
         }
     }
 

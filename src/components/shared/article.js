@@ -127,7 +127,7 @@ const Article = ({article, currentUser, token}) => {
 
     const liked = () => {
         let hasLiked = false;
-        likes.forEach(like => {
+        article && likes.forEach(like => {
             if(like.author === currentUser._id){
                 hasLiked = true;
             }
@@ -170,11 +170,11 @@ const Article = ({article, currentUser, token}) => {
             <CardContent>
                 <Grid className={classes.grid} container={true} justify="flex-start" alignItems="center" spacing={1}>
                     <Grid item={true}>
-                        <Typography variant="body2">{readingTime(text).text}</Typography>
+                        <Typography variant="body2">{article && readingTime(text).text}</Typography>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
-                        <Typography variant="body2">{readingTime(text).words} words</Typography>
+                        <Typography variant="body2">{article && readingTime(text).words} words</Typography>
                     </Grid>
                 </Grid>
                 <Typography onClick={handleTitleClicked} gutterBottom={true} variant="h6"
@@ -189,7 +189,7 @@ const Article = ({article, currentUser, token}) => {
                             startIcon={<ThumbUp className={classes.info}/>}
                             size="small"
                             variant="text">
-                            {display(likeCount)}
+                            {article && display(likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
@@ -199,14 +199,14 @@ const Article = ({article, currentUser, token}) => {
                             className={classes.info}
                             startIcon={<Comment className={classes.info}/>}
                             variant="text">
-                            {display(commentCount)}
+                            {article &&display(commentCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Button className={classes.info} size="small" startIcon={<Visibility className={classes.info}/>}
                                 variant="text">
-                            {display(viewCount)}
+                            {article && display(viewCount)}
                         </Button>
                     </Grid>
                 </Grid>

@@ -67,7 +67,6 @@ const getLikesByUserFailure = error => {
     }
 }
 export const getLikesByUser = (userId, token) => {
-    console.log('get likes by user')
     return dispatch => {
         dispatch(getLikesByUserRequest());
         axios({
@@ -78,7 +77,6 @@ export const getLikesByUser = (userId, token) => {
             url: `${DEVELOPMENT_BASE_URL}/users/${userId}/likes`
         }).then(response => {
             const {data} = response.data;
-            console.log(data)
             dispatch(getLikesByUserSuccess(data));
         }).catch(error => {
             dispatch(getLikesByUserFailure(error.response.data.error));

@@ -100,7 +100,8 @@ export const getLoggedInUserError = (error) => {
         payload: {error}
     }
 }
-export const getLoggedInUser = (history, token) => {
+export const getLoggedInUser = (history, token, url) => {
+    console.log(url)
     return dispatch => {
         dispatch(getLoggedInUserRequest());
         axios({
@@ -113,7 +114,7 @@ export const getLoggedInUser = (history, token) => {
             const {data, token} = response.data;
             dispatch(getLoggedInUserSuccess(data, token));
             localStorage.setItem(TOKEN_KEY, token);
-            history.push('/');
+            history.push(url);
         }).catch(error => {
             dispatch(getLoggedInUserError(error.response.data.error));
             history.push('/auth/login');

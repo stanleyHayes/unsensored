@@ -34,7 +34,7 @@ const ReplyList = ({replies, message}) => {
     return (
         <Grid container={true} className={classes.container} spacing={2}>
             {
-                replies.length ? (
+                replies && replies.length ? (
                     replies.map(reply => {
                         return (
                             <Grid key={reply._id} item={true} xs={12}>

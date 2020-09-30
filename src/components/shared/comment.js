@@ -125,7 +125,7 @@ const Comment = ({comment, currentUser, token}) => {
 
     const liked = () => {
         let hasLiked = false;
-        comment.likes.forEach(like => {
+        comment && comment.likes.forEach(like => {
             if (like.author === currentUser._id) {
                 hasLiked = true;
             }
@@ -174,7 +174,7 @@ const Comment = ({comment, currentUser, token}) => {
                     gutterBottom={true}
                     variant="body1"
                     className={classes.text}>
-                    {comment.text}
+                    {comment && comment.text}
                 </Typography>
             </CardContent>
             <CardActions>
@@ -182,14 +182,14 @@ const Comment = ({comment, currentUser, token}) => {
                     <Grid item={true}>
                         <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>} size="small"
                                 variant="text">
-                            {display(comment.likeCount)}
+                            {comment && display(comment.likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Button size="small" className={classes.info} startIcon={<Reply className={classes.info}/>}
                                 variant="text">
-                            {display(comment.replyCount)}
+                            {display(comment && comment.replyCount)}
                         </Button>
                     </Grid>
                 </Grid>
@@ -214,7 +214,7 @@ const Comment = ({comment, currentUser, token}) => {
                     </Grid>
                     <Grid item={true}>
                         <Link className={classes.link}
-                              to={`/articles/${comment.article}/comments/${comment._id}/replies`}>
+                              to={`/articles/${comment && comment.article}/comments/${comment && comment._id}/replies`}>
                             <Button size="small" startIcon={<Reply/>} variant="text">
                                 Reply
                             </Button>
