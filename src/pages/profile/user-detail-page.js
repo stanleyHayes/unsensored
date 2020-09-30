@@ -28,6 +28,9 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
             },
             link: {
                 textDecoration: "none"
+            },
+            content: {
+                minHeight: "86vh"
             }
         }
     });
@@ -69,7 +72,7 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
 
     return (
         <Layout>
-            <Container>
+            <Container maxWidth="md" className={classes.content}>
                 <Paper className={classes.container} variant="elevation" elevation={0}>
                     <Tabs scrollButtons="on" value={index}
                           onChange={(event, index) => handleSelectedTab(index)}
@@ -99,7 +102,7 @@ const UserDetailPage = ({token, articles, likes, comments, replies, user}) => {
                         />
                     </Tabs>
                 </Paper>
-                <div>
+                <div className={classes.content}>
                     {getTabDetail(index)}
                 </div>
             </Container>
