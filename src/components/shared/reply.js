@@ -21,8 +21,8 @@ import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
-import {toggleLike} from "../../redux/likes/likes-action-creators";
 import {blue} from "@material-ui/core/colors";
+import {toggleReplyLike} from "../../redux/replies/replies-action-creators";
 
 
 const display = createDisplay({
@@ -88,7 +88,7 @@ const CommentReply = ({reply, currentUser, token}) => {
     }
 
     const handleLikeClicked = () => {
-        dispatch(toggleLike({reply: reply._id, type: 'REPLY'}, token));
+        dispatch(toggleReplyLike(reply._id, token));
     }
 
 
@@ -115,7 +115,7 @@ const CommentReply = ({reply, currentUser, token}) => {
     const liked = reply => {
         let hasLiked = false;
         reply.likes.forEach(like => {
-            if(like.author === currentUser._id){
+            if (like.author === currentUser._id) {
                 hasLiked = true;
             }
         });
@@ -182,6 +182,7 @@ const CommentReply = ({reply, currentUser, token}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Button
+                            className={liked(reply) ? classes.liked : null}
                             onClick={handleLikeClicked}
                             startIcon={
                                 reply && liked(reply) ?

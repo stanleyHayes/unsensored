@@ -16,7 +16,10 @@ import {
     GET_AUTHORED_ARTICLES_SUCCESS,
     UPDATE_ARTICLE_FAILURE,
     UPDATE_ARTICLE_REQUEST,
-    UPDATE_ARTICLE_SUCCESS, GET_ARTICLES_BY_USER_REQUEST, GET_ARTICLES_BY_USER_SUCCESS, GET_ARTICLES_BY_USER_FAILURE
+    UPDATE_ARTICLE_SUCCESS,
+    GET_ARTICLES_BY_USER_REQUEST,
+    GET_ARTICLES_BY_USER_SUCCESS,
+    GET_ARTICLES_BY_USER_FAILURE, TOGGLE_ARTICLE_LIKE_FAILURE, TOGGLE_ARTICLE_LIKE_REQUEST, TOGGLE_ARTICLE_LIKE_SUCCESS
 } from './articles-action-types';
 import axios from 'axios';
 import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
@@ -291,6 +294,44 @@ export const getArticlesByUser = (userId, token) => {
             dispatch(getArticlesByUserSuccess(data));
         }).catch(error => {
             dispatch(getArticlesByUserFailure(error.response.data.error));
+        });
+    }
+}
+
+
+
+const toggleArticleLikeRequest = () => {
+    return {
+        type: TOGGLE_ARTICLE_LIKE_REQUEST
+    }
+}
+const toggleArticleLikeSuccess = (like, action) => {
+    return {
+        type: TOGGLE_ARTICLE_LIKE_SUCCESS,
+        payload: {like, action}
+    }
+}
+const toggleArticleLikeFailure = error => {
+    return {
+        type: TOGGLE_ARTICLE_LIKE_FAILURE,
+        payload: error
+    }
+}
+export const toggleArticleLike = (article, token) => {
+    return dispatch => {
+        dispatch(toggleArticleLikeRequest());
+        axios({
+            method: 'post',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            data: {type: 'ARTICLE', article}
+        }).then(response => {
+            const {data, action} = response.data;
+            dispatch(toggleArticleLikeSuccess(data, action));
+        }).catch(error => {
+            dispatch(toggleArticleLikeFailure(error.response.data.error));
         });
     }
 }

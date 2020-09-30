@@ -10,7 +10,7 @@ import {
     GET_REPLIES_BY_COMMENT_SUCCESS,
     GET_REPLIES_BY_USER_FAILURE,
     GET_REPLIES_BY_USER_REQUEST,
-    GET_REPLIES_BY_USER_SUCCESS,
+    GET_REPLIES_BY_USER_SUCCESS, TOGGLE_REPLY_LIKE_FAILURE, TOGGLE_REPLY_LIKE_SUCCESS,
     UPDATE_REPLY_FAILURE,
     UPDATE_REPLY_REQUEST,
     UPDATE_REPLY_SUCCESS
@@ -19,6 +19,7 @@ import {
 
 import axios from 'axios';
 import {DEVELOPMENT_BASE_URL, PRODUCTION_BASE_URL} from "../../constants/constants";
+import {TOGGLE_COMMENT_LIKE_REQUEST} from "../comments/comments-action-types";
 
 const getRepliesByUserRequest = () => {
     return {
@@ -197,6 +198,42 @@ export const createReply = (reply, token) => {
             dispatch(createReplySuccess(data));
         }).catch(error => {
             dispatch(createReplyFailure(error.response.data.error));
+        });
+    }
+}
+
+const toggleReplyLikeRequest = () => {
+    return {
+        type: TOGGLE_COMMENT_LIKE_REQUEST
+    }
+}
+const toggleReplyLikeSuccess = (like, action) => {
+    return {
+        type: TOGGLE_REPLY_LIKE_SUCCESS,
+        payload: {like, action}
+    }
+}
+const toggleReplyLikeFailure = error => {
+    return {
+        type: TOGGLE_REPLY_LIKE_FAILURE,
+        payload: error
+    }
+}
+export const toggleReplyLike = (reply, token) => {
+    return dispatch => {
+        dispatch(toggleReplyLikeRequest());
+        axios({
+            method: 'post',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            data: {type: 'REPLY', reply}
+        }).then(response => {
+            const {data, action} = response.data;
+            dispatch(toggleReplyLikeSuccess(data, action));
+        }).catch(error => {
+            dispatch(toggleReplyLikeFailure(error.response.data.error));
         });
     }
 }

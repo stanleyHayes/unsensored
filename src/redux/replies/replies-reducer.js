@@ -13,8 +13,13 @@ import {
     CREATE_REPLY_FAILURE,
     GET_REPLIES_BY_COMMENT_FAILURE,
     GET_REPLIES_BY_COMMENT_REQUEST,
-    GET_REPLIES_BY_COMMENT_SUCCESS
+    GET_REPLIES_BY_COMMENT_SUCCESS, TOGGLE_REPLY_LIKE_FAILURE, TOGGLE_REPLY_LIKE_SUCCESS, TOGGLE_REPLY_LIKE_REQUEST
 } from "./replies-action-types";
+import {
+    TOGGLE_ARTICLE_LIKE_FAILURE,
+    TOGGLE_ARTICLE_LIKE_REQUEST,
+    TOGGLE_ARTICLE_LIKE_SUCCESS
+} from "../articles/articles-action-types";
 
 const INITIAL_STATE = {
     replies: [],
@@ -93,7 +98,7 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
         case UPDATE_REPLY_SUCCESS:
             updatedReplies = state.replies.map(reply => {
                 if(reply._id === action.payload._id){
-                    return action.payload;
+                    return {...action.payload};
                 }
                 return reply;
             });
@@ -122,6 +127,45 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
                 replies: [...updatedReplies]
             }
         case DELETE_REPLY_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
+
+        case TOGGLE_REPLY_LIKE_REQUEST:
+            return {
+                ...state,
+                loading: false
+            }
+        case TOGGLE_REPLY_LIKE_SUCCESS:
+            switch (action.payload.action) {
+                case 'ADD':
+                    updatedReplies = state.replies.map(reply => {
+                        if (reply._id === reply.payload.like.reply) {
+                            reply.likes = [...reply.likes, action.payload.like];
+                            return {...reply};
+                        }
+                        return reply;
+                    });
+                    break;
+                case 'REMOVE':
+                    updatedReplies = state.replies.map(reply => {
+                        if (reply._id === reply.payload.like.reply) {
+                            reply.likes = reply.likes.filter(like => like._id !== action.payload.like._id);
+                            return {...reply};
+                        }
+                        return reply;
+                    });
+                    break;
+                default:
+                    return;
+            }
+            return {
+                ...state,
+                loading: false,
+                replies: [...updatedReplies]
+            }
+        case TOGGLE_REPLY_LIKE_FAILURE:
             return {
                 ...state,
                 loading: false

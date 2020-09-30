@@ -13,7 +13,7 @@ import {
     CREATE_COMMENT_FAILURE,
     GET_COMMENTS_BY_USER_FAILURE,
     GET_COMMENTS_BY_USER_SUCCESS,
-    GET_COMMENTS_BY_USER_REQUEST
+    GET_COMMENTS_BY_USER_REQUEST, TOGGLE_COMMENT_LIKE_REQUEST, TOGGLE_COMMENT_LIKE_SUCCESS, TOGGLE_COMMENT_LIKE_FAILURE
 } from "./comments-action-types";
 
 const INITIAL_STATE = {
@@ -127,6 +127,46 @@ const commentsReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false
             }
+
+        case TOGGLE_COMMENT_LIKE_REQUEST:
+            return {
+                ...state,
+                loading: false
+            }
+        case TOGGLE_COMMENT_LIKE_SUCCESS:
+            switch (action.payload.action) {
+                case 'ADD':
+                    updatedComments = state.comments.map(comment => {
+                        if (comment._id === comment.payload.like.comment) {
+                            comment.likes = [...comment.likes, action.payload.like];
+                            return {...comment};
+                        }
+                        return comment;
+                    });
+                    break;
+                case 'REMOVE':
+                    updatedComments = state.comments.map(comment => {
+                        if (comment._id === action.payload.like.comment) {
+                            comment.likes = comment.likes.filter(like => like._id !== action.payload.like._id);
+                            return {...comment};
+                        }
+                        return comment;
+                    });
+                    break;
+                default:
+                    return;
+            }
+            return {
+                ...state,
+                loading: false,
+                comments: [...updatedComments]
+            }
+        case TOGGLE_COMMENT_LIKE_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
+
         default:
             return state;
     }

@@ -16,7 +16,13 @@ import {
     UPDATE_ARTICLE_REQUEST,
     DELETE_ARTICLE_FAILURE,
     DELETE_ARTICLE_SUCCESS,
-    DELETE_ARTICLE_REQUEST, GET_ARTICLES_BY_USER_REQUEST, GET_ARTICLES_BY_USER_SUCCESS, GET_ARTICLES_BY_USER_FAILURE
+    DELETE_ARTICLE_REQUEST,
+    GET_ARTICLES_BY_USER_REQUEST,
+    GET_ARTICLES_BY_USER_SUCCESS,
+    GET_ARTICLES_BY_USER_FAILURE,
+    TOGGLE_ARTICLE_LIKE_FAILURE,
+    TOGGLE_ARTICLE_LIKE_SUCCESS,
+    TOGGLE_ARTICLE_LIKE_REQUEST
 
 } from "./articles-action-types";
 
@@ -115,7 +121,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
         case UPDATE_ARTICLE_SUCCESS:
             updatedArticles = state.articles.map(article => {
                 if (article._id === action.payload._id) {
-                    return action.payload;
+                    return {...action.payload};
                 }
                 return article;
             });
@@ -167,6 +173,49 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+
+
+        case TOGGLE_ARTICLE_LIKE_REQUEST:
+            return {
+                ...state,
+                loading: false
+            }
+        case TOGGLE_ARTICLE_LIKE_SUCCESS:
+
+            switch (action.payload.action) {
+                case 'ADD':
+                    updatedArticles = state.articles.map(article => {
+                        if (article._id === action.payload.like.article) {
+                            article.likes = [...article.likes, action.payload.like];
+                            return {...article};
+                        }
+                        return article;
+                    });
+                    break;
+                case 'REMOVE':
+                    updatedArticles = state.articles.map(article => {
+                        if (article._id === action.payload.like.article) {
+                            console.log(article._id, action.payload.like.article)
+                            article.likes = article.likes.filter(like => like._id !== action.payload.like._id);
+                            return {...article};
+                        }
+                        return article;
+                    });
+                    break;
+                default:
+                    return;
+            }
+            return {
+                ...state,
+                loading: false,
+                articles: [...updatedArticles]
+            }
+
+        case TOGGLE_ARTICLE_LIKE_FAILURE:
+            return {
+                ...state,
+                loading: false
             }
 
         default:

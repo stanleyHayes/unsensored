@@ -10,7 +10,7 @@ import {
     GET_COMMENTS_BY_ARTICLE_SUCCESS,
     GET_COMMENTS_BY_USER_FAILURE,
     GET_COMMENTS_BY_USER_REQUEST,
-    GET_COMMENTS_BY_USER_SUCCESS,
+    GET_COMMENTS_BY_USER_SUCCESS, TOGGLE_COMMENT_LIKE_FAILURE, TOGGLE_COMMENT_LIKE_REQUEST, TOGGLE_COMMENT_LIKE_SUCCESS,
     UPDATE_COMMENT_FAILURE,
     UPDATE_COMMENT_REQUEST,
     UPDATE_COMMENT_SUCCESS
@@ -54,7 +54,6 @@ export const getCommentsByUser = (userId, token) => {
     }
 }
 
-
 const getCommentsByArticleRequest = () => {
     return {
         type: GET_COMMENTS_BY_ARTICLE_REQUEST
@@ -90,7 +89,6 @@ export const getCommentsByArticle = (articleId, token) => {
     }
 }
 
-
 const deleteCommentRequest = () => {
     return {
         type: DELETE_COMMENT_REQUEST
@@ -125,7 +123,6 @@ export const deleteComment = (commentId, token) => {
         })
     }
 }
-
 
 const updateCommentRequest = () => {
     return {
@@ -163,7 +160,6 @@ export const updateComment = (commentId, comment, token) => {
     }
 }
 
-
 const createCommentRequest = () => {
     return {
         type: CREATE_COMMENT_REQUEST
@@ -198,5 +194,42 @@ export const createComment = (comment, token) => {
             console.log(error)
             dispatch(createCommentFailure(error.response.data.error));
         })
+    }
+}
+
+
+const toggleCommentLikeRequest = () => {
+    return {
+        type: TOGGLE_COMMENT_LIKE_REQUEST
+    }
+}
+const toggleCommentLikeSuccess = (like, action) => {
+    return {
+        type: TOGGLE_COMMENT_LIKE_SUCCESS,
+        payload: {like, action}
+    }
+}
+const toggleCommentLikeFailure = error => {
+    return {
+        type: TOGGLE_COMMENT_LIKE_FAILURE,
+        payload: error
+    }
+}
+export const toggleCommentLike = (comment, token) => {
+    return dispatch => {
+        dispatch(toggleCommentLikeRequest());
+        axios({
+            method: 'post',
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            data: {type: 'COMMENT', comment}
+        }).then(response => {
+            const {data, action} = response.data;
+            dispatch(toggleCommentLikeSuccess(data, action));
+        }).catch(error => {
+            dispatch(toggleCommentLikeFailure(error.response.data.error));
+        });
     }
 }

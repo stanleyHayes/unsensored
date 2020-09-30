@@ -21,8 +21,8 @@ import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
-import {toggleLike} from "../../redux/likes/likes-action-creators";
 import {blue} from "@material-ui/core/colors";
+import {toggleCommentLike} from "../../redux/comments/comments-action-creators";
 
 
 const display = createDisplay({
@@ -100,7 +100,7 @@ const Comment = ({comment, currentUser, token}) => {
     }
 
     const handleLikeClicked = () => {
-        dispatch(toggleLike({comment: comment._id, type: 'COMMENT'}, token));
+        dispatch(toggleCommentLike(comment._id, token));
     }
 
     const handleMenuClicked = event => {
@@ -123,7 +123,7 @@ const Comment = ({comment, currentUser, token}) => {
         setMenuOpen(false);
     }
 
-    const liked = comment => {
+    const liked = () => {
         let hasLiked = false;
         comment.likes.forEach(like => {
             if (like.author === currentUser._id) {
@@ -174,7 +174,7 @@ const Comment = ({comment, currentUser, token}) => {
                     gutterBottom={true}
                     variant="body1"
                     className={classes.text}>
-                    {comment && comment.text}
+                    {comment.text}
                 </Typography>
             </CardContent>
             <CardActions>
@@ -182,14 +182,14 @@ const Comment = ({comment, currentUser, token}) => {
                     <Grid item={true}>
                         <Button className={classes.info} startIcon={<ThumbUp className={classes.info}/>} size="small"
                                 variant="text">
-                            {comment && display(comment.likeCount)}
+                            {display(comment.likeCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
                     <Grid item={true}>
                         <Button size="small" className={classes.info} startIcon={<Reply className={classes.info}/>}
                                 variant="text">
-                            {comment && display(comment.replyCount)}
+                            {display(comment.replyCount)}
                         </Button>
                     </Grid>
                 </Grid>
@@ -199,9 +199,10 @@ const Comment = ({comment, currentUser, token}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Button
+                            className={liked() ? classes.liked : null}
                             onClick={handleLikeClicked}
                             startIcon={
-                                comment && liked(comment) ?
+                                liked() ?
                                     <ThumbUp className={classes.liked}/>
                                     :
                                     <ThumbUpAltOutlined/>
@@ -213,7 +214,7 @@ const Comment = ({comment, currentUser, token}) => {
                     </Grid>
                     <Grid item={true}>
                         <Link className={classes.link}
-                              to={`/articles/${comment && comment.article}/comments/${comment && comment._id}/replies`}>
+                              to={`/articles/${comment.article}/comments/${comment._id}/replies`}>
                             <Button size="small" startIcon={<Reply/>} variant="text">
                                 Reply
                             </Button>

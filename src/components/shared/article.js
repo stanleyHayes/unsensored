@@ -19,12 +19,13 @@ import {
 import {makeStyles} from "@material-ui/styles";
 import moment from "moment";
 import readingTime from 'reading-time';
-import {Chat, Comment, MoreVert, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
+import {Chat, Comment, MoreHoriz, MoreVert, Share, ThumbUp, ThumbUpAltOutlined, Visibility} from "@material-ui/icons";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
 import {toggleLike} from "../../redux/likes/likes-action-creators";
-import {blue} from "@material-ui/core/colors";
+import {blue, grey} from "@material-ui/core/colors";
+import {toggleArticleLike} from "../../redux/articles/articles-action-creator";
 
 
 const display = createDisplay({
@@ -71,7 +72,8 @@ const Article = ({article, currentUser, token}) => {
                 textDecoration: "none"
             },
             more: {
-                cursor: "pointer"
+                cursor: "pointer",
+                color: grey["600"]
             },
             liked: {
                 color: blue["700"]
@@ -100,7 +102,7 @@ const Article = ({article, currentUser, token}) => {
     }
 
     const handleLikeClicked = () => {
-        dispatch(toggleLike({article: _id, type: 'ARTICLE'}, token));
+        dispatch(toggleArticleLike(_id, token));
     }
 
     const handleMenuClose = () => {
@@ -148,7 +150,7 @@ const Article = ({article, currentUser, token}) => {
                     </Typography>}
                 subheader={moment(updatedAt).fromNow()}
                 action={currentUser && authorId === currentUser._id ?
-                    <MoreVert className={classes.more} onClick={handleMenuOpen}/>
+                    <MoreHoriz className={classes.more} onClick={handleMenuOpen}/>
                     : null}
             />
             <Popper open={openMenu} anchorEl={anchorElement}>
@@ -214,6 +216,7 @@ const Article = ({article, currentUser, token}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Button
+                            className={liked() ? classes.liked: null}
                             onClick={handleLikeClicked}
                             startIcon={liked() ? <ThumbUp className={classes.liked}/> : <ThumbUpAltOutlined/>}
                             size="small"

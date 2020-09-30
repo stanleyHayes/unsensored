@@ -38,7 +38,8 @@ export const toggleLike = (like, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${PRODUCTION_BASE_URL}/likes`
+            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            data: like
         }).then(response => {
             const {data} = response.data;
             dispatch(toggleLikeSuccess(data));
@@ -66,6 +67,7 @@ const getLikesByUserFailure = error => {
     }
 }
 export const getLikesByUser = (userId, token) => {
+    console.log('get likes by user')
     return dispatch => {
         dispatch(getLikesByUserRequest());
         axios({
@@ -73,9 +75,10 @@ export const getLikesByUser = (userId, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${PRODUCTION_BASE_URL}/users/${userId}/likes`
+            url: `${DEVELOPMENT_BASE_URL}/users/${userId}/likes`
         }).then(response => {
             const {data} = response.data;
+            console.log(data)
             dispatch(getLikesByUserSuccess(data));
         }).catch(error => {
             dispatch(getLikesByUserFailure(error.response.data.error));
@@ -101,6 +104,7 @@ const getLikesByArticleFailure = error => {
     }
 }
 export const getLikesByArticle = (articleId, token) => {
+    console.log('create likes by article')
     return dispatch => {
         dispatch(getLikesByArticleRequest());
         axios({
@@ -108,7 +112,7 @@ export const getLikesByArticle = (articleId, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${PRODUCTION_BASE_URL}/articles/${articleId}/likes`
+            url: `${DEVELOPMENT_BASE_URL}/articles/${articleId}/likes`
         }).then(response => {
             const {data} = response.data;
             dispatch(getLikesByArticleSuccess(data));
