@@ -7,7 +7,7 @@ const ReplyList = ({replies, message}) => {
 
     const useStyles = makeStyles(theme => {
         return {
-            noCommentsContainer: {
+            noRepliesContainer: {
                 minHeight: '86vh'
             },
             imageContainer: {
@@ -22,7 +22,9 @@ const ReplyList = ({replies, message}) => {
                 color: '#333333'
             },
             root: {},
-            container: {}
+            container: {
+                minHeight: "86vh"
+            }
         }
     });
 
@@ -41,7 +43,7 @@ const ReplyList = ({replies, message}) => {
                     })
                 ) : (
                     <Grid
-                        className={classes.noCommentsContainer}
+                        className={classes.noRepliesContainer}
                         alignItems="center"
                         container={true}
                         item={true}

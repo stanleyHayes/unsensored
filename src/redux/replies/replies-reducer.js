@@ -74,7 +74,7 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
-                comments: action.payload,
+                replies: action.payload,
                 error: false
             }
         case GET_REPLIES_BY_USER_FAILURE:
@@ -82,7 +82,7 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false,
                 error: action.payload,
-                comments: []
+                replies: []
             }
 
         case UPDATE_REPLY_REQUEST:

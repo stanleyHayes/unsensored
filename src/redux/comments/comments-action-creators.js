@@ -41,7 +41,7 @@ export const getCommentsByUser = (userId, token) => {
         dispatch(getCommentsByUserRequest());
         axios({
             method: 'get',
-            url: `${PRODUCTION_BASE_URL}/users/${userId}/comments`,
+            url: `${DEVELOPMENT_BASE_URL}/users/${userId}/comments`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
