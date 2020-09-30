@@ -208,7 +208,8 @@ const CommentReply = ({reply, currentUser, token}) => {
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.auth.currentUser
+        currentUser: state.auth.currentUser,
+        token: state.auth.token
     }
 }
 

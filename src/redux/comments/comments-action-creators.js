@@ -223,7 +223,7 @@ export const toggleCommentLike = (comment, token) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            url: `${DEVELOPMENT_BASE_URL}/likes`,
+            url: `${PRODUCTION_BASE_URL}/likes`,
             data: {type: 'COMMENT', comment}
         }).then(response => {
             const {data, action} = response.data;

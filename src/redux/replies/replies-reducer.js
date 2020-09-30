@@ -141,7 +141,7 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
             switch (action.payload.action) {
                 case 'ADD':
                     updatedReplies = state.replies.map(reply => {
-                        if (reply._id === reply.payload.like.reply) {
+                        if (reply._id === action.payload.like.reply) {
                             reply.likes = [...reply.likes, action.payload.like];
                             return {...reply};
                         }
@@ -168,7 +168,8 @@ const repliesReducer = (state = INITIAL_STATE, action) => {
         case TOGGLE_REPLY_LIKE_FAILURE:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: action.payload
             }
 
         default:

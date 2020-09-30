@@ -134,10 +134,11 @@ const commentsReducer = (state = INITIAL_STATE, action) => {
                 loading: false
             }
         case TOGGLE_COMMENT_LIKE_SUCCESS:
+
             switch (action.payload.action) {
                 case 'ADD':
                     updatedComments = state.comments.map(comment => {
-                        if (comment._id === comment.payload.like.comment) {
+                        if (comment._id === action.payload.like.comment) {
                             comment.likes = [...comment.likes, action.payload.like];
                             return {...comment};
                         }
