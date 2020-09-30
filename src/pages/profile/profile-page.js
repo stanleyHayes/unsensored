@@ -58,7 +58,7 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
     return (
         <Layout>
             <Container maxWidth="md">
-                <Grid container={true} justify="center">
+                <Grid container={true}>
                     <Grid item={true}>
                         <Card className={classes.card} elevation={1}>
                             <CardHeader
