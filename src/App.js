@@ -32,6 +32,8 @@ function App() {
 
                 <ProtectedRoute component={CreateArticlePage} path="/article/new" exact={true}/>
 
+                <ProtectedRoute component={AuthoredArticlesPage} path="/articles/me" exact={true}/>
+
                 <ProtectedRoute component={ArticleDetailPage} path="/articles/:articleId" exact={true}/>
 
                 <ProtectedRoute component={AuthoredArticlesPage} path="/articles" exact={true}/>

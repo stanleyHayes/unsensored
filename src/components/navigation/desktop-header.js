@@ -58,6 +58,14 @@ const DesktopHeader = () => {
 
                             <Grid item={true}>
                                 <Button>
+                                    <Link className={classes.link} to="/articles/me">
+                                        Authored Articles
+                                    </Link>
+                                </Button>
+                            </Grid>
+
+                            <Grid item={true}>
+                                <Button>
                                     <Link className={classes.link} to="/search">
                                         Search
                                     </Link>

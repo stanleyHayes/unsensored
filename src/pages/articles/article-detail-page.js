@@ -36,7 +36,7 @@ const ArticleDetailPage = ({articleDetail, currentUser, token, loading}) => {
 
     useEffect(() => {
         dispatch(getArticle(articleId, token, history));
-    }, [articleId, dispatch, history]);
+    }, [articleId, dispatch, history, token]);
 
     const useStyles = makeStyles(theme => {
         return {

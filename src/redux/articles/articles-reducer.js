@@ -16,7 +16,7 @@ import {
     UPDATE_ARTICLE_REQUEST,
     DELETE_ARTICLE_FAILURE,
     DELETE_ARTICLE_SUCCESS,
-    DELETE_ARTICLE_REQUEST
+    DELETE_ARTICLE_REQUEST, GET_ARTICLES_BY_USER_REQUEST, GET_ARTICLES_BY_USER_SUCCESS, GET_ARTICLES_BY_USER_FAILURE
 
 } from "./articles-action-types";
 
@@ -114,7 +114,7 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
             }
         case UPDATE_ARTICLE_SUCCESS:
             updatedArticles = state.articles.map(article => {
-                if(article._id === action.payload._id){
+                if (article._id === action.payload._id) {
                     return action.payload;
                 }
                 return article;
@@ -148,6 +148,27 @@ const articlesReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 loading: false
             }
+
+        case GET_ARTICLES_BY_USER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case GET_ARTICLES_BY_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                articles: action.payload
+            }
+        case GET_ARTICLES_BY_USER_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
         default:
             return state;
     }

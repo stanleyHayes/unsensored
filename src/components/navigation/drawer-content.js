@@ -147,6 +147,18 @@ const DrawerContent = ({handleClose, currentUser}) => {
 
                     <Divider className={classes.divider} variant="fullWidth"/>
 
+                    <Button
+                        className={classes.button}
+                        fullWidth={false}
+                        size="large"
+                        startIcon={<Person className={classes.icon}/>}>
+                        <Link className={classes.link} to="/articles/me">
+                            Authored Articles
+                        </Link>
+                    </Button>
+
+                    <Divider className={classes.divider} variant="fullWidth"/>
+
                 </Grid>
 
                 <Grid item={true} xs={12}>
