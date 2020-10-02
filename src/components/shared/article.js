@@ -62,7 +62,8 @@ const Article = ({article, currentUser, token}) => {
             title: {
                 cursor: "pointer",
                 fontWeight: 400,
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                color: grey["600"],
             },
             author: {
                 color: theme.palette.primary.light,
@@ -79,6 +80,11 @@ const Article = ({article, currentUser, token}) => {
             },
             liked: {
                 color: blue["700"]
+            },
+            divider: {
+                backgroundColor: grey["400"],
+                marginTop: 8,
+                marginBottom: 8
             }
         }
     });
@@ -130,7 +136,7 @@ const Article = ({article, currentUser, token}) => {
     const liked = () => {
         let hasLiked = false;
         article && likes.forEach(like => {
-            if(like.author === currentUser._id){
+            if (like.author === currentUser._id) {
                 hasLiked = true;
             }
         });
@@ -179,8 +185,16 @@ const Article = ({article, currentUser, token}) => {
                         <Typography variant="body2">{article && readingTime(text).words} words</Typography>
                     </Grid>
                 </Grid>
-                <Typography onClick={handleTitleClicked} gutterBottom={true} variant="h6"
-                            className={classes.title}>{title}</Typography>
+
+                <Divider className={classes.divider} variant="fullWidth"/>
+                <Typography
+                    onClick={handleTitleClicked}
+                    gutterBottom={true}
+                    variant="h6"
+                    className={classes.title}>
+                    {title}
+                </Typography>
+                <Divider className={classes.divider} variant="fullWidth"/>
                 <Typography variant="body2">{summary}</Typography>
             </CardContent>
             <CardActions>
@@ -201,7 +215,7 @@ const Article = ({article, currentUser, token}) => {
                             className={classes.info}
                             startIcon={<Comment className={classes.info}/>}
                             variant="text">
-                            {article &&display(commentCount)}
+                            {article && display(commentCount)}
                         </Button>
                     </Grid>
                     <span className={classes.dot}>&#xb7;</span>
@@ -218,7 +232,7 @@ const Article = ({article, currentUser, token}) => {
                 <Grid container={true} justify="space-around" alignItems="center">
                     <Grid item={true}>
                         <Button
-                            className={liked() ? classes.liked: null}
+                            className={liked() ? classes.liked : null}
                             onClick={handleLikeClicked}
                             startIcon={liked() ? <ThumbUp className={classes.liked}/> : <ThumbUpAltOutlined/>}
                             size="small"

@@ -39,7 +39,7 @@ const TrendingArticlesPage = ({loading, articles, token}) => {
 
     return (
         <Layout>
-            <Container maxWidth="md">
+            <Container maxWidth="sm">
                 {loading && <LinearProgress variant="query"/>}
                 <Grid container={true} spacing={4} className={classes.container}>
                     {

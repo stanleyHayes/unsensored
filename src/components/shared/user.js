@@ -17,6 +17,7 @@ import {Comment, Info, Note, Reply, Share, ThumbUp, Visibility} from "@material-
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 import moment from "moment";
+import {grey} from "@material-ui/core/colors";
 
 const display = createDisplay({
     length: 8,
@@ -77,6 +78,9 @@ const User = ({user}) => {
             divider: {
                 marginTop: 8,
                 marginBottom: 8
+            },
+            joined: {
+                color: grey["500"]
             }
         }
     });
@@ -138,12 +142,15 @@ const User = ({user}) => {
             }
             <Divider variant="fullWidth"/>
             <CardContent>
-                <Typography variant="body1">Joined {moment(createdAt).fromNow()}</Typography>
-                <Divider variant="middle" className={classes.divider} />
+
                 {profile ?
                     <Typography gutterBottom={true} variant="body1">{profile}</Typography> :
                     <Typography gutterBottom={true} variant="body1">Has nothing nice to say about himself</Typography>
                 }
+
+                <Divider variant="middle" className={classes.divider} />
+
+                <Typography variant="body2" className={classes.joined}>Joined {moment(createdAt).fromNow()}</Typography>
             </CardContent>
             <Divider variant="fullWidth"/>
             <CardActions>

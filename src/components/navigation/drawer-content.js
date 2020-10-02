@@ -140,7 +140,7 @@ const DrawerContent = ({handleClose, currentUser}) => {
                         fullWidth={false}
                         size="large"
                         startIcon={<Person className={classes.icon}/>}>
-                        <Link className={classes.link} to="/profile/stanley">
+                        <Link className={classes.link} to={`/profile/${currentUser && currentUser._id}`}>
                             Profile
                         </Link>
                     </Button>

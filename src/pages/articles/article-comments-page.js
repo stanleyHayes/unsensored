@@ -89,7 +89,7 @@ const ArticleCommentsPage = ({comments, loading, token}) => {
     return (
         <Layout>
             {loading && <LinearProgress variant="query"/>}
-            <Container maxWidth="md" className={classes.container}>
+            <Container maxWidth="sm" className={classes.container}>
                 <Grid container={true} className={classes.gridContainer} justify="center">
                     <Grid item={true} xs={12}>
                         <CommentList comments={comments}/>
