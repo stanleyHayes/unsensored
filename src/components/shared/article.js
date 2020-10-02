@@ -73,7 +73,9 @@ const Article = ({article, currentUser, token}) => {
             },
             more: {
                 cursor: "pointer",
-                color: grey["600"]
+                color: grey["600"],
+                marginLeft: 8,
+                marginTop: 8
             },
             liked: {
                 color: blue["700"]

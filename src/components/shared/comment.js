@@ -16,12 +16,12 @@ import {
     Paper
 } from "@material-ui/core";
 import moment from "moment";
-import {MoreVert, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
+import {MoreHoriz, MoreVert, Reply, Share, ThumbUp, ThumbUpAltOutlined} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {Link, useHistory} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
-import {blue} from "@material-ui/core/colors";
+import {blue, grey} from "@material-ui/core/colors";
 import {toggleCommentLike} from "../../redux/comments/comments-action-creators";
 
 
@@ -72,7 +72,10 @@ const Comment = ({comment, currentUser, token}) => {
                 textDecoration: "none"
             },
             more: {
-                cursor: "pointer"
+                cursor: "pointer",
+                color: grey["600"],
+                marginLeft: 8,
+                marginTop: 8
             },
             liked: {
                 color: blue["700"]
@@ -155,7 +158,7 @@ const Comment = ({comment, currentUser, token}) => {
                 }
                 subheader={comment && moment(comment.createdAt).fromNow()}
                 action={currentUser && comment && comment.author && comment.author._id === currentUser._id ?
-                    <MoreVert onClick={handleMenuClicked} className={classes.more}/> : null}
+                    <MoreHoriz onClick={handleMenuClicked} className={classes.more}/> : null}
             />
             <Popper open={menuOpen} anchorEl={anchorElement}>
                 <Paper>

@@ -73,6 +73,10 @@ const User = ({user}) => {
                 height: 300,
                 display: "flex",
                 alignItems: "center"
+            },
+            divider: {
+                marginTop: 8,
+                marginBottom: 8
             }
         }
     });
@@ -90,7 +94,6 @@ const User = ({user}) => {
         _id,
         likeCount,
         profile,
-        birthday,
         createdAt
     } = user;
     const history = useHistory();
@@ -99,9 +102,6 @@ const User = ({user}) => {
         history.push(`/profile/${_id}`);
     }
 
-    const handleTitleClicked = () => {
-        history.push(`/articles/${_id}`);
-    }
 
     const handleShareClicked = () => {
         document.execCommand("copy", true, link);
@@ -138,14 +138,12 @@ const User = ({user}) => {
             }
             <Divider variant="fullWidth"/>
             <CardContent>
-                <Typography
-                    onClick={handleTitleClicked}
-                    gutterBottom={true} variant="h6"
-                    className={classes.title}>{name}</Typography>
-                <Typography variant="body2">Joined {moment(createdAt).fromNow()}</Typography>
-                {profile ? <Typography gutterBottom={true} variant="body2">{profile}</Typography> : null}
-                {birthday ?
-                    <Typography gutterBottom={true}  variant="body2">Born on {new Date(birthday).toDateString()}</Typography> : null}
+                <Typography variant="body1">Joined {moment(createdAt).fromNow()}</Typography>
+                <Divider variant="middle" className={classes.divider} />
+                {profile ?
+                    <Typography gutterBottom={true} variant="body1">{profile}</Typography> :
+                    <Typography gutterBottom={true} variant="body1">Has nothing nice to say about himself</Typography>
+                }
             </CardContent>
             <Divider variant="fullWidth"/>
             <CardActions>

@@ -21,7 +21,7 @@ import {makeStyles} from "@material-ui/styles";
 import createDisplay from 'number-display';
 import {useHistory} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
-import {blue} from "@material-ui/core/colors";
+import {blue, grey} from "@material-ui/core/colors";
 import {toggleReplyLike} from "../../redux/replies/replies-action-creators";
 
 
@@ -66,7 +66,10 @@ const CommentReply = ({reply, currentUser, token}) => {
                 fontSize: 16
             },
             more: {
-                cursor: "pointer"
+                cursor: "pointer",
+                color: grey["600"],
+                marginLeft: 8,
+                marginTop: 8
             },
             liked: {
                 color: blue["700"]

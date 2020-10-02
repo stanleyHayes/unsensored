@@ -6,7 +6,7 @@ import {
     Card,
     Avatar,
     CardHeader,
-    Divider, IconButton, Button, LinearProgress
+    Divider, IconButton, Button, LinearProgress, CardContent
 } from "@material-ui/core";
 import Layout from "../../components/layout/layout";
 import {makeStyles} from "@material-ui/styles";
@@ -18,13 +18,14 @@ import {getUserProfile} from "../../redux/users/user-action-creators";
 import {getArticlesByUser} from "../../redux/articles/articles-action-creator";
 import {grey} from "@material-ui/core/colors";
 import {Skeleton} from "@material-ui/lab";
+import moment from "moment";
 
 const ProfilePage = ({currentUser, token, user, articles, loading, articleLoading, userLoading}) => {
 
     const useStyles = makeStyles(theme => {
         return {
             card: {
-                borderRadius: 16,
+                borderRadius: 8,
                 borderWidth: 2
             },
             icon: {
@@ -34,7 +35,12 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
                 textDecoration: "none"
             },
             textButton: {
-                color: grey["600"]
+                color: grey["600"],
+                marginTop: 8
+            },
+            divider: {
+                marginTop: 8,
+                marginBottom: 8
             }
         }
     });
@@ -59,21 +65,21 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
         <Layout>
             <Container maxWidth="md">
                 <Grid container={true}>
-                    <Grid item={true}>
+                    <Grid item={true} xs={12}>
                         <Card className={classes.card} elevation={1}>
                             <CardHeader
                                 avatar={
-                                    userLoading ? <Skeleton variant="circle" animation="wave" /> :
-                                    user && user.avatar ?
-                                        <Avatar src={user.avatar} className={classes.avatar}/>
-                                        :
-                                        <Avatar>
-                                            <Typography
-                                                variant="h5"
-                                                align="center">
-                                                {user && user.name[0][0]}
-                                            </Typography>
-                                        </Avatar>
+                                    userLoading ? <Skeleton variant="circle" animation="wave"/> :
+                                        user && user.avatar ?
+                                            <Avatar src={user.avatar} className={classes.avatar}/>
+                                            :
+                                            <Avatar>
+                                                <Typography
+                                                    variant="h5"
+                                                    align="center">
+                                                    {user && user.name[0][0]}
+                                                </Typography>
+                                            </Avatar>
                                 }
                                 title={<Typography variant="h6"
                                                    className={classes.name}>{user && user.name}</Typography>}
@@ -90,23 +96,80 @@ const ProfilePage = ({currentUser, token, user, articles, loading, articleLoadin
                                 }
                             />
                             <Divider variant="fullWidth"/>
-                            <Link className={classes.link} to={`/users/${userId}/activities`}>
-                                <Button
-                                    endIcon={<KeyboardArrowRight className={classes.icon}/>}
-                                    className={classes.textButton}
-                                    size="small"
-                                    fullWidth={true}>
-                                    comments, likes, views & replies by {user && user.username}
-                                </Button>
-                            </Link>
+                            <CardContent>
+
+                                {
+                                    userLoading ? <Skeleton variant="text" animation="wave"/> : user && user.profile ?
+                                        <div>
+                                            <Typography gutterBottom={true} variant="body2">Profile</Typography>
+                                            <Typography gutterBottom={true} variant="h6">{user.profile}</Typography>
+                                        </div>
+                                        :
+                                        <div>
+                                            <Typography gutterBottom={true} variant="body2">Profile</Typography>
+                                            <Typography gutterBottom={true} variant="h6">
+                                                Has nothing nice to say about himself
+                                            </Typography>
+                                        </div>
+                                }
+                                <Divider className={classes.divider} variant="fullWidth"/>
+                                {
+                                    userLoading ? <Skeleton variant="text" animation="wave"/> :
+                                        user && user.birthday ?
+                                            <div>
+                                                <Typography gutterBottom={true} variant="body2">Birthday</Typography>
+                                                <Typography
+                                                    gutterBottom={true}
+                                                    variant="h6">
+                                                    {new Date(user.birthday).toDateString()}
+                                                </Typography>
+                                            </div>
+                                            :
+                                            <div>
+                                                <Typography gutterBottom={true} variant="body2">Birthday</Typography>
+                                                <Typography
+                                                    gutterBottom={true}
+                                                    variant="h6">
+                                                    Probably wasn't born
+                                                </Typography>
+                                            </div>
+
+                                }
+
+                                <Divider variant="fullWidth" className={classes.divider}/>
+
+                                {
+                                    userLoading ? <Skeleton variant="text" animation="wave"/> :
+                                        <div>
+                                            <Typography gutterBottom={true} variant="body2">Joined</Typography>
+                                            <Typography
+                                                gutterBottom={true}
+                                                variant="h6">
+                                                {user && moment(user.createdAt).fromNow()}
+                                            </Typography>
+                                        </div>
+
+                                }
+
+                                <Divider variant="fullWidth" className={classes.divider}/>
+                                <Link className={classes.link} to={`/users/${userId}/activities`}>
+                                    <Button
+                                        endIcon={<KeyboardArrowRight className={classes.icon}/>}
+                                        className={classes.textButton}
+                                        size="medium"
+                                        fullWidth={true}>
+                                        comments, likes, views & replies by {user && user.username}
+                                    </Button>
+                                </Link>
+                            </CardContent>
                             <Divider variant="fullWidth"/>
                         </Card>
                     </Grid>
 
                     <Divider variant="fullWidth"/>
 
-                    <Grid item={true}>
-                        {articleLoading && <LinearProgress variant="query" />}
+                    <Grid item={true} xs={12}>
+                        {articleLoading && <LinearProgress variant="query"/>}
                         <ArticleList message={`No articles by ${user && user.username}`} articles={articles}/>
                     </Grid>
                 </Grid>
