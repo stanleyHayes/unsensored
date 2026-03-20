@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import {combineReducers} from "@reduxjs/toolkit";
 import authReducer from "./auth/auth-reducer";
 import articlesReducer from "./articles/articles-reducer";
 import userReducer from "./users/user-reducer";

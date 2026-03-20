@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Open book / speech shape -->
+  <path d="M20 8 L8 14 L8 32 L20 26 L32 32 L32 14 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+  <!-- Center spine -->
+  <line x1="20" y1="8" x2="20" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <!-- Break / slash through — the "uncensored" mark -->
+  <line x1="12" y1="6" x2="28" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+  <!-- Small dot accent -->
+  <circle cx="30" cy="10" r="2" fill="currentColor" opacity="0.6"/>
+</svg>

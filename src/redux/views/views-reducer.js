@@ -1,61 +1,85 @@
-import {
-    GET_VIEWS_BY_ARTICLE_FAILURE,
-    GET_VIEWS_BY_ARTICLE_SUCCESS,
-    GET_VIEWS_BY_ARTICLE_REQUEST,
-    CREATE_ARTICLE_VIEW_FAILURE,
-    CREATE_ARTICLE_VIEW_SUCCESS,
-    CREATE_ARTICLE_VIEW_REQUEST
-} from "./views-action-types";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
+import {BASE_URL} from "../../constants/constants";
 
-const INITIAL_STATE = {
-    views: [],
-    loading: false,
-    error: null
-}
-
-const viewsReducer = (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-
-        case CREATE_ARTICLE_VIEW_REQUEST:
-            return {
-                ...state
-            }
-        case CREATE_ARTICLE_VIEW_SUCCESS:
-            return {
-                ...state,
-                views: [...state.views, action.payload],
-                loading: false
-            }
-        case CREATE_ARTICLE_VIEW_FAILURE:
-            return {
-                ...state,
-                error: action.payload,
-                loading: false
-            }
-
-        case GET_VIEWS_BY_ARTICLE_REQUEST:
-            return {
-                ...state,
-                loading: true
-            }
-        case GET_VIEWS_BY_ARTICLE_SUCCESS:
-            return {
-                ...state,
-                views: action.payload,
-                error: null,
-                loading: false
-            }
-        case GET_VIEWS_BY_ARTICLE_FAILURE:
-            return {
-                ...state,
-                error: action.payload,
-                views: [],
-                loading: false
-            }
-
-        default:
-            return state;
+// Async thunks
+export const createArticleView = createAsyncThunk(
+    'views/createArticleView',
+    async ({articleId, token}, {rejectWithValue}) => {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${BASE_URL}/views`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {article: articleId}
+            });
+            const {data} = response.data;
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data.error);
+        }
     }
-}
+);
 
-export default viewsReducer;
+export const getViewsByArticle = createAsyncThunk(
+    'views/getViewsByArticle',
+    async ({articleId, token}, {rejectWithValue}) => {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${BASE_URL}/articles/${articleId}/views`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {article: articleId}
+            });
+            const {data} = response.data;
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
+const viewsSlice = createSlice({
+    name: 'views',
+    initialState: {
+        views: [],
+        loading: false,
+        error: null
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            // createArticleView
+            .addCase(createArticleView.pending, (state) => {
+                // no loading change in original
+            })
+            .addCase(createArticleView.fulfilled, (state, action) => {
+                state.views.push(action.payload);
+                state.loading = false;
+            })
+            .addCase(createArticleView.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            })
+            // getViewsByArticle
+            .addCase(getViewsByArticle.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getViewsByArticle.fulfilled, (state, action) => {
+                state.views = action.payload;
+                state.error = null;
+                state.loading = false;
+            })
+            .addCase(getViewsByArticle.rejected, (state, action) => {
+                state.error = action.payload;
+                state.views = [];
+                state.loading = false;
+            });
+    }
+});
+
+export default viewsSlice.reducer;
