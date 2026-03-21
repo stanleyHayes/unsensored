@@ -14,6 +14,7 @@ import { getArticle } from "../../redux/articles/articles-reducer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import readingTime from "reading-time";
+import { useArticleRoom } from "../../socket/socket-context";
 
 const ArticleCommentsPage = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const ArticleCommentsPage = () => {
     const [submitting, setSubmitting] = useState(false);
     const [page, setPage] = useState(1);
     const { articleId } = useParams();
+    useArticleRoom(articleId);
 
     useEffect(() => {
         dispatch(getCommentsByArticle({ articleId, token, page }));

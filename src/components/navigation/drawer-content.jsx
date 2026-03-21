@@ -6,7 +6,8 @@ import {
 import {
     HomeOutlined, PersonOutline, ArticleOutlined, EditOutlined,
     LockOutlined, LogoutOutlined, CloseOutlined, DeleteOutline,
-    DarkModeOutlined, LightModeOutlined,
+    DarkModeOutlined, LightModeOutlined, TrendingUpOutlined,
+    ExploreOutlined, PeopleOutlined,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -25,6 +26,9 @@ const DrawerContent = ({ handleClose }) => {
 
     const menuItems = [
         { label: "Home", icon: <HomeOutlined />, to: "/" },
+        { label: "Trending", icon: <TrendingUpOutlined />, to: "/trending" },
+        { label: "Explore", icon: <ExploreOutlined />, to: "/search" },
+        { label: "Writers", icon: <PeopleOutlined />, to: "/users" },
         { label: "Profile", icon: <PersonOutline />, to: `/profile/${currentUser?._id}` },
         { label: "My Articles", icon: <ArticleOutlined />, to: "/articles/me" },
         { label: "Edit Profile", icon: <EditOutlined />, to: "/edit-profile" },

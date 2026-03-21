@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {BASE_URL} from "../../constants/constants";
+import { toggleArticleLike } from "../likes/likes-reducer";
 
 // Async thunks
 export const createArticle = createAsyncThunk(
@@ -20,7 +21,7 @@ export const createArticle = createAsyncThunk(
             navigate('/');
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -39,7 +40,7 @@ export const getArticle = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -60,7 +61,7 @@ export const updateArticle = createAsyncThunk(
             navigate(`/articles/${articleId}`);
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -80,7 +81,7 @@ export const deleteArticle = createAsyncThunk(
             navigate(`/articles/${articleId}`);
             return article;
         } catch (error) {
-            return rejectWithValue(error.data.error.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -132,25 +133,36 @@ export const getArticlesByUser = createAsyncThunk(
     }
 );
 
-export const toggleArticleLike = createAsyncThunk(
-    'articles/toggleArticleLike',
-    async ({article, token}, {rejectWithValue}) => {
+export const getTrendingArticles = createAsyncThunk(
+    'articles/getTrendingArticles',
+    async ({token, page = 1, limit = 6}, {rejectWithValue}) => {
         try {
-            const response = await axios({
-                method: 'post',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-                url: `${BASE_URL}/likes`,
-                data: {type: 'ARTICLE', article}
+            const response = await axios.get(`${BASE_URL}/articles/trending`, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { page, limit },
             });
-            const {data, action} = response.data;
-            return {like: data, action};
+            return { data: response.data.data, pagination: response.data.pagination };
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
+
+export const getTags = createAsyncThunk(
+    'articles/getTags',
+    async ({token, limit = 20}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/articles/tags`, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { limit },
+            });
+            return response.data.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
+
 
 const articlesSlice = createSlice({
     name: 'articles',
@@ -160,8 +172,34 @@ const articlesSlice = createSlice({
         pagination: null,
         loading: false,
         error: null,
+        trendingArticles: [],
+        trendingPagination: null,
+        trendingLoading: false,
+        tags: [],
+        tagsLoading: false,
     },
-    reducers: {},
+    reducers: {
+        socketArticleCreated: (state, action) => {
+            const exists = state.articles.some(a => a._id === action.payload._id);
+            if (!exists) {
+                state.articles.unshift(action.payload);
+            }
+        },
+        socketArticleUpdated: (state, action) => {
+            state.articles = state.articles.map(a =>
+                a._id === action.payload._id ? { ...a, ...action.payload } : a
+            );
+            if (state.articleDetail?._id === action.payload._id) {
+                state.articleDetail = { ...state.articleDetail, ...action.payload };
+            }
+        },
+        socketArticleDeleted: (state, action) => {
+            state.articles = state.articles.filter(a => a._id !== action.payload._id);
+            if (state.articleDetail?._id === action.payload._id) {
+                state.articleDetail = null;
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             // createArticle
@@ -256,34 +294,55 @@ const articlesSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            // toggleArticleLike
-            .addCase(toggleArticleLike.pending, (state) => {
-                state.loading = false;
+            // getTrendingArticles
+            .addCase(getTrendingArticles.pending, (state) => {
+                state.trendingLoading = true;
             })
+            .addCase(getTrendingArticles.fulfilled, (state, action) => {
+                state.trendingLoading = false;
+                state.trendingArticles = action.payload.data;
+                state.trendingPagination = action.payload.pagination;
+            })
+            .addCase(getTrendingArticles.rejected, (state) => {
+                state.trendingLoading = false;
+            })
+            // getTags
+            .addCase(getTags.pending, (state) => {
+                state.tagsLoading = true;
+            })
+            .addCase(getTags.fulfilled, (state, action) => {
+                state.tagsLoading = false;
+                state.tags = action.payload;
+            })
+            .addCase(getTags.rejected, (state) => {
+                state.tagsLoading = false;
+            })
+            // toggleArticleLike — update likeCount on articles
             .addCase(toggleArticleLike.fulfilled, (state, action) => {
-                const {like, action: likeAction} = action.payload;
-                if (likeAction === 'ADD') {
-                    state.articles = state.articles.map(article => {
-                        if (article._id === like.article) {
-                            return {...article, likes: [...article.likes, like]};
-                        }
-                        return article;
-                    });
-                } else if (likeAction === 'REMOVE') {
-                    state.articles = state.articles.map(article => {
-                        if (article._id === like.article) {
-                            console.log(article._id, like.article);
-                            return {...article, likes: article.likes.filter(l => l._id !== like._id)};
-                        }
-                        return article;
-                    });
+                const { data, action: likeAction } = action.payload;
+                if (!data) return;
+                const articleId = typeof data.article === 'object' ? data.article._id || data.article : data.article;
+                const delta = likeAction === 'ADD' ? 1 : -1;
+                state.articles = state.articles.map(a => {
+                    if (a._id === articleId) {
+                        return { ...a, likeCount: Math.max((a.likeCount || 0) + delta, 0) };
+                    }
+                    return a;
+                });
+                if (state.articleDetail?._id === articleId) {
+                    state.articleDetail = {
+                        ...state.articleDetail,
+                        likeCount: Math.max((state.articleDetail.likeCount || 0) + delta, 0),
+                    };
                 }
-                state.loading = false;
-            })
-            .addCase(toggleArticleLike.rejected, (state) => {
-                state.loading = false;
             });
     }
 });
+
+export const {
+    socketArticleCreated,
+    socketArticleUpdated,
+    socketArticleDeleted,
+} = articlesSlice.actions;
 
 export default articlesSlice.reducer;

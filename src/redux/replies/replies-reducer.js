@@ -17,7 +17,7 @@ export const getRepliesByUser = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -32,7 +32,7 @@ export const getRepliesByComment = createAsyncThunk(
             });
             return { data: response.data.data, pagination: response.data.pagination };
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -51,7 +51,7 @@ export const deleteReply = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -71,7 +71,7 @@ export const updateReply = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -91,7 +91,7 @@ export const createReply = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -111,7 +111,7 @@ export const toggleReplyLike = createAsyncThunk(
             const {data, action} = response.data;
             return {like: data, action};
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -124,7 +124,44 @@ const repliesSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        socketReplyCreated: (state, action) => {
+            const exists = state.replies.some(r => r._id === action.payload._id);
+            if (!exists) {
+                state.replies.push(action.payload);
+            }
+        },
+        socketReplyUpdated: (state, action) => {
+            state.replies = state.replies.map(r =>
+                r._id === action.payload._id ? { ...r, ...action.payload } : r
+            );
+        },
+        socketReplyDeleted: (state, action) => {
+            state.replies = state.replies.filter(r => r._id !== action.payload._id);
+        },
+        socketReplyLikeToggled: (state, action) => {
+            const { like, action: likeAction } = action.payload;
+            if (!like?.reply) return;
+
+            if (likeAction === 'ADD') {
+                state.replies = state.replies.map(reply => {
+                    if (reply._id === like.reply) {
+                        const alreadyLiked = (reply.likes || []).some(l => l._id === like._id);
+                        if (alreadyLiked) return reply;
+                        return { ...reply, likes: [...(reply.likes || []), like] };
+                    }
+                    return reply;
+                });
+            } else if (likeAction === 'REMOVE') {
+                state.replies = state.replies.map(reply => {
+                    if (reply._id === like.reply) {
+                        return { ...reply, likes: (reply.likes || []).filter(l => l._id !== like._id) };
+                    }
+                    return reply;
+                });
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             // createReply
@@ -133,7 +170,8 @@ const repliesSlice = createSlice({
             })
             .addCase(createReply.fulfilled, (state, action) => {
                 state.loading = false;
-                state.replies.push(action.payload);
+                const exists = state.replies.some(r => r._id === action.payload._id);
+                if (!exists) state.replies.push(action.payload);
                 state.error = false;
             })
             .addCase(createReply.rejected, (state, action) => {
@@ -199,21 +237,14 @@ const repliesSlice = createSlice({
             })
             .addCase(toggleReplyLike.fulfilled, (state, action) => {
                 const {like, action: likeAction} = action.payload;
-                if (likeAction === 'ADD') {
-                    state.replies = state.replies.map(reply => {
-                        if (reply._id === like.reply) {
-                            return {...reply, likes: [...reply.likes, like]};
-                        }
-                        return reply;
-                    });
-                } else if (likeAction === 'REMOVE') {
-                    state.replies = state.replies.map(reply => {
-                        if (reply._id === like.reply) {
-                            return {...reply, likes: reply.likes.filter(l => l._id !== like._id)};
-                        }
-                        return reply;
-                    });
-                }
+                if (!like) return;
+                const delta = likeAction === 'ADD' ? 1 : -1;
+                state.replies = state.replies.map(reply => {
+                    if (reply._id === like.reply) {
+                        return { ...reply, likeCount: Math.max((reply.likeCount || 0) + delta, 0) };
+                    }
+                    return reply;
+                });
                 state.loading = false;
             })
             .addCase(toggleReplyLike.rejected, (state, action) => {
@@ -222,5 +253,12 @@ const repliesSlice = createSlice({
             });
     }
 });
+
+export const {
+    socketReplyCreated,
+    socketReplyUpdated,
+    socketReplyDeleted,
+    socketReplyLikeToggled,
+} = repliesSlice.actions;
 
 export default repliesSlice.reducer;

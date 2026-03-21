@@ -18,7 +18,7 @@ export const createArticleView = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -38,7 +38,7 @@ export const getViewsByArticle = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );

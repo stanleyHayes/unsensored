@@ -6,6 +6,8 @@ import commentsReducer from "./comments/comments-reducer";
 import likesReducer from "./likes/likes-reducer";
 import viewsReducer from "./views/views-reducer";
 import repliesReducer from "./replies/replies-reducer";
+import bookmarksReducer from "./bookmarks/bookmarks-reducer";
+import notificationsReducer from "./notifications/notifications-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,7 +16,9 @@ const rootReducer = combineReducers({
     comments: commentsReducer,
     likes: likesReducer,
     views: viewsReducer,
-    replies: repliesReducer
+    replies: repliesReducer,
+    bookmarks: bookmarksReducer,
+    notifications: notificationsReducer,
 });
 
 export default rootReducer;

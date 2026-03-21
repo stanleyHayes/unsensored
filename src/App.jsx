@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import {Routes, Route} from "react-router-dom";
+import useSocketEvents from "./socket/use-socket-events";
 import PageTransition from "./components/shared/page-transition";
 import TimelinePage from "./pages/articles/timeline-articles-page";
 import CreateArticlePage from "./pages/articles/create-article-page";
@@ -22,9 +23,14 @@ import PageNotFound from "./pages/404/404-page-not-found-page";
 import ProtectedRoute from "./components/shared/protected-route";
 import ArticleCommentRepliesPage from "./pages/articles/article-comment-replies-page";
 import UsersPage from "./pages/users/users-page";
-import UserDetailPage from "./pages/profile/user-detail-page";
+import MorePage from "./pages/more/more-page";
+import AboutPage from "./pages/legal/about-page";
+import TermsPage from "./pages/legal/terms-page";
+import PrivacyPage from "./pages/legal/privacy-page";
 
 function App() {
+    useSocketEvents();
+
     return (
         <PageTransition>
             <Routes>
@@ -60,13 +66,19 @@ function App() {
 
                 <Route path="/users" element={<ProtectedRoute><UsersPage /></ProtectedRoute>} />
 
-                <Route path="/users/:userId/activities" element={<ProtectedRoute><UserDetailPage /></ProtectedRoute>} />
+                <Route path="/users/:userId/activities" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
                 <Route path="/auth/register" element={<SignUpPage />} />
 
                 <Route path="/auth/login" element={<SignInPage />} />
 
                 <Route path="/auth/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
+
+                <Route path="/more" element={<ProtectedRoute><MorePage /></ProtectedRoute>} />
+
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
 
                 <Route path="*" element={<PageNotFound />} />
             </Routes>

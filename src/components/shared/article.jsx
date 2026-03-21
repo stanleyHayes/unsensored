@@ -4,17 +4,36 @@ import {
 } from "@mui/material";
 import {
     FavoriteBorder, Favorite, ChatBubbleOutline,
-    BookmarkBorderOutlined, East,
+    BookmarkBorderOutlined, Bookmark, East,
 } from "@mui/icons-material";
 import moment from "moment";
 import readingTime from "reading-time";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleArticleLike } from "../../redux/articles/articles-reducer";
+import { toggleArticleLike } from "../../redux/likes/likes-reducer";
+import { toggleBookmark } from "../../redux/bookmarks/bookmarks-reducer";
+import { playLikeSound, playUnlikeSound, spawnHeartBurst, playBookmarkSound, playUnbookmarkSound, spawnBookmarkBurst } from "../../utils/like-effects";
+import AnimatedCount from "./animated-count";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+`;
+
+const heartPop = keyframes`
+    0% { transform: scale(1); }
+    25% { transform: scale(1.35); }
+    50% { transform: scale(0.9); }
+    75% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+`;
+
+const bookmarkPop = keyframes`
+    0% { transform: scale(1) translateY(0); }
+    20% { transform: scale(1.3) translateY(-2px); }
+    50% { transform: scale(0.85) translateY(0); }
+    75% { transform: scale(1.1) translateY(-1px); }
+    100% { transform: scale(1) translateY(0); }
 `;
 
 const Article = ({ article, index = 0 }) => {
@@ -27,13 +46,33 @@ const Article = ({ article, index = 0 }) => {
     const dispatch = useDispatch();
     const currentUser = useSelector((s) => s.auth.currentUser);
     const token = useSelector((s) => s.auth.token);
+    const bookmarkIds = useSelector((s) => s.bookmarks.bookmarkIds);
+    const likedArticleIds = useSelector((s) => s.likes.likedArticleIds);
 
-    const isLiked = likes?.some((l) => l.author === currentUser?._id);
+    const isLiked = likedArticleIds.includes(_id);
+    const isSaved = bookmarkIds.includes(_id);
     const stats = readingTime(text || "");
 
     const handleLike = (e) => {
         e.stopPropagation();
+        if (!isLiked) {
+            playLikeSound();
+            spawnHeartBurst(e);
+        } else {
+            playUnlikeSound();
+        }
         dispatch(toggleArticleLike({ article: _id, token }));
+    };
+
+    const handleSave = (e) => {
+        e.stopPropagation();
+        if (!isSaved) {
+            playBookmarkSound();
+            spawnBookmarkBurst(e);
+        } else {
+            playUnbookmarkSound();
+        }
+        dispatch(toggleBookmark({ article: _id, token }));
     };
 
     return (
@@ -170,22 +209,28 @@ const Article = ({ article, index = 0 }) => {
                     {/* Actions */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 0.2 }}>
                         <Tooltip title={isLiked ? "Unlike" : "Like"} arrow>
-                            <IconButton size="small" onClick={handleLike} sx={{ "&:active": { transform: "scale(0.8)" }, transition: "transform 0.12s" }}>
-                                {isLiked ? <Favorite sx={{ fontSize: 17, color: "#e53935" }} /> : <FavoriteBorder sx={{ fontSize: 17, color: "text.disabled" }} />}
+                            <IconButton size="small" onClick={handleLike} sx={{ transition: "transform 0.12s" }}>
+                                {isLiked
+                                    ? <Favorite sx={{ fontSize: 17, color: "#e53935", animation: `${heartPop} 0.45s ease` }} />
+                                    : <FavoriteBorder sx={{ fontSize: 17, color: "text.disabled" }} />
+                                }
                             </IconButton>
                         </Tooltip>
-                        <Typography variant="caption" color="text.disabled" sx={{ mr: 0.5, fontSize: "0.7rem", minWidth: 10 }}>{likeCount || 0}</Typography>
+                        <Typography variant="caption" sx={{ mr: 0.5, fontSize: "0.7rem", minWidth: 10, color: isLiked ? "#e53935" : "text.disabled", fontWeight: isLiked ? 700 : 400, transition: "color 0.2s" }}><AnimatedCount count={likeCount || 0} /></Typography>
 
                         <Tooltip title="Comments" arrow>
                             <IconButton size="small" component={Link} to={`/articles/${_id}/comments`}>
                                 <ChatBubbleOutline sx={{ fontSize: 15, color: "text.disabled" }} />
                             </IconButton>
                         </Tooltip>
-                        <Typography variant="caption" color="text.disabled" sx={{ mr: 0.5, fontSize: "0.7rem", minWidth: 10 }}>{commentCount || 0}</Typography>
+                        <Typography variant="caption" color="text.disabled" sx={{ mr: 0.5, fontSize: "0.7rem", minWidth: 10 }}><AnimatedCount count={commentCount || 0} /></Typography>
 
-                        <Tooltip title="Save" arrow>
-                            <IconButton size="small" sx={{ "&:active": { transform: "scale(0.8)" }, transition: "transform 0.12s" }}>
-                                <BookmarkBorderOutlined sx={{ fontSize: 17, color: "text.disabled" }} />
+                        <Tooltip title={isSaved ? "Unsave" : "Save"} arrow>
+                            <IconButton size="small" onClick={handleSave} sx={{ transition: "transform 0.12s" }}>
+                                {isSaved
+                                    ? <Bookmark sx={{ fontSize: 17, color: "primary.main", animation: `${bookmarkPop} 0.45s ease` }} />
+                                    : <BookmarkBorderOutlined sx={{ fontSize: 17, color: "text.disabled" }} />
+                                }
                             </IconButton>
                         </Tooltip>
 

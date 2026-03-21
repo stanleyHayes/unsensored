@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { createReply, getRepliesByComment } from "../../redux/replies/replies-reducer";
 import { getComment } from "../../redux/comments/comments-reducer";
 import moment from "moment";
+import { useArticleRoom } from "../../socket/socket-context";
 
 const ArticleCommentRepliesPage = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const ArticleCommentRepliesPage = () => {
     const [submitting, setSubmitting] = useState(false);
     const [page, setPage] = useState(1);
     const { commentId, articleId } = useParams();
+    useArticleRoom(articleId);
 
     useEffect(() => {
         dispatch(getRepliesByComment({ commentId, token, page }));

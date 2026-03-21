@@ -6,6 +6,7 @@ import { MenuOutlined, AddOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "../shared/logo";
+import NotificationsDropdown from "../shared/notifications-dropdown";
 
 const MobileHeader = ({ handleOpen }) => {
     const currentUser = useSelector((s) => s.auth.currentUser);
@@ -30,10 +31,11 @@ const MobileHeader = ({ handleOpen }) => {
                     <Logo size={24} />
                 </Box>
 
-                <Box sx={{ display: "flex", gap: 0.5 }}>
+                <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
                     <IconButton component={Link} to="/article/new" size="small" sx={{ color: "text.primary" }}>
                         <AddOutlined />
                     </IconButton>
+                    <NotificationsDropdown />
                     <IconButton component={Link} to={`/profile/${currentUser?._id}`} size="small">
                         <Avatar
                             src={currentUser?.avatar}

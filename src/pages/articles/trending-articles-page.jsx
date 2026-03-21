@@ -6,18 +6,18 @@ import PageBanner from "../../components/shared/page-banner";
 import Pagination from "../../components/shared/pagination";
 import { useSelector, useDispatch } from "react-redux";
 import ArticleList from "../../components/shared/article-list";
-import { getArticles } from "../../redux/articles/articles-reducer";
+import { getTrendingArticles } from "../../redux/articles/articles-reducer";
 
 const TrendingArticlesPage = () => {
     const dispatch = useDispatch();
-    const loading = useSelector((s) => s.articles.loading);
-    const articles = useSelector((s) => s.articles.articles);
-    const pagination = useSelector((s) => s.articles.pagination);
+    const loading = useSelector((s) => s.articles.trendingLoading);
+    const articles = useSelector((s) => s.articles.trendingArticles);
+    const pagination = useSelector((s) => s.articles.trendingPagination);
     const token = useSelector((s) => s.auth.token);
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getArticles({ token, page }));
+        dispatch(getTrendingArticles({ token, page }));
     }, [dispatch, token, page]);
 
     const handlePageChange = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };

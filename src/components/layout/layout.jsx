@@ -44,13 +44,13 @@ const Layout = ({ children }) => {
             </Box>
 
             {/* Mobile */}
-            <Box sx={{ display: { xs: "block", lg: "none" } }}>
+            <Box sx={{ display: { xs: "block", lg: "none" }, position: "fixed", inset: 0, overflow: "hidden" }}>
                 <MobileHeader handleOpen={() => setDrawerOpen(true)} />
-                <Box sx={{ pt: "64px", pb: "72px", px: 1.5 }}>
+                <Box sx={{ position: "absolute", top: 56, bottom: 60, left: 0, right: 0, overflowY: "auto", WebkitOverflowScrolling: "touch", px: 1.5, py: 1 }}>
                     <BackButton />
                     {children}
                 </Box>
-                <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}>
+                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, pb: "env(safe-area-inset-bottom)" }}>
                     <BottomNavBar />
                 </Box>
             </Box>

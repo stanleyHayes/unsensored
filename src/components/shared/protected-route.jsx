@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { TOKEN_KEY } from "../../constants/constants";
 import { useDispatch } from "react-redux";
 import { getLoggedInUser } from "../../redux/auth/auth-reducer";
+import { getMyBookmarkIds } from "../../redux/bookmarks/bookmarks-reducer";
+import { getMyLikedArticleIds } from "../../redux/likes/likes-reducer";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -16,6 +18,8 @@ const ProtectedRoute = ({ children }) => {
             return navigate('/auth/login');
         }
         dispatch(getLoggedInUser({navigate, token}));
+        dispatch(getMyBookmarkIds({ token }));
+        dispatch(getMyLikedArticleIds({ token }));
     }, [dispatch, navigate, token]);
 
     if (!token) {

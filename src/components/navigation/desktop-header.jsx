@@ -9,11 +9,13 @@ import {
     LogoutOutlined, PersonOutline, DarkModeOutlined, LightModeOutlined,
     NotificationsOutlined, KeyboardArrowDown, ArticleOutlined,
     EditOutlined, LockOutlined, CloseOutlined, East,
+    InfoOutlined, GavelOutlined, PrivacyTipOutlined,
 } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useThemeMode } from "../../theme/theme-context";
 import Logo from "../shared/logo";
+import NotificationsDropdown from "../shared/notifications-dropdown";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: translateY(-8px); }
@@ -27,8 +29,8 @@ const shimmer = keyframes`
 
 const navItems = [
     { label: "Feed", path: "/" },
-    { label: "Trending", path: "/trending", icon: <TrendingUpOutlined sx={{ fontSize: 16 }} /> },
-    { label: "Explore", path: "/search", icon: <SearchOutlined sx={{ fontSize: 16 }} /> },
+    { label: "Trending", path: "/trending" },
+    { label: "Explore", path: "/search" },
     { label: "Writers", path: "/users" },
 ];
 
@@ -144,42 +146,31 @@ const DesktopHeader = () => {
                             </Tooltip>
 
                             {/* Notifications */}
-                            <Tooltip title="Notifications" arrow>
-                                <IconButton size="small" sx={{ color: "text.disabled", "&:hover": { color: "text.primary" } }}>
-                                    <Badge variant="dot" color="error" invisible>
-                                        <NotificationsOutlined sx={{ fontSize: 19 }} />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
+                            <NotificationsDropdown />
 
                             {/* Write */}
-                            <Button
-                                component={Link}
-                                to="/article/new"
-                                variant="contained"
-                                startIcon={<AddOutlined sx={{ fontSize: 16 }} />}
-                                size="small"
-                                sx={{
-                                    fontWeight: 600,
-                                    fontSize: "0.8rem",
-                                    bgcolor: "primary.main",
-                                    color: (t) => t.palette.mode === "dark" ? "#0f0f14" : "#fff",
-                                    borderRadius: 6,
-                                    px: 2,
-                                    py: 0.6,
-                                    ml: 0.5,
-                                    boxShadow: "none",
-                                    "&:hover": {
-                                        bgcolor: "primary.light",
-                                        boxShadow: (t) => t.palette.mode === "dark"
-                                            ? "0 4px 14px rgba(167,139,250,0.25)"
-                                            : "0 4px 14px rgba(26,26,46,0.15)",
-                                    },
-                                    transition: "all 0.2s ease",
-                                }}
-                            >
-                                Write
-                            </Button>
+                            <Tooltip title="Write article" arrow>
+                                <IconButton
+                                    component={Link}
+                                    to="/article/new"
+                                    size="small"
+                                    sx={{
+                                        color: "text.disabled",
+                                        border: "1.5px solid",
+                                        borderColor: "divider",
+                                        borderRadius: 2,
+                                        p: 0.6,
+                                        "&:hover": {
+                                            color: "primary.main",
+                                            borderColor: "primary.main",
+                                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)",
+                                        },
+                                        transition: "all 0.15s ease",
+                                    }}
+                                >
+                                    <EditOutlined sx={{ fontSize: 17 }} />
+                                </IconButton>
+                            </Tooltip>
 
                             <Divider orientation="vertical" flexItem sx={{ mx: 0.8, my: 1.5 }} />
 
@@ -328,6 +319,9 @@ const DesktopHeader = () => {
                                 { icon: <ArticleOutlined sx={{ fontSize: 17 }} />, label: "My Articles", to: "/articles/me" },
                                 { icon: <EditOutlined sx={{ fontSize: 17 }} />, label: "Edit Profile", to: "/edit-profile" },
                                 { icon: <LockOutlined sx={{ fontSize: 17 }} />, label: "Change Password", to: "/auth/change-password" },
+                                { icon: <InfoOutlined sx={{ fontSize: 17 }} />, label: "About Unsensored", to: "/about" },
+                                { icon: <GavelOutlined sx={{ fontSize: 17 }} />, label: "Terms of Service", to: "/terms" },
+                                { icon: <PrivacyTipOutlined sx={{ fontSize: 17 }} />, label: "Privacy Policy", to: "/privacy" },
                             ].map((item) => (
                                 <Box
                                     key={item.label}

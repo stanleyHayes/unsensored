@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     Avatar, Box, Button, Chip, Container, Divider,
-    IconButton, Skeleton, Stack, Tooltip, Typography, keyframes,
+    IconButton, Skeleton, Snackbar, Stack, Tooltip, Typography, keyframes,
 } from "@mui/material";
 import Layout from "../../components/layout/layout";
 import moment from "moment";
@@ -13,16 +13,36 @@ import { deleteArticle, getArticle } from "../../redux/articles/articles-reducer
 import {
     ChatBubbleOutline, DeleteOutline, Edit,
     FavoriteBorder, Favorite, Share, VisibilityOutlined,
-    BookmarkBorderOutlined, East,
+    BookmarkBorderOutlined, Bookmark, East,
 } from "@mui/icons-material";
 import { createArticleView } from "../../redux/views/views-reducer";
-import { toggleArticleLike } from "../../redux/articles/articles-reducer";
+import { toggleArticleLike } from "../../redux/likes/likes-reducer";
+import { toggleBookmark } from "../../redux/bookmarks/bookmarks-reducer";
+import { playLikeSound, playUnlikeSound, spawnHeartBurst, playBookmarkSound, playUnbookmarkSound, spawnBookmarkBurst } from "../../utils/like-effects";
+import AnimatedCount from "../../components/shared/animated-count";
 import MarkdownPreview from "../../components/shared/markdown-preview";
 import { BASE_URL } from "../../constants/constants";
+import { useArticleRoom } from "../../socket/socket-context";
 
 const fadeIn = keyframes`
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
+`;
+
+const heartPop = keyframes`
+    0% { transform: scale(1); }
+    25% { transform: scale(1.4); }
+    50% { transform: scale(0.85); }
+    75% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+`;
+
+const bookmarkPop = keyframes`
+    0% { transform: scale(1) translateY(0); }
+    20% { transform: scale(1.3) translateY(-2px); }
+    50% { transform: scale(0.85) translateY(0); }
+    75% { transform: scale(1.1) translateY(-1px); }
+    100% { transform: scale(1) translateY(0); }
 `;
 
 const DetailSkeleton = () => (
@@ -83,13 +103,26 @@ const ArticleDetailPage = () => {
     const { articleId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    useArticleRoom(articleId);
 
     const articleDetail = useSelector((s) => s.articles.articleDetail);
     const currentUser = useSelector((s) => s.auth.currentUser);
     const token = useSelector((s) => s.auth.token);
     const loading = useSelector((s) => s.articles.loading);
+    const bookmarkIds = useSelector((s) => s.bookmarks.bookmarkIds);
+    const likedArticleIds = useSelector((s) => s.likes.likedArticleIds);
 
     const [authorArticles, setAuthorArticles] = useState([]);
+    const [copied, setCopied] = useState(false);
+
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            setCopied(true);
+        } catch {
+            setCopied(false);
+        }
+    };
 
     useEffect(() => { dispatch(getArticle({ articleId, token })); }, [articleId, dispatch, token]);
     useEffect(() => { dispatch(createArticleView({ articleId, token })); }, [articleId, dispatch, token]);
@@ -111,8 +144,29 @@ const ArticleDetailPage = () => {
     if (!articleDetail) return <Layout />;
 
     const isOwner = currentUser && articleDetail.author?._id === currentUser._id;
-    const isLiked = articleDetail.likes?.some((l) => l.author === currentUser?._id);
+    const isLiked = likedArticleIds.includes(articleDetail._id);
+    const isSaved = bookmarkIds.includes(articleDetail._id);
     const stats = readingTime(articleDetail.text || "");
+
+    const handleLike = (e) => {
+        if (!isLiked) {
+            playLikeSound();
+            spawnHeartBurst(e);
+        } else {
+            playUnlikeSound();
+        }
+        dispatch(toggleArticleLike({ article: articleId, token }));
+    };
+
+    const handleBookmark = (e) => {
+        if (!isSaved) {
+            playBookmarkSound();
+            spawnBookmarkBurst(e);
+        } else {
+            playUnbookmarkSound();
+        }
+        dispatch(toggleBookmark({ article: articleId, token }));
+    };
 
     return (
         <Layout>
@@ -161,8 +215,8 @@ const ArticleDetailPage = () => {
                         </Box>
                         <Stack direction="row" spacing={0.3}>
                             <Tooltip title={isLiked ? "Unlike" : "Like"} arrow>
-                                <IconButton size="small" onClick={() => dispatch(toggleArticleLike({ article: articleId, token }))} sx={{ "&:active": { transform: "scale(0.85)" }, transition: "transform 0.1s" }}>
-                                    {isLiked ? <Favorite sx={{ fontSize: 19, color: "#e53935" }} /> : <FavoriteBorder sx={{ fontSize: 19, color: "text.disabled" }} />}
+                                <IconButton size="small" onClick={handleLike} sx={{ transition: "transform 0.1s" }}>
+                                    {isLiked ? <Favorite sx={{ fontSize: 19, color: "#e53935", animation: `${heartPop} 0.45s ease` }} /> : <FavoriteBorder sx={{ fontSize: 19, color: "text.disabled" }} />}
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Comments" arrow>
@@ -170,9 +224,13 @@ const ArticleDetailPage = () => {
                                     <ChatBubbleOutline sx={{ fontSize: 18, color: "text.disabled" }} />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Save" arrow><IconButton size="small"><BookmarkBorderOutlined sx={{ fontSize: 19, color: "text.disabled" }} /></IconButton></Tooltip>
+                            <Tooltip title={isSaved ? "Unsave" : "Save"} arrow>
+                                <IconButton size="small" onClick={handleBookmark}>
+                                    {isSaved ? <Bookmark sx={{ fontSize: 19, color: "primary.main", animation: `${bookmarkPop} 0.45s ease` }} /> : <BookmarkBorderOutlined sx={{ fontSize: 19, color: "text.disabled" }} />}
+                                </IconButton>
+                            </Tooltip>
                             <Tooltip title="Share" arrow>
-                                <IconButton size="small" onClick={() => navigator.clipboard?.writeText(window.location.href)}>
+                                <IconButton size="small" onClick={handleShare}>
                                     <Share sx={{ fontSize: 18, color: "text.disabled" }} />
                                 </IconButton>
                             </Tooltip>
@@ -204,22 +262,26 @@ const ArticleDetailPage = () => {
                     {/* Engagement bar */}
                     <Box sx={{ display: "flex", alignItems: "center", py: 1.5, px: 2, borderRadius: 2, border: "1px solid", borderColor: "divider", bgcolor: "background.paper", mb: 3 }}>
                         <Tooltip title={isLiked ? "Unlike" : "Like"} arrow>
-                            <IconButton size="small" onClick={() => dispatch(toggleArticleLike({ article: articleId, token }))}>
-                                {isLiked ? <Favorite sx={{ fontSize: 20, color: "#e53935" }} /> : <FavoriteBorder sx={{ fontSize: 20, color: "text.disabled" }} />}
+                            <IconButton size="small" onClick={handleLike}>
+                                {isLiked ? <Favorite sx={{ fontSize: 20, color: "#e53935", animation: `${heartPop} 0.45s ease` }} /> : <FavoriteBorder sx={{ fontSize: 20, color: "text.disabled" }} />}
                             </IconButton>
                         </Tooltip>
-                        <Typography variant="body2" color="text.secondary" sx={{ mr: 2.5, fontSize: "0.82rem" }}>{articleDetail.likeCount || 0} likes</Typography>
+                        <Typography variant="body2" sx={{ mr: 2.5, fontSize: "0.82rem", color: isLiked ? "#e53935" : "text.secondary", fontWeight: isLiked ? 700 : 400, transition: "color 0.2s" }}><AnimatedCount count={articleDetail.likeCount || 0} /> likes</Typography>
                         <IconButton size="small" component={Link} to={`/articles/${articleDetail._id}/comments`}>
                             <ChatBubbleOutline sx={{ fontSize: 19, color: "text.disabled" }} />
                         </IconButton>
-                        <Typography variant="body2" color="text.secondary" sx={{ mr: 2.5, fontSize: "0.82rem" }}>{articleDetail.commentCount || 0} comments</Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ mr: 2.5, fontSize: "0.82rem" }}><AnimatedCount count={articleDetail.commentCount || 0} /> comments</Typography>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.4 }}>
                             <VisibilityOutlined sx={{ fontSize: 18, color: "text.disabled" }} />
                             <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>{articleDetail.viewCount || 0} views</Typography>
                         </Box>
                         <Box sx={{ flex: 1 }} />
-                        <Tooltip title="Share" arrow><IconButton size="small" onClick={() => navigator.clipboard?.writeText(window.location.href)}><Share sx={{ fontSize: 19, color: "text.disabled" }} /></IconButton></Tooltip>
-                        <Tooltip title="Save" arrow><IconButton size="small"><BookmarkBorderOutlined sx={{ fontSize: 19, color: "text.disabled" }} /></IconButton></Tooltip>
+                        <Tooltip title="Share" arrow><IconButton size="small" onClick={handleShare}><Share sx={{ fontSize: 19, color: "text.disabled" }} /></IconButton></Tooltip>
+                        <Tooltip title={isSaved ? "Unsave" : "Save"} arrow>
+                            <IconButton size="small" onClick={handleBookmark}>
+                                {isSaved ? <Bookmark sx={{ fontSize: 19, color: "primary.main", animation: `${bookmarkPop} 0.45s ease` }} /> : <BookmarkBorderOutlined sx={{ fontSize: 19, color: "text.disabled" }} />}
+                            </IconButton>
+                        </Tooltip>
                     </Box>
 
                     {isOwner && (
@@ -270,6 +332,13 @@ const ArticleDetailPage = () => {
                     )}
                 </Box>
             </Box>
+            <Snackbar
+                open={copied}
+                autoHideDuration={2000}
+                onClose={() => setCopied(false)}
+                message="Link copied to clipboard"
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            />
         </Layout>
     );
 };

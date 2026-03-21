@@ -17,7 +17,7 @@ export const getCommentsByUser = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -48,7 +48,7 @@ export const getCommentsByArticle = createAsyncThunk(
             });
             return { data: response.data.data, pagination: response.data.pagination };
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -67,7 +67,7 @@ export const deleteComment = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -87,7 +87,7 @@ export const updateComment = createAsyncThunk(
             const {data} = response.data;
             return data;
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -108,7 +108,7 @@ export const createComment = createAsyncThunk(
             return data;
         } catch (error) {
             console.log(error);
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -128,7 +128,7 @@ export const toggleCommentLike = createAsyncThunk(
             const {data, action} = response.data;
             return {like: data, action};
         } catch (error) {
-            return rejectWithValue(error.response.data.error);
+            return rejectWithValue(error.response?.data?.message || error.message);
         }
     }
 );
@@ -142,7 +142,44 @@ const commentsSlice = createSlice({
         error: null,
         commentDetail: null
     },
-    reducers: {},
+    reducers: {
+        socketCommentCreated: (state, action) => {
+            const exists = state.comments.some(c => c._id === action.payload._id);
+            if (!exists) {
+                state.comments.push(action.payload);
+            }
+        },
+        socketCommentUpdated: (state, action) => {
+            state.comments = state.comments.map(c =>
+                c._id === action.payload._id ? { ...c, ...action.payload } : c
+            );
+        },
+        socketCommentDeleted: (state, action) => {
+            state.comments = state.comments.filter(c => c._id !== action.payload._id);
+        },
+        socketCommentLikeToggled: (state, action) => {
+            const { like, action: likeAction } = action.payload;
+            if (!like?.comment) return;
+
+            if (likeAction === 'ADD') {
+                state.comments = state.comments.map(comment => {
+                    if (comment._id === like.comment) {
+                        const alreadyLiked = (comment.likes || []).some(l => l._id === like._id);
+                        if (alreadyLiked) return comment;
+                        return { ...comment, likes: [...(comment.likes || []), like] };
+                    }
+                    return comment;
+                });
+            } else if (likeAction === 'REMOVE') {
+                state.comments = state.comments.map(comment => {
+                    if (comment._id === like.comment) {
+                        return { ...comment, likes: (comment.likes || []).filter(l => l._id !== like._id) };
+                    }
+                    return comment;
+                });
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             // createComment
@@ -151,7 +188,8 @@ const commentsSlice = createSlice({
             })
             .addCase(createComment.fulfilled, (state, action) => {
                 state.loading = false;
-                state.comments.push(action.payload);
+                const exists = state.comments.some(c => c._id === action.payload._id);
+                if (!exists) state.comments.push(action.payload);
                 state.error = false;
             })
             .addCase(createComment.rejected, (state, action) => {
@@ -227,21 +265,14 @@ const commentsSlice = createSlice({
             })
             .addCase(toggleCommentLike.fulfilled, (state, action) => {
                 const {like, action: likeAction} = action.payload;
-                if (likeAction === 'ADD') {
-                    state.comments = state.comments.map(comment => {
-                        if (comment._id === like.comment) {
-                            return {...comment, likes: [...comment.likes, like]};
-                        }
-                        return comment;
-                    });
-                } else if (likeAction === 'REMOVE') {
-                    state.comments = state.comments.map(comment => {
-                        if (comment._id === like.comment) {
-                            return {...comment, likes: comment.likes.filter(l => l._id !== like._id)};
-                        }
-                        return comment;
-                    });
-                }
+                if (!like) return;
+                const delta = likeAction === 'ADD' ? 1 : -1;
+                state.comments = state.comments.map(comment => {
+                    if (comment._id === like.comment) {
+                        return { ...comment, likeCount: Math.max((comment.likeCount || 0) + delta, 0) };
+                    }
+                    return comment;
+                });
                 state.loading = false;
             })
             .addCase(toggleCommentLike.rejected, (state) => {
@@ -249,5 +280,12 @@ const commentsSlice = createSlice({
             });
     }
 });
+
+export const {
+    socketCommentCreated,
+    socketCommentUpdated,
+    socketCommentDeleted,
+    socketCommentLikeToggled,
+} = commentsSlice.actions;
 
 export default commentsSlice.reducer;

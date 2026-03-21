@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import {
-    Avatar, Box, Button, Chip, Container, Divider, Stack, Typography,
+    Avatar, Box, Button, Chip, Container, Divider, Stack, Tab, Tabs, Typography,
 } from "@mui/material";
 import Layout from "../../components/layout/layout";
 import Pagination from "../../components/shared/pagination";
 import { ProfileSkeleton, FeedSkeleton } from "../../components/shared/loader";
 import ArticleList from "../../components/shared/article-list";
+import LikeList from "../../components/shared/like-list";
+import CommentList from "../../components/shared/comment-list";
+import ReplyList from "../../components/shared/reply-list";
+import BookmarkList from "../../components/shared/bookmark-list";
 import {
-    EditOutlined, CalendarTodayOutlined, LinkOutlined,
+    EditOutlined, CalendarTodayOutlined,
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/users/user-reducer";
 import { getArticlesByUser } from "../../redux/articles/articles-reducer";
+import { getLikesByUser } from "../../redux/likes/likes-reducer";
+import { getCommentsByUser } from "../../redux/comments/comments-reducer";
+import { getRepliesByUser } from "../../redux/replies/replies-reducer";
+import { getMyBookmarks } from "../../redux/bookmarks/bookmarks-reducer";
 import moment from "moment";
 
 const ProfilePage = () => {
@@ -26,19 +34,91 @@ const ProfilePage = () => {
     const articlePagination = useSelector((s) => s.articles.pagination);
     const articleLoading = useSelector((s) => s.articles.loading);
     const userLoading = useSelector((s) => s.users.loading);
+    const likes = useSelector((s) => s.likes.likes);
+    const comments = useSelector((s) => s.comments.comments);
+    const replies = useSelector((s) => s.replies.replies);
+    const bookmarks = useSelector((s) => s.bookmarks.bookmarks);
+    const bookmarkPagination = useSelector((s) => s.bookmarks.pagination);
+
+    const [tabIndex, setTabIndex] = useState(0);
     const [articlePage, setArticlePage] = useState(1);
+    const [bookmarkPage, setBookmarkPage] = useState(1);
+
+    const isOwner = !!(user && currentUser && user._id === currentUser._id);
 
     useEffect(() => {
         dispatch(getUserProfile({ userId, token }));
+        dispatch(getLikesByUser({ userId, token }));
+        dispatch(getCommentsByUser({ userId, token }));
+        dispatch(getRepliesByUser({ userId, token }));
     }, [dispatch, token, userId]);
 
     useEffect(() => {
         dispatch(getArticlesByUser({ userId, token, page: articlePage }));
     }, [dispatch, token, userId, articlePage]);
 
-    const handleArticlePageChange = (p) => { setArticlePage(p); };
+    useEffect(() => {
+        if (isOwner) {
+            dispatch(getMyBookmarks({ token, page: bookmarkPage }));
+        }
+    }, [dispatch, token, isOwner, bookmarkPage]);
 
-    const isOwner = !!(user && currentUser && user._id === currentUser._id);
+    const handleTabChange = (_, newValue) => {
+        setTabIndex(newValue);
+        setArticlePage(1);
+        setBookmarkPage(1);
+    };
+
+    // Build tabs dynamically — "Saved" only visible to owner
+    const tabs = [
+        { label: "Articles", count: articlePagination?.total },
+        { label: "Likes", count: likes?.length },
+        ...(isOwner ? [{ label: "Saved", count: bookmarkPagination?.total }] : []),
+        { label: "Comments", count: comments?.length },
+        { label: "Replies", count: replies?.length },
+    ];
+
+    const renderTab = () => {
+        const tabLabel = tabs[tabIndex]?.label;
+
+        switch (tabLabel) {
+            case "Articles":
+                return (
+                    <>
+                        {articleLoading && !articles?.length ? (
+                            <FeedSkeleton count={2} />
+                        ) : (
+                            <>
+                                <ArticleList
+                                    message={isOwner ? "You haven't written any articles yet" : `No articles by @${user?.username}`}
+                                    articles={articles}
+                                />
+                                {articlePagination && (
+                                    <Pagination page={articlePage} totalPages={articlePagination.totalPages} onPageChange={(p) => setArticlePage(p)} />
+                                )}
+                            </>
+                        )}
+                    </>
+                );
+            case "Likes":
+                return <LikeList message={isOwner ? "You haven't liked anything yet" : `No items liked by @${user?.username}`} likes={likes} />;
+            case "Saved":
+                return (
+                    <>
+                        <BookmarkList bookmarks={bookmarks} />
+                        {bookmarkPagination && (
+                            <Pagination page={bookmarkPage} totalPages={bookmarkPagination.totalPages} onPageChange={(p) => setBookmarkPage(p)} />
+                        )}
+                    </>
+                );
+            case "Comments":
+                return <CommentList message={isOwner ? "You haven't commented yet" : `No comments by @${user?.username}`} comments={comments} />;
+            case "Replies":
+                return <ReplyList message={isOwner ? "You haven't replied yet" : `No replies by @${user?.username}`} replies={replies} />;
+            default:
+                return null;
+        }
+    };
 
     if (userLoading && !user) {
         return (
@@ -127,12 +207,12 @@ const ProfilePage = () => {
                                     size="small"
                                     sx={{
                                         textTransform: "none",
-                                        borderColor: "#ddd",
+                                        borderColor: "divider",
                                         color: "text.primary",
                                         fontWeight: 600,
                                         px: 2.5,
                                         mb: { xs: 0, sm: 1 },
-                                        "&:hover": { borderColor: "#bbb", bgcolor: "rgba(0,0,0,0.02)" },
+                                        "&:hover": { borderColor: "text.secondary", bgcolor: "rgba(0,0,0,0.02)" },
                                     }}
                                 >
                                     Edit Profile
@@ -208,36 +288,51 @@ const ProfilePage = () => {
                     </Box>
                 </Box>
 
-                <Divider />
+                {/* ---- Tabs ---- */}
+                <Tabs
+                    value={tabIndex}
+                    onChange={handleTabChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    sx={{
+                        borderBottom: "1px solid",
+                        borderColor: "divider",
+                        mb: 3,
+                        "& .MuiTab-root": {
+                            textTransform: "none",
+                            fontWeight: 600,
+                            fontSize: "0.85rem",
+                            minHeight: 44,
+                        },
+                    }}
+                >
+                    {tabs.map((tab) => (
+                        <Tab
+                            key={tab.label}
+                            label={
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
+                                    {tab.label}
+                                    {tab.count > 0 && (
+                                        <Chip
+                                            label={tab.count}
+                                            size="small"
+                                            sx={{
+                                                height: 20,
+                                                fontSize: "0.68rem",
+                                                fontWeight: 700,
+                                                bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)",
+                                            }}
+                                        />
+                                    )}
+                                </Box>
+                            }
+                        />
+                    ))}
+                </Tabs>
 
-                {/* ---- Articles Section ---- */}
-                <Box sx={{ py: 3 }}>
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                            Articles
-                        </Typography>
-                        {articlePagination && (
-                            <Chip
-                                label={`${articlePagination.total} published`}
-                                size="small"
-                                sx={{ bgcolor: "rgba(0,0,0,0.04)", fontWeight: 500, fontSize: "0.75rem" }}
-                            />
-                        )}
-                    </Box>
-
-                    {articleLoading && !articles?.length ? (
-                        <FeedSkeleton count={2} />
-                    ) : (
-                        <>
-                            <ArticleList
-                                message={isOwner ? "You haven't written any articles yet" : `No articles by @${user?.username}`}
-                                articles={articles}
-                            />
-                            {articlePagination && (
-                                <Pagination page={articlePage} totalPages={articlePagination.totalPages} onPageChange={handleArticlePageChange} />
-                            )}
-                        </>
-                    )}
+                {/* ---- Tab Content ---- */}
+                <Box sx={{ pb: 6, minHeight: "40vh" }}>
+                    {renderTab()}
                 </Box>
             </Container>
         </Layout>

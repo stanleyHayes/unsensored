@@ -1,18 +1,20 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Fab, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
     HomeOutlined, Home,
     TrendingUpOutlined, TrendingUp,
-    SearchOutlined, Search,
-    PeopleOutline, People,
+    ExploreOutlined, Explore,
+    AddOutlined,
+    MenuOutlined, Menu,
 } from "@mui/icons-material";
 
 const tabs = [
     { label: "Feed", path: "/", icon: HomeOutlined, activeIcon: Home },
     { label: "Trending", path: "/trending", icon: TrendingUpOutlined, activeIcon: TrendingUp },
-    { label: "Search", path: "/search", icon: SearchOutlined, activeIcon: Search },
-    { label: "Writers", path: "/users", icon: PeopleOutline, activeIcon: People },
+    { label: "Write", path: "/article/new", fab: true },
+    { label: "Explore", path: "/search", icon: ExploreOutlined, activeIcon: Explore },
+    { label: "More", path: "/more", icon: MenuOutlined, activeIcon: Menu },
 ];
 
 const BottomNavBar = () => {
@@ -34,10 +36,30 @@ const BottomNavBar = () => {
         >
             {tabs.map((tab) => {
                 const active = location.pathname === tab.path;
+
+                if (tab.fab) {
+                    return (
+                        <Box key={tab.label} sx={{ flex: 1, display: "flex", justifyContent: "center", mt: -2.5 }}>
+                            <Fab
+                                size="small"
+                                color="primary"
+                                onClick={() => navigate(tab.path)}
+                                sx={{
+                                    boxShadow: (t) => t.palette.mode === "dark"
+                                        ? "0 4px 14px rgba(167,139,250,0.3)"
+                                        : "0 4px 14px rgba(26,26,46,0.2)",
+                                }}
+                            >
+                                <AddOutlined />
+                            </Fab>
+                        </Box>
+                    );
+                }
+
                 const Icon = active ? tab.activeIcon : tab.icon;
                 return (
                     <Box
-                        key={tab.path}
+                        key={tab.label}
                         onClick={() => navigate(tab.path)}
                         sx={{
                             display: "flex",
