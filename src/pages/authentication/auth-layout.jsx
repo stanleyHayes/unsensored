@@ -178,12 +178,10 @@ const AuthLayout = ({ children, scrollable = false, tagline = "Speak freely. Thi
                 }}
             />
 
-            {/* Logo — always pinned top-left */}
-            <Box sx={{ position: "absolute", top: 28, left: { xs: 24, sm: 40 }, zIndex: 2 }}>
-                <Logo size={28} to={null} />
-            </Box>
-
             <Box sx={{ width: "100%", maxWidth: 420, position: "relative", zIndex: 1, my: "auto" }}>
+                <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
+                    <Logo size={64} to={null} showText={false} />
+                </Box>
                 {children}
             </Box>
         </Box>

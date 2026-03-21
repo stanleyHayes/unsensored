@@ -7,7 +7,7 @@ import {
     HomeOutlined, PersonOutline, ArticleOutlined, EditOutlined,
     LockOutlined, LogoutOutlined, CloseOutlined, DeleteOutline,
     DarkModeOutlined, LightModeOutlined, TrendingUpOutlined,
-    ExploreOutlined, PeopleOutlined,
+    ExploreOutlined, PeopleOutlined, ChatBubbleOutline, FavoriteBorder,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -62,9 +62,41 @@ const DrawerContent = ({ handleClose }) => {
                 <Typography variant="subtitle1" fontWeight={700}>
                     {currentUser?.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                     @{currentUser?.username}
                 </Typography>
+                <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1 }}>
+                    {[
+                        { value: currentUser?.articleCount || 0, label: "Articles", icon: <ArticleOutlined sx={{ fontSize: 16 }} /> },
+                        { value: currentUser?.commentCount || 0, label: "Comments", icon: <ChatBubbleOutline sx={{ fontSize: 16 }} /> },
+                        { value: currentUser?.likeCount || 0, label: "Likes", icon: <FavoriteBorder sx={{ fontSize: 16 }} /> },
+                    ].map((stat) => (
+                        <Box
+                            key={stat.label}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: 0.3,
+                                py: 1,
+                                borderRadius: 1.5,
+                                border: "1px solid",
+                                borderColor: "divider",
+                                bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.015)",
+                            }}
+                        >
+                            <Box sx={{ color: "text.disabled" }}>{stat.icon}</Box>
+                            <Typography variant="body2" sx={{ fontWeight: 800, fontSize: "0.9rem", lineHeight: 1 }}>
+                                {stat.value >= 1_000_000 ? (stat.value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+                                    : stat.value >= 1_000 ? (stat.value / 1_000).toFixed(1).replace(/\.0$/, '') + 'K'
+                                    : stat.value}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.62rem", fontWeight: 500 }}>
+                                {stat.label}
+                            </Typography>
+                        </Box>
+                    ))}
+                </Box>
             </Box>
 
             <Divider />

@@ -46,7 +46,7 @@ const SignInPage = () => {
 
     return (
         <AuthLayout tagline="Speak freely. Think boldly. Write without limits.">
-            <Box sx={{ animation: `${fadeUp} 0.6s ease-out` }}>
+            <Box sx={{ animation: `${fadeUp} 0.6s ease-out`, textAlign: "center" }}>
                 <Typography variant="h4" fontWeight={800} sx={{ mb: 0.5, letterSpacing: "-0.02em" }}>
                     Sign in
                 </Typography>

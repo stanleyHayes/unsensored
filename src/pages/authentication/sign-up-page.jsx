@@ -59,7 +59,7 @@ const SignUpPage = () => {
 
     return (
         <AuthLayout scrollable tagline="Your voice matters. Join a community that believes in unrestricted thought.">
-            <Box sx={{ animation: `${fadeUp} 0.6s ease-out` }}>
+            <Box sx={{ animation: `${fadeUp} 0.6s ease-out`, textAlign: "center" }}>
                 <Typography variant="h4" fontWeight={800} sx={{ mb: 0.5, letterSpacing: "-0.02em" }}>
                     Create account
                 </Typography>

@@ -23,27 +23,49 @@ const MobileHeader = ({ handleOpen }) => {
             }}
         >
             <Toolbar sx={{ height: 56, justifyContent: "space-between" }}>
-                <IconButton onClick={handleOpen} edge="start" sx={{ color: "text.primary" }}>
-                    <MenuOutlined />
-                </IconButton>
-
-                <Box sx={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
-                    <Logo size={24} />
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <IconButton
+                        onClick={handleOpen}
+                        size="small"
+                        sx={{
+                            color: "text.primary",
+                            border: "1.5px solid",
+                            borderColor: "divider",
+                            borderRadius: 1,
+                            p: 0.6,
+                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+                        }}
+                    >
+                        <MenuOutlined sx={{ fontSize: 20 }} />
+                    </IconButton>
+                    <Logo size={22} />
                 </Box>
 
-                <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
-                    <IconButton component={Link} to="/article/new" size="small" sx={{ color: "text.primary" }}>
-                        <AddOutlined />
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                    <IconButton
+                        component={Link}
+                        to="/article/new"
+                        size="small"
+                        sx={{
+                            color: "text.primary",
+                            border: "1.5px solid",
+                            borderColor: "divider",
+                            borderRadius: 1,
+                            p: 0.6,
+                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+                        }}
+                    >
+                        <AddOutlined sx={{ fontSize: 20 }} />
                     </IconButton>
                     <NotificationsDropdown />
-                    <IconButton component={Link} to={`/profile/${currentUser?._id}`} size="small">
-                        <Avatar
-                            src={currentUser?.avatar}
-                            sx={{ width: 28, height: 28, fontSize: "0.75rem", bgcolor: "#1a1a2e" }}
-                        >
-                            {currentUser?.name?.charAt(0)?.toUpperCase()}
-                        </Avatar>
-                    </IconButton>
+                    <Avatar
+                        component={Link}
+                        to={`/profile/${currentUser?._id}`}
+                        src={currentUser?.avatar}
+                        sx={{ width: 32, height: 32, fontSize: "0.7rem", bgcolor: "primary.main", fontWeight: 700, borderRadius: 1, cursor: "pointer" }}
+                    >
+                        {currentUser?.name?.charAt(0)?.toUpperCase()}
+                    </Avatar>
                 </Box>
             </Toolbar>
         </AppBar>
