@@ -38,7 +38,7 @@ const MobileHeader = ({ handleOpen }) => {
                     >
                         <MenuOutlined sx={{ fontSize: 20 }} />
                     </IconButton>
-                    <Logo size={22} />
+                    <Logo size={36} />
                 </Box>
 
                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
