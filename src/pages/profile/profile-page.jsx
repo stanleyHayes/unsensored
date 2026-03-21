@@ -12,6 +12,7 @@ import ReplyList from "../../components/shared/reply-list";
 import BookmarkList from "../../components/shared/bookmark-list";
 import {
     EditOutlined, CalendarTodayOutlined,
+    ArticleOutlined, ChatBubbleOutline, VisibilityOutlined, FavoriteBorder,
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +23,12 @@ import { getCommentsByUser } from "../../redux/comments/comments-reducer";
 import { getRepliesByUser } from "../../redux/replies/replies-reducer";
 import { getMyBookmarks } from "../../redux/bookmarks/bookmarks-reducer";
 import moment from "moment";
+
+const formatCount = (n) => {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return n.toString();
+};
 
 const ProfilePage = () => {
     const { userId } = useParams();
@@ -261,30 +268,44 @@ const ProfilePage = () => {
                         </Stack>
 
                         {/* Stats */}
-                        <Stack
-                            direction="row"
-                            spacing={3}
+                        <Box
                             sx={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(4, 1fr)",
+                                gap: 1.5,
                                 mt: 2.5,
-                                justifyContent: { xs: "center", sm: "flex-start" },
                             }}
                         >
                             {[
-                                { value: user?.articleCount || 0, label: "Articles" },
-                                { value: user?.commentCount || 0, label: "Comments" },
-                                { value: user?.viewCount || 0, label: "Views" },
-                                { value: user?.likeCount || 0, label: "Likes" },
+                                { value: user?.articleCount || 0, label: "Articles", icon: <ArticleOutlined sx={{ fontSize: 18 }} /> },
+                                { value: user?.commentCount || 0, label: "Comments", icon: <ChatBubbleOutline sx={{ fontSize: 18 }} /> },
+                                { value: user?.viewCount || 0, label: "Views", icon: <VisibilityOutlined sx={{ fontSize: 18 }} /> },
+                                { value: user?.likeCount || 0, label: "Likes", icon: <FavoriteBorder sx={{ fontSize: 18 }} /> },
                             ].map((stat) => (
-                                <Box key={stat.label} sx={{ display: "flex", gap: 0.5, alignItems: "baseline" }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 800 }}>
-                                        {stat.value}
+                                <Box
+                                    key={stat.label}
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        gap: 0.5,
+                                        py: 1.5,
+                                        borderRadius: 2,
+                                        border: "1px solid",
+                                        borderColor: "divider",
+                                        bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.015)",
+                                    }}
+                                >
+                                    <Box sx={{ color: "text.disabled" }}>{stat.icon}</Box>
+                                    <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1, fontSize: "1.1rem" }}>
+                                        {formatCount(stat.value)}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.68rem", fontWeight: 500 }}>
                                         {stat.label}
                                     </Typography>
                                 </Box>
                             ))}
-                        </Stack>
+                        </Box>
                     </Box>
                 </Box>
 

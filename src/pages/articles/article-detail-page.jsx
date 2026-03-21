@@ -200,16 +200,16 @@ const ArticleDetailPage = () => {
 
                     {/* Author bar */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 4, animation: `${fadeIn} 0.5s ease-out 0.15s both` }}>
-                        <Avatar src={articleDetail.author?.avatar} sx={{ width: 44, height: 44, bgcolor: "primary.main", cursor: "pointer", fontWeight: 700, border: "2px solid", borderColor: "divider" }}
+                        <Avatar src={articleDetail.author?.avatar} sx={{ width: { xs: 36, sm: 44 }, height: { xs: 36, sm: 44 }, bgcolor: "primary.main", cursor: "pointer", fontWeight: 700, border: "2px solid", borderColor: "divider", flexShrink: 0 }}
                             onClick={() => navigate(`/profile/${articleDetail.author?._id}`)}>
                             {articleDetail.author?.name?.charAt(0)?.toUpperCase()}
                         </Avatar>
-                        <Box sx={{ flex: 1 }}>
-                            <Typography variant="body2" sx={{ fontWeight: 700, cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                            <Typography variant="body2" sx={{ fontWeight: 700, cursor: "pointer", fontSize: { xs: "0.82rem", sm: "0.875rem" }, "&:hover": { textDecoration: "underline" } }}
                                 onClick={() => navigate(`/profile/${articleDetail.author?._id}`)}>
                                 {articleDetail.author?.name}
                             </Typography>
-                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.72rem" }}>
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: "0.65rem", sm: "0.72rem" }, display: "block" }}>
                                 {moment(articleDetail.updatedAt).format("MMM D, YYYY")} · {stats.text} · {articleDetail.viewCount || 0} views
                             </Typography>
                         </Box>

@@ -181,6 +181,7 @@ const Article = ({ article, index = 0 }) => {
                 <Box
                     sx={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
+                        flexWrap: "wrap", gap: 1,
                         pt: 1.5, borderTop: "1px solid", borderColor: "divider",
                     }}
                     onClick={(e) => e.stopPropagation()}
@@ -189,25 +190,26 @@ const Article = ({ article, index = 0 }) => {
                     <Box
                         sx={{
                             display: "flex", alignItems: "center", gap: 1, cursor: "pointer",
+                            minWidth: 0, flex: "1 1 auto",
                             "&:hover .author-name": { textDecoration: "underline" },
                         }}
                         onClick={() => navigate(`/profile/${author?._id}`)}
                     >
-                        <Avatar src={author?.avatar} sx={{ width: 28, height: 28, fontSize: "0.7rem", bgcolor: "primary.main", fontWeight: 700 }}>
+                        <Avatar src={author?.avatar} sx={{ width: 28, height: 28, fontSize: "0.7rem", bgcolor: "primary.main", fontWeight: 700, flexShrink: 0 }}>
                             {author?.name?.charAt(0)?.toUpperCase()}
                         </Avatar>
-                        <Box>
-                            <Typography className="author-name" variant="caption" sx={{ fontWeight: 600, fontSize: "0.75rem", display: "block", lineHeight: 1.2 }}>
+                        <Box sx={{ minWidth: 0 }}>
+                            <Typography className="author-name" variant="caption" sx={{ fontWeight: 600, fontSize: "0.75rem", display: "block", lineHeight: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                                 {author?.name}
                             </Typography>
-                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.66rem" }}>
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.66rem", whiteSpace: "nowrap" }}>
                                 {moment(updatedAt).fromNow()}
                             </Typography>
                         </Box>
                     </Box>
 
                     {/* Actions */}
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.2, flexShrink: 0 }}>
                         <Tooltip title={isLiked ? "Unlike" : "Like"} arrow>
                             <IconButton size="small" onClick={handleLike} sx={{ transition: "transform 0.12s" }}>
                                 {isLiked

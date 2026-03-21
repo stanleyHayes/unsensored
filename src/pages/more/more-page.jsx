@@ -76,26 +76,26 @@ const MorePage = () => {
 
                     {/* Avatar + info */}
                     <Box
-                        sx={{ px: 2, mt: -5, cursor: "pointer" }}
+                        sx={{ px: 2, mt: -5, pt: 0, cursor: "pointer" }}
                         onClick={() => navigate(`/profile/${currentUser?._id}`)}
                     >
-                        <Box sx={{ display: "flex", alignItems: "flex-end", gap: 2 }}>
-                            <Avatar
-                                src={currentUser?.avatar}
-                                sx={{
-                                    width: 80,
-                                    height: 80,
-                                    border: "4px solid",
-                                    borderColor: "background.default",
-                                    bgcolor: "primary.main",
-                                    fontSize: "1.8rem",
-                                    fontWeight: 800,
-                                    boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-                                }}
-                            >
-                                {currentUser?.name?.charAt(0)?.toUpperCase()}
-                            </Avatar>
-                            <Box sx={{ pb: 0.5, flex: 1 }}>
+                        <Avatar
+                            src={currentUser?.avatar}
+                            sx={{
+                                width: 80,
+                                height: 80,
+                                border: "4px solid",
+                                borderColor: "background.default",
+                                bgcolor: "primary.main",
+                                fontSize: "1.8rem",
+                                fontWeight: 800,
+                                boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                            }}
+                        >
+                            {currentUser?.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1.5 }}>
+                            <Box sx={{ flex: 1 }}>
                                 <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
                                     {currentUser?.name}
                                 </Typography>
@@ -103,7 +103,7 @@ const MorePage = () => {
                                     @{currentUser?.username}
                                 </Typography>
                             </Box>
-                            <East sx={{ fontSize: 18, color: "text.disabled", mb: 1 }} />
+                            <East sx={{ fontSize: 18, color: "text.disabled" }} />
                         </Box>
                     </Box>
                 </Box>
