@@ -79,8 +79,8 @@ const DrawerContent = ({ handleClose }) => {
                         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1 }}>
                             {[
                                 { value: currentUser?.articleCount || 0, label: "Articles", icon: <ArticleOutlined sx={{ fontSize: 16 }} /> },
-                                { value: currentUser?.commentCount || 0, label: "Comments", icon: <ChatBubbleOutline sx={{ fontSize: 16 }} /> },
-                                { value: currentUser?.likeCount || 0, label: "Likes", icon: <FavoriteBorder sx={{ fontSize: 16 }} /> },
+                                { value: currentUser?.followerCount || 0, label: "Followers", icon: <PeopleOutlined sx={{ fontSize: 16 }} /> },
+                                { value: currentUser?.followingCount || 0, label: "Following", icon: <PersonAddOutlined sx={{ fontSize: 16 }} /> },
                             ].map((stat) => (
                                 <Box
                                     key={stat.label}
