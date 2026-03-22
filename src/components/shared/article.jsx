@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-    Box, Typography, Avatar, Chip, IconButton, Tooltip, keyframes,
+    Box, Typography, Avatar, Chip, IconButton, Tooltip, keyframes, Snackbar,
 } from "@mui/material";
 import {
     FavoriteBorder, Favorite, ChatBubbleOutline,
@@ -49,10 +49,32 @@ const Article = ({ article, index = 0, gridView = false }) => {
     const bookmarkIds = useSelector((s) => s.bookmarks.bookmarkIds);
     const likedArticleIds = useSelector((s) => s.likes.likedArticleIds);
 
+    const [copied, setCopied] = useState(false);
+
     const isLoggedIn = !!currentUser && !!token;
     const isLiked = likedArticleIds.includes(_id);
     const isSaved = bookmarkIds.includes(_id);
     const stats = readingTime(text || "");
+
+    const handleShare = async (e) => {
+        e.stopPropagation();
+        const url = `${window.location.origin}/articles/${_id}`;
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: title || "Uncensored", text: summary || "", url });
+            } catch (err) {
+                if (err.name !== "AbortError") {
+                    await navigator.clipboard.writeText(url).catch(() => {});
+                    setCopied(true);
+                }
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+            } catch { /* ignore */ }
+        }
+    };
 
     const handleLike = (e) => {
         e.stopPropagation();
@@ -253,13 +275,17 @@ const Article = ({ article, index = 0, gridView = false }) => {
                     <Typography variant="caption" sx={{ mr: 1, fontSize: "0.7rem", minWidth: 10, color: isSaved ? "primary.main" : "text.disabled", fontWeight: isSaved ? 700 : 400, transition: "color 0.2s" }}><AnimatedCount count={bookmarkCount || 0} /></Typography>
 
                     <Tooltip title="Share" arrow>
-                        <IconButton size="small" onClick={(e) => {
-                            e.stopPropagation();
-                            navigator.clipboard.writeText(`${window.location.origin}/articles/${_id}`);
-                        }}>
+                        <IconButton size="small" onClick={handleShare}>
                             <Share sx={{ fontSize: 15, color: "text.disabled" }} />
                         </IconButton>
                     </Tooltip>
+                    <Snackbar
+                        open={copied}
+                        autoHideDuration={2000}
+                        onClose={() => setCopied(false)}
+                        message="Link copied to clipboard"
+                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    />
 
                     <Box sx={{ flex: 1 }} />
 

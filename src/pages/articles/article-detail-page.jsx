@@ -116,11 +116,25 @@ const ArticleDetailPage = () => {
     const [copied, setCopied] = useState(false);
 
     const handleShare = async () => {
-        try {
-            await navigator.clipboard.writeText(window.location.href);
-            setCopied(true);
-        } catch {
-            setCopied(false);
+        const url = window.location.href;
+        const title = articleDetail?.title || "Check out this article on Uncensored";
+        const text = articleDetail?.summary || "";
+        if (navigator.share) {
+            try {
+                await navigator.share({ title, text, url });
+            } catch (err) {
+                if (err.name !== "AbortError") {
+                    await navigator.clipboard.writeText(url).catch(() => {});
+                    setCopied(true);
+                }
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+            } catch {
+                setCopied(false);
+            }
         }
     };
 
