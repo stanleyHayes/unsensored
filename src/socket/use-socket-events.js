@@ -20,6 +20,7 @@ import {
     socketReplyLikeToggled,
 } from '../redux/replies/replies-reducer';
 import { socketBookmarkToggled } from '../redux/bookmarks/bookmarks-reducer';
+import { socketFollowToggled } from '../redux/follows/follows-reducer';
 import { socketNotificationReceived } from '../redux/notifications/notifications-reducer';
 
 const useSocketEvents = () => {
@@ -54,6 +55,9 @@ const useSocketEvents = () => {
         // Bookmark events (room-scoped)
         socket.on('bookmark:toggled', (data) => dispatch(socketBookmarkToggled(data)));
 
+        // Follow events (user-scoped)
+        socket.on('follow:toggled', (data) => dispatch(socketFollowToggled(data)));
+
         // Notification events (user-scoped)
         socket.on('notification:new', (notification) => dispatch(socketNotificationReceived(notification)));
 
@@ -69,6 +73,7 @@ const useSocketEvents = () => {
             socket.off('reply:updated');
             socket.off('reply:deleted');
             socket.off('bookmark:toggled');
+            socket.off('follow:toggled');
             socket.off('notification:new');
         };
     }, [socket, dispatch]);

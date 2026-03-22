@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { getLoggedInUser } from "../../redux/auth/auth-reducer";
 import { getMyBookmarkIds } from "../../redux/bookmarks/bookmarks-reducer";
 import { getMyLikedArticleIds } from "../../redux/likes/likes-reducer";
+import { getMyFollowingIds } from "../../redux/follows/follows-reducer";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -20,6 +21,7 @@ const ProtectedRoute = ({ children }) => {
         dispatch(getLoggedInUser({navigate, token}));
         dispatch(getMyBookmarkIds({ token }));
         dispatch(getMyLikedArticleIds({ token }));
+        dispatch(getMyFollowingIds({ token }));
     }, [dispatch, navigate, token]);
 
     if (!token) {

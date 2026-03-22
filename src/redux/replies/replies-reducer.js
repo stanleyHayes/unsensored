@@ -243,7 +243,11 @@ const repliesSlice = createSlice({
                 const delta = likeAction === 'ADD' ? 1 : -1;
                 state.replies = state.replies.map(reply => {
                     if (reply._id === like.reply) {
-                        return { ...reply, likeCount: Math.max((reply.likeCount || 0) + delta, 0) };
+                        const likes = reply.likes || [];
+                        const updatedLikes = likeAction === 'ADD'
+                            ? [...likes, like]
+                            : likes.filter(l => l._id !== like._id);
+                        return { ...reply, likeCount: Math.max((reply.likeCount || 0) + delta, 0), likes: updatedLikes };
                     }
                     return reply;
                 });

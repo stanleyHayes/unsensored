@@ -173,17 +173,15 @@ const Comment = ({ comment, index = 0 }) => {
                     </Typography>
 
                     <Tooltip title="Replies" arrow>
-                        <IconButton
-                            size="small"
-                            component={Link}
-                            to={`/articles/${comment?.article}/comments/${comment?._id}/replies`}
-                        >
-                            <ChatBubbleOutline sx={{ fontSize: 14, color: "text.disabled" }} />
-                        </IconButton>
+                        <Box component={Link} to={`/articles/${comment?.article}/comments/${comment?._id}/replies`} sx={{ display: "flex", alignItems: "center", gap: 0.3, textDecoration: "none", color: "inherit" }}>
+                            <IconButton size="small" component="span">
+                                <ChatBubbleOutline sx={{ fontSize: 14, color: "text.disabled" }} />
+                            </IconButton>
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.7rem", minWidth: 10 }}>
+                                <AnimatedCount count={comment?.replyCount || 0} />
+                            </Typography>
+                        </Box>
                     </Tooltip>
-                    <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.7rem", minWidth: 10 }}>
-                        <AnimatedCount count={comment?.replyCount || 0} />
-                    </Typography>
                 </Box>
             </Box>
         </Box>

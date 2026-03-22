@@ -6,6 +6,7 @@ import {
     CloseOutlined, ImageOutlined, SaveOutlined,
 } from "@mui/icons-material";
 import Layout from "../../components/layout/layout";
+import ButtonLoader from "../../components/shared/button-loader";
 import { InlineLoader } from "../../components/shared/loader";
 import MarkdownEditor from "../../components/shared/markdown-editor";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,14 +91,69 @@ const UpdateArticlePage = () => {
                             Update your article content
                         </Typography>
                     </Box>
+                    {/* Desktop button */}
                     <Button
                         variant="contained"
-                        startIcon={<SaveOutlined />}
+                        size="small"
+                        startIcon={!loading && <SaveOutlined sx={{ fontSize: "1rem !important" }} />}
                         onClick={handleSave}
                         disabled={loading}
-                        sx={{ bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, boxShadow: "none" }}
+                        sx={{
+                            display: { xs: "none", md: "inline-flex" },
+                            fontSize: "0.78rem",
+                            fontWeight: 600,
+                            px: 2,
+                            borderRadius: 3,
+                            boxShadow: "none",
+                            background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                            },
+                            transition: "all 0.2s ease",
+                        }}
                     >
-                        Save Changes
+                        {loading ? <>Saving <ButtonLoader /></> : "Save Changes"}
+                    </Button>
+                </Box>
+
+                {/* Mobile fixed bottom bar */}
+                <Box
+                    sx={{
+                        display: { xs: "flex", md: "none" },
+                        position: "fixed",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 1200,
+                        px: 2,
+                        py: 1.5,
+                        bgcolor: "background.paper",
+                        borderTop: 1,
+                        borderColor: "divider",
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        startIcon={!loading && <SaveOutlined sx={{ fontSize: "1rem !important" }} />}
+                        onClick={handleSave}
+                        disabled={loading}
+                        sx={{
+                            fontSize: "0.82rem",
+                            fontWeight: 600,
+                            py: 1,
+                            borderRadius: 3,
+                            boxShadow: "none",
+                            background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                            },
+                            transition: "all 0.2s ease",
+                        }}
+                    >
+                        {loading ? <>Saving <ButtonLoader /></> : "Save Changes"}
                     </Button>
                 </Box>
 
@@ -128,7 +184,7 @@ const UpdateArticlePage = () => {
                         sx={{
                             display: "flex", flexDirection: "column", alignItems: "center",
                             justifyContent: "center", gap: 1, height: 160,
-                            border: "2px dashed", borderColor: "divider", borderRadius: 2,
+                            border: "2px dashed", borderColor: "divider", borderRadius: 3,
                             cursor: "pointer", mb: 3,
                             "&:hover": { borderColor: "primary.main", bgcolor: "rgba(0,0,0,0.01)" },
                         }}

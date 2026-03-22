@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import {
     FavoriteBorder, Favorite, ChatBubbleOutline,
-    BookmarkBorderOutlined, Bookmark, East, Share,
+    BookmarkBorderOutlined, Bookmark, East, Share, VisibilityOutlined,
 } from "@mui/icons-material";
 import moment from "moment";
 import readingTime from "reading-time";
@@ -39,7 +39,7 @@ const bookmarkPop = keyframes`
 const Article = ({ article, index = 0, gridView = false }) => {
     const {
         title, summary, author, updatedAt, banner, text,
-        likeCount, commentCount, bookmarkCount, _id, likes, tags,
+        likeCount, commentCount, bookmarkCount, viewCount, _id, likes, tags,
     } = article;
 
     const navigate = useNavigate();
@@ -234,11 +234,13 @@ const Article = ({ article, index = 0, gridView = false }) => {
                     <Typography variant="caption" sx={{ mr: 1, fontSize: "0.7rem", minWidth: 10, color: isLiked ? "#e53935" : "text.disabled", fontWeight: isLiked ? 700 : 400, transition: "color 0.2s" }}><AnimatedCount count={likeCount || 0} /></Typography>
 
                     <Tooltip title="Comments" arrow>
-                        <IconButton size="small" component={Link} to={`/articles/${_id}/comments`}>
-                            <ChatBubbleOutline sx={{ fontSize: 15, color: "text.disabled" }} />
-                        </IconButton>
+                        <Box component={Link} to={`/articles/${_id}/comments`} sx={{ display: "flex", alignItems: "center", gap: 0.3, textDecoration: "none", color: "inherit", mr: 1 }}>
+                            <IconButton size="small" component="span">
+                                <ChatBubbleOutline sx={{ fontSize: 15, color: "text.disabled" }} />
+                            </IconButton>
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.7rem", minWidth: 10 }}><AnimatedCount count={commentCount || 0} /></Typography>
+                        </Box>
                     </Tooltip>
-                    <Typography variant="caption" color="text.disabled" sx={{ mr: 1, fontSize: "0.7rem", minWidth: 10 }}><AnimatedCount count={commentCount || 0} /></Typography>
 
                     <Tooltip title={isSaved ? "Unsave" : "Save"} arrow>
                         <IconButton size="small" onClick={handleSave} sx={{ transition: "transform 0.12s" }}>
@@ -260,6 +262,15 @@ const Article = ({ article, index = 0, gridView = false }) => {
                     </Tooltip>
 
                     <Box sx={{ flex: 1 }} />
+
+                    <Tooltip title="Views" arrow>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3, mr: 1 }}>
+                            <VisibilityOutlined sx={{ fontSize: 14, color: "text.disabled" }} />
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.7rem" }}>
+                                <AnimatedCount count={viewCount || 0} />
+                            </Typography>
+                        </Box>
+                    </Tooltip>
 
                     <Box className="article-read" sx={{ display: "flex", alignItems: "center", gap: 0.3, opacity: 0, transform: "translateX(-4px)", transition: "all 0.2s ease", color: "primary.main" }}>
                         <Typography variant="caption" sx={{ fontWeight: 700, fontSize: "0.68rem" }}>Read</Typography>

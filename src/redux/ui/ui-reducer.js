@@ -4,6 +4,7 @@ const uiSlice = createSlice({
     name: 'ui',
     initialState: {
         toast: { open: false, message: '', severity: 'error' },
+        isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
     },
     reducers: {
         showToast: (state, action) => {
@@ -16,9 +17,12 @@ const uiSlice = createSlice({
         hideToast: (state) => {
             state.toast.open = false;
         },
+        setOnlineStatus: (state, action) => {
+            state.isOnline = action.payload;
+        },
     },
 });
 
-export const { showToast, hideToast } = uiSlice.actions;
+export const { showToast, hideToast, setOnlineStatus } = uiSlice.actions;
 
 export default uiSlice.reducer;

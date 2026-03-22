@@ -113,10 +113,37 @@ const ChangePasswordPage = () => {
                     </Section>
 
                     <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
-                        <Button variant="outlined" onClick={() => window.history.back()} sx={{ flex: 1, py: 1.2, borderColor: "divider", color: "text.primary", "&:hover": { borderColor: "text.secondary" } }}>
+                        <Button
+                            variant="outlined"
+                            onClick={() => window.history.back()}
+                            sx={{
+                                flex: 1, py: 1.2,
+                                borderRadius: 3,
+                                borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)",
+                                color: "text.primary",
+                                "&:hover": {
+                                    borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.25)",
+                                    bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.02)",
+                                },
+                                transition: "all 0.2s ease",
+                            }}
+                        >
                             Cancel
                         </Button>
-                        <Button type="submit" variant="contained" disabled={loading} sx={{ flex: 2, py: 1.2, bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, boxShadow: "none" }}>
+                        <Button
+                            type="submit" variant="contained" disabled={loading}
+                            sx={{
+                                flex: 2, py: 1.2,
+                                borderRadius: 3,
+                                boxShadow: "none",
+                                background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                                "&:hover": {
+                                    background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                    boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                                },
+                                transition: "all 0.2s ease",
+                            }}
+                        >
                             {loading ? <>Updating <ButtonLoader /></> : "Update Password"}
                         </Button>
                     </Stack>

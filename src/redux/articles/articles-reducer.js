@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {BASE_URL} from "../../constants/constants";
 import { toggleArticleLike } from "../likes/likes-reducer";
+import { toggleBookmark } from "../bookmarks/bookmarks-reducer";
 
 // Async thunks
 export const createArticle = createAsyncThunk(
@@ -154,6 +155,36 @@ export const getTrendingArticles = createAsyncThunk(
     }
 );
 
+export const getFollowingFeed = createAsyncThunk(
+    'articles/getFollowingFeed',
+    async ({token, page = 1, limit = 6}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/articles/feed/following`, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { page, limit },
+            });
+            return { data: response.data.data, pagination: response.data.pagination };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
+
+export const getForYouFeed = createAsyncThunk(
+    'articles/getForYouFeed',
+    async ({token, page = 1, limit = 6}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/articles/feed/for-you`, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { page, limit },
+            });
+            return { data: response.data.data, pagination: response.data.pagination };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
+
 export const getTags = createAsyncThunk(
     'articles/getTags',
     async ({token, limit = 20} = {}, {rejectWithValue}) => {
@@ -185,6 +216,9 @@ const articlesSlice = createSlice({
         trendingLoading: false,
         tags: [],
         tagsLoading: false,
+        feedArticles: [],
+        feedPagination: null,
+        feedLoading: false,
     },
     reducers: {
         socketArticleCreated: (state, action) => {
@@ -325,22 +359,71 @@ const articlesSlice = createSlice({
             .addCase(getTags.rejected, (state) => {
                 state.tagsLoading = false;
             })
+            // getFollowingFeed
+            .addCase(getFollowingFeed.pending, (state) => {
+                state.feedLoading = true;
+            })
+            .addCase(getFollowingFeed.fulfilled, (state, action) => {
+                state.feedLoading = false;
+                state.feedArticles = action.payload.data;
+                state.feedPagination = action.payload.pagination;
+            })
+            .addCase(getFollowingFeed.rejected, (state) => {
+                state.feedLoading = false;
+            })
+            // getForYouFeed
+            .addCase(getForYouFeed.pending, (state) => {
+                state.feedLoading = true;
+            })
+            .addCase(getForYouFeed.fulfilled, (state, action) => {
+                state.feedLoading = false;
+                state.feedArticles = action.payload.data;
+                state.feedPagination = action.payload.pagination;
+            })
+            .addCase(getForYouFeed.rejected, (state) => {
+                state.feedLoading = false;
+            })
             // toggleArticleLike — update likeCount on articles
             .addCase(toggleArticleLike.fulfilled, (state, action) => {
                 const { data, action: likeAction } = action.payload;
                 if (!data) return;
                 const articleId = typeof data.article === 'object' ? data.article._id || data.article : data.article;
                 const delta = likeAction === 'ADD' ? 1 : -1;
-                state.articles = state.articles.map(a => {
+                const updateLike = (a) => {
                     if (a._id === articleId) {
                         return { ...a, likeCount: Math.max((a.likeCount || 0) + delta, 0) };
                     }
                     return a;
-                });
+                };
+                state.articles = state.articles.map(updateLike);
+                state.feedArticles = state.feedArticles.map(updateLike);
+                state.trendingArticles = state.trendingArticles.map(updateLike);
                 if (state.articleDetail?._id === articleId) {
                     state.articleDetail = {
                         ...state.articleDetail,
                         likeCount: Math.max((state.articleDetail.likeCount || 0) + delta, 0),
+                    };
+                }
+            })
+            // toggleBookmark — update bookmarkCount on articles
+            .addCase(toggleBookmark.fulfilled, (state, action) => {
+                const { data, action: bmAction } = action.payload;
+                if (!data) return;
+                const articleId = typeof data.article === 'object' ? data.article._id || data.article : data.article;
+                const delta = bmAction === 'ADD' ? 1 : -1;
+                const updateBm = (a) => {
+                    if (a._id === articleId) {
+                        return { ...a, bookmarkCount: Math.max((a.bookmarkCount || 0) + delta, 0) };
+                    }
+                    return a;
+                };
+                state.articles = state.articles.map(updateBm);
+                state.feedArticles = state.feedArticles.map(updateBm);
+                state.trendingArticles = state.trendingArticles.map(updateBm);
+                if (state.articleDetail?._id === articleId) {
+                    state.articleDetail = {
+                        ...state.articleDetail,
+                        bookmarkCount: Math.max((state.articleDetail.bookmarkCount || 0) + delta, 0),
                     };
                 }
             });

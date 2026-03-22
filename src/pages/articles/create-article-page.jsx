@@ -8,6 +8,7 @@ import {
     SaveOutlined,
 } from "@mui/icons-material";
 import Layout from "../../components/layout/layout";
+import ButtonLoader from "../../components/shared/button-loader";
 import { InlineLoader } from "../../components/shared/loader";
 import MarkdownEditor from "../../components/shared/markdown-editor";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,30 +85,115 @@ const CreateArticlePage = () => {
                             Write in markdown — preview as you go
                         </Typography>
                     </Box>
-                    <Stack direction="row" spacing={1}>
+                    {/* Desktop buttons */}
+                    <Stack direction="row" spacing={1.5} sx={{ display: { xs: "none", md: "flex" } }}>
                         <Button
                             variant="outlined"
-                            startIcon={<SaveOutlined />}
+                            size="small"
+                            startIcon={<SaveOutlined sx={{ fontSize: "1rem !important" }} />}
                             disabled={loading}
-                            sx={{ borderColor: "#ddd", color: "text.primary", "&:hover": { borderColor: "#bbb" } }}
+                            sx={{
+                                fontSize: "0.78rem",
+                                fontWeight: 600,
+                                px: 2,
+                                borderRadius: 3,
+                                borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)",
+                                color: "text.primary",
+                                "&:hover": {
+                                    borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
+                                    bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+                                },
+                                transition: "all 0.2s ease",
+                            }}
                         >
                             Draft
                         </Button>
                         <Button
                             variant="contained"
-                            startIcon={<PublishOutlined />}
+                            size="small"
+                            startIcon={!loading && <PublishOutlined sx={{ fontSize: "1rem !important" }} />}
                             onClick={handlePublish}
                             disabled={loading}
                             sx={{
-                                bgcolor: "primary.main",
-                                "&:hover": { bgcolor: "primary.light" },
+                                fontSize: "0.78rem",
+                                fontWeight: 600,
+                                px: 2,
+                                borderRadius: 3,
                                 boxShadow: "none",
+                                background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                                "&:hover": {
+                                    background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                    boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                                },
+                                transition: "all 0.2s ease",
                             }}
                         >
-                            Publish
+                            {loading ? <>Publishing <ButtonLoader /></> : "Publish"}
                         </Button>
                     </Stack>
                 </Box>
+
+                {/* Mobile fixed bottom bar */}
+                <Stack
+                    direction="row"
+                    spacing={1.5}
+                    sx={{
+                        display: { xs: "flex", md: "none" },
+                        position: "fixed",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 1200,
+                        px: 2,
+                        py: 1.5,
+                        bgcolor: "background.paper",
+                        borderTop: 1,
+                        borderColor: "divider",
+                    }}
+                >
+                    <Button
+                        variant="outlined"
+                        fullWidth
+                        startIcon={<SaveOutlined sx={{ fontSize: "1rem !important" }} />}
+                        disabled={loading}
+                        sx={{
+                            fontSize: "0.82rem",
+                            fontWeight: 600,
+                            py: 1,
+                            borderRadius: 3,
+                            borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)",
+                            color: "text.primary",
+                            "&:hover": {
+                                borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)",
+                            },
+                            transition: "all 0.2s ease",
+                        }}
+                    >
+                        Draft
+                    </Button>
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        startIcon={!loading && <PublishOutlined sx={{ fontSize: "1rem !important" }} />}
+                        onClick={handlePublish}
+                        disabled={loading}
+                        sx={{
+                            fontSize: "0.82rem",
+                            fontWeight: 600,
+                            py: 1,
+                            borderRadius: 3,
+                            boxShadow: "none",
+                            background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                            },
+                            transition: "all 0.2s ease",
+                        }}
+                    >
+                        {loading ? <>Publishing <ButtonLoader /></> : "Publish"}
+                    </Button>
+                </Stack>
 
                 {/* Cover image */}
                 {bannerPreview ? (
@@ -120,7 +206,7 @@ const CreateArticlePage = () => {
                                 width: "100%",
                                 height: { xs: 200, sm: 300 },
                                 objectFit: "cover",
-                                borderRadius: 2,
+                                borderRadius: 3,
                             }}
                         />
                         <IconButton
@@ -150,7 +236,7 @@ const CreateArticlePage = () => {
                             height: 160,
                             border: "2px dashed",
                             borderColor: errors.banner ? "error.main" : "divider",
-                            borderRadius: 2,
+                            borderRadius: 3,
                             cursor: "pointer",
                             mb: 3,
                             transition: "all 0.15s ease",

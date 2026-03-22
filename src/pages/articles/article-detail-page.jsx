@@ -238,9 +238,11 @@ const ArticleDetailPage = () => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Comments" arrow>
-                                <IconButton size="small" component={Link} to={`/articles/${articleDetail._id}/comments`}>
-                                    <ChatBubbleOutline sx={{ fontSize: 18, color: "text.disabled" }} />
-                                </IconButton>
+                                <Box component={Link} to={`/articles/${articleDetail._id}/comments`} sx={{ display: "flex", alignItems: "center", textDecoration: "none", color: "inherit" }}>
+                                    <IconButton size="small" component="span">
+                                        <ChatBubbleOutline sx={{ fontSize: 18, color: "text.disabled" }} />
+                                    </IconButton>
+                                </Box>
                             </Tooltip>
                             <Tooltip title={isSaved ? "Unsave" : "Save"} arrow>
                                 <IconButton size="small" onClick={handleBookmark}>
@@ -285,10 +287,12 @@ const ArticleDetailPage = () => {
                             </IconButton>
                         </Tooltip>
                         <Typography variant="body2" sx={{ mr: 2.5, fontSize: "0.82rem", color: isLiked ? "#e53935" : "text.secondary", fontWeight: isLiked ? 700 : 400, transition: "color 0.2s" }}><AnimatedCount count={articleDetail.likeCount || 0} /> likes</Typography>
-                        <IconButton size="small" component={Link} to={`/articles/${articleDetail._id}/comments`}>
-                            <ChatBubbleOutline sx={{ fontSize: 19, color: "text.disabled" }} />
-                        </IconButton>
-                        <Typography variant="body2" color="text.secondary" sx={{ mr: 2.5, fontSize: "0.82rem" }}><AnimatedCount count={articleDetail.commentCount || 0} /> comments</Typography>
+                        <Box component={Link} to={`/articles/${articleDetail._id}/comments`} sx={{ display: "flex", alignItems: "center", gap: 0.3, textDecoration: "none", color: "inherit", mr: 2.5 }}>
+                            <IconButton size="small" component="span">
+                                <ChatBubbleOutline sx={{ fontSize: 19, color: "text.disabled" }} />
+                            </IconButton>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}><AnimatedCount count={articleDetail.commentCount || 0} /> comments</Typography>
+                        </Box>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.4 }}>
                             <VisibilityOutlined sx={{ fontSize: 18, color: "text.disabled" }} />
                             <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>{formatCount(articleDetail.viewCount || 0)} views</Typography>

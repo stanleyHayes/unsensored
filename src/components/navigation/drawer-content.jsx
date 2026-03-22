@@ -11,20 +11,21 @@ import {
     LoginOutlined, PersonAddOutlined,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/auth-reducer";
 import { useThemeMode } from "../../theme/theme-context";
 import { formatCount } from "../shared/animated-count";
 
 const DrawerContent = ({ handleClose }) => {
     const currentUser = useSelector((s) => s.auth.currentUser);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { mode, toggleTheme } = useThemeMode();
     const isLoggedIn = !!currentUser;
 
     const handleLogout = () => {
-        localStorage.clear();
+        dispatch(logout());
         handleClose();
-        navigate("/auth/login");
     };
 
     const publicItems = [

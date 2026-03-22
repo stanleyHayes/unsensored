@@ -38,6 +38,20 @@ export const getUsers = createAsyncThunk(
     }
 );
 
+export const getSuggestedUsers = createAsyncThunk(
+    'users/getSuggestedUsers',
+    async ({token}, {rejectWithValue}) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/users/suggested`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return response.data.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'users',
     initialState: {
@@ -46,6 +60,8 @@ const userSlice = createSlice({
         error: null,
         users: [],
         pagination: null,
+        suggestedUsers: [],
+        suggestedLoading: false,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -72,6 +88,16 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.users = [];
                 state.error = action.payload;
+            })
+            .addCase(getSuggestedUsers.pending, (state) => {
+                state.suggestedLoading = true;
+            })
+            .addCase(getSuggestedUsers.fulfilled, (state, action) => {
+                state.suggestedLoading = false;
+                state.suggestedUsers = action.payload;
+            })
+            .addCase(getSuggestedUsers.rejected, (state) => {
+                state.suggestedLoading = false;
             });
     }
 });

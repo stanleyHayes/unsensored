@@ -24,6 +24,7 @@ const NOTIFICATION_TEXT = {
     LIKE_REPLY: "liked your reply",
     COMMENT_ARTICLE: "commented on your article",
     REPLY_COMMENT: "replied to your comment",
+    FOLLOW_USER: "started following you",
 };
 
 const NotificationsDropdown = () => {
@@ -44,6 +45,11 @@ const NotificationsDropdown = () => {
             dispatch(markNotificationRead({ id: notification._id, token }));
         }
         setOpen(false);
+        if (notification.type === "FOLLOW_USER") {
+            const senderId = typeof notification.sender === "object" ? notification.sender._id : notification.sender;
+            navigate(`/profile/${senderId}`);
+            return;
+        }
         if (notification.article) {
             const articleId = typeof notification.article === "object" ? notification.article._id : notification.article;
             navigate(`/articles/${articleId}`);

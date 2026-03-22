@@ -51,7 +51,7 @@ const SignInPage = () => {
                     Sign in
                 </Typography>
                 <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                    Welcome back — enter your details below
+                    Pick up where you left off. Your voice matters.
                 </Typography>
             </Box>
 
@@ -118,9 +118,15 @@ const SignInPage = () => {
                         endIcon={!loading && <East />}
                         sx={{
                             py: 1.4, textTransform: "none", fontSize: "0.95rem", fontWeight: 600,
-                            bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" },
+                            borderRadius: 3,
+                            boxShadow: "none",
+                            background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                            },
                             "&:active": { transform: "scale(0.98)" },
-                            transition: "all 0.15s ease",
+                            transition: "all 0.2s ease",
                             animation: `${fadeUp} 0.6s ease-out 0.25s both`,
                         }}
                     >
@@ -140,11 +146,38 @@ const SignInPage = () => {
                     component={Link} to="/auth/register" fullWidth variant="outlined"
                     sx={{
                         py: 1.4, textTransform: "none", fontSize: "0.95rem", fontWeight: 600,
-                        borderColor: "#e0e0e0", color: "text.primary",
-                        "&:hover": { borderColor: "#bbb", bgcolor: "rgba(0,0,0,0.02)" },
+                        borderRadius: 3,
+                        borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)",
+                        color: "text.primary",
+                        "&:hover": {
+                            borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.25)",
+                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.02)",
+                        },
+                        transition: "all 0.2s ease",
                     }}
                 >
                     Create account
+                </Button>
+            </Box>
+
+            <Box sx={{ textAlign: "center", mt: 3, animation: `${fadeUp} 0.6s ease-out 0.4s both` }}>
+                <Button
+                    component={Link} to="/" fullWidth
+                    endIcon={<East sx={{ fontSize: "1.1rem !important", background: "linear-gradient(135deg, #7c3aed, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }} />}
+                    sx={{
+                        textTransform: "none", fontSize: "0.92rem", fontWeight: 600,
+                        background: "linear-gradient(135deg, #7c3aed, #a78bfa)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        "&:hover": {
+                            background: "linear-gradient(135deg, #6d28d9, #8b5cf6)",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                        },
+                        transition: "all 0.2s ease",
+                    }}
+                >
+                    Just here to read? Skip ahead
                 </Button>
             </Box>
         </AuthLayout>

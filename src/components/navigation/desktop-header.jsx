@@ -13,7 +13,8 @@ import {
     LoginOutlined, PersonAddOutlined,
 } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/auth-reducer";
 import { useThemeMode } from "../../theme/theme-context";
 import Logo from "../shared/logo";
 import NotificationsDropdown from "../shared/notifications-dropdown";
@@ -38,6 +39,7 @@ const navItems = [
 const DesktopHeader = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const currentUser = useSelector((s) => s.auth.currentUser);
     const { mode, toggleTheme } = useThemeMode();
 
@@ -451,7 +453,7 @@ const DesktopHeader = () => {
 
                         {/* Sign out */}
                         <Box
-                            onClick={() => { localStorage.clear(); navigate("/auth/login"); }}
+                            onClick={() => { dispatch(logout()); setProfileAnchor(null); }}
                             sx={{
                                 display: "flex",
                                 alignItems: "center",

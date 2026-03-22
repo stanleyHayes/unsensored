@@ -29,6 +29,7 @@ import AboutPage from "./pages/legal/about-page";
 import TermsPage from "./pages/legal/terms-page";
 import PrivacyPage from "./pages/legal/privacy-page";
 import GlobalToast from "./components/shared/global-toast";
+import NetworkStatus from "./components/shared/network-status";
 
 function App() {
     useSocketEvents();
@@ -84,6 +85,7 @@ function App() {
 
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
+            <NetworkStatus />
             <GlobalToast />
         </PageTransition>
     );

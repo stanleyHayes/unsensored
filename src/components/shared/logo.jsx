@@ -6,19 +6,26 @@ import { Link } from "react-router-dom";
  * Logo mark — open eye, "nothing hidden".
  * Clean, minimal, recognizable at small sizes.
  */
-const LogoMark = ({ size = 32, color = "currentColor" }) => (
+const LogoMark = ({ size = 32 }) => (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#a78bfa" />
+                <stop offset="50%" stopColor="#7c3aed" />
+                <stop offset="100%" stopColor="#c084fc" />
+            </linearGradient>
+        </defs>
         {/* Eye shape */}
         <path
             d="M3 18C3 18 9.5 9 18 9C26.5 9 33 18 33 18C33 18 26.5 27 18 27C9.5 27 3 18 3 18Z"
-            stroke={color}
+            stroke="url(#logo-grad)"
             strokeWidth="2.2"
             strokeLinejoin="round"
         />
         {/* Iris */}
-        <circle cx="18" cy="18" r="5" stroke={color} strokeWidth="2" />
+        <circle cx="18" cy="18" r="5" stroke="url(#logo-grad)" strokeWidth="2" />
         {/* Pupil */}
-        <circle cx="18" cy="18" r="2" fill={color} />
+        <circle cx="18" cy="18" r="2" fill="url(#logo-grad)" />
     </svg>
 );
 

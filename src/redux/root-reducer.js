@@ -7,6 +7,7 @@ import likesReducer from "./likes/likes-reducer";
 import viewsReducer from "./views/views-reducer";
 import repliesReducer from "./replies/replies-reducer";
 import bookmarksReducer from "./bookmarks/bookmarks-reducer";
+import followsReducer from "./follows/follows-reducer";
 import notificationsReducer from "./notifications/notifications-reducer";
 import uiReducer from "./ui/ui-reducer";
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     views: viewsReducer,
     replies: repliesReducer,
     bookmarks: bookmarksReducer,
+    follows: followsReducer,
     notifications: notificationsReducer,
     ui: uiReducer,
 });

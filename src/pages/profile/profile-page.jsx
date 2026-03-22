@@ -13,7 +13,9 @@ import BookmarkList from "../../components/shared/bookmark-list";
 import {
     EditOutlined, CalendarTodayOutlined,
     ArticleOutlined, ChatBubbleOutline, VisibilityOutlined, FavoriteBorder,
+    PeopleOutline, PersonAddOutlined,
 } from "@mui/icons-material";
+import FollowButton from "../../components/shared/follow-button";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/users/user-reducer";
@@ -22,8 +24,52 @@ import { getLikesByUser } from "../../redux/likes/likes-reducer";
 import { getCommentsByUser } from "../../redux/comments/comments-reducer";
 import { getRepliesByUser } from "../../redux/replies/replies-reducer";
 import { getMyBookmarks } from "../../redux/bookmarks/bookmarks-reducer";
+import { getFollowers, getFollowing } from "../../redux/follows/follows-reducer";
 import moment from "moment";
 import { formatCount } from "../../components/shared/animated-count";
+
+const FollowUserCard = ({ user }) => {
+    if (!user) return null;
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                p: 2,
+                borderRadius: 3,
+                border: "1px solid",
+                borderColor: "divider",
+                bgcolor: "background.paper",
+                transition: "all 0.15s ease",
+                "&:hover": { borderColor: "primary.main", bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)" },
+            }}
+        >
+            <Avatar
+                component={Link}
+                to={`/profile/${user._id}`}
+                src={user.avatar}
+                sx={{ width: 44, height: 44, textDecoration: "none" }}
+            >
+                {user.name?.[0]}
+            </Avatar>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography
+                    component={Link}
+                    to={`/profile/${user._id}`}
+                    variant="body2"
+                    sx={{ fontWeight: 700, textDecoration: "none", color: "text.primary", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                >
+                    {user.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                    @{user.username}
+                </Typography>
+            </Box>
+            <FollowButton userId={user._id} size="small" />
+        </Box>
+    );
+};
 
 const ProfilePage = () => {
     const { userId } = useParams();
@@ -41,10 +87,16 @@ const ProfilePage = () => {
     const replies = useSelector((s) => s.replies.replies);
     const bookmarks = useSelector((s) => s.bookmarks.bookmarks);
     const bookmarkPagination = useSelector((s) => s.bookmarks.pagination);
+    const followers = useSelector((s) => s.follows.followers);
+    const following = useSelector((s) => s.follows.following);
+    const followerPagination = useSelector((s) => s.follows.followerPagination);
+    const followingPagination = useSelector((s) => s.follows.followingPagination);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [articlePage, setArticlePage] = useState(1);
     const [bookmarkPage, setBookmarkPage] = useState(1);
+    const [followerPage, setFollowerPage] = useState(1);
+    const [followingPage, setFollowingPage] = useState(1);
 
     const isOwner = !!(user && currentUser && user._id === currentUser._id);
 
@@ -65,10 +117,20 @@ const ProfilePage = () => {
         }
     }, [dispatch, token, isOwner, bookmarkPage]);
 
+    useEffect(() => {
+        dispatch(getFollowers({ userId, token, page: followerPage }));
+    }, [dispatch, token, userId, followerPage]);
+
+    useEffect(() => {
+        dispatch(getFollowing({ userId, token, page: followingPage }));
+    }, [dispatch, token, userId, followingPage]);
+
     const handleTabChange = (_, newValue) => {
         setTabIndex(newValue);
         setArticlePage(1);
         setBookmarkPage(1);
+        setFollowerPage(1);
+        setFollowingPage(1);
     };
 
     // Build tabs dynamically — "Saved" only visible to owner
@@ -78,6 +140,8 @@ const ProfilePage = () => {
         ...(isOwner ? [{ label: "Saved", count: bookmarkPagination?.total }] : []),
         { label: "Comments", count: comments?.length },
         { label: "Replies", count: replies?.length },
+        { label: "Followers", count: user?.followerCount },
+        { label: "Following", count: user?.followingCount },
     ];
 
     const renderTab = () => {
@@ -117,6 +181,44 @@ const ProfilePage = () => {
                 return <CommentList message={isOwner ? "You haven't commented yet" : `No comments by @${user?.username}`} comments={comments} />;
             case "Replies":
                 return <ReplyList message={isOwner ? "You haven't replied yet" : `No replies by @${user?.username}`} replies={replies} />;
+            case "Followers":
+                return (
+                    <>
+                        {followers?.length ? (
+                            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
+                                {followers.map((f) => (
+                                    <FollowUserCard key={f._id} user={f.follower} />
+                                ))}
+                            </Box>
+                        ) : (
+                            <Typography color="text.secondary" sx={{ textAlign: "center", py: 6 }}>
+                                {isOwner ? "No one is following you yet" : `No followers yet`}
+                            </Typography>
+                        )}
+                        {followerPagination && followerPagination.totalPages > 1 && (
+                            <Pagination page={followerPage} totalPages={followerPagination.totalPages} onPageChange={(p) => setFollowerPage(p)} />
+                        )}
+                    </>
+                );
+            case "Following":
+                return (
+                    <>
+                        {following?.length ? (
+                            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2 }}>
+                                {following.map((f) => (
+                                    <FollowUserCard key={f._id} user={f.following} />
+                                ))}
+                            </Box>
+                        ) : (
+                            <Typography color="text.secondary" sx={{ textAlign: "center", py: 6 }}>
+                                {isOwner ? "You're not following anyone yet" : `Not following anyone yet`}
+                            </Typography>
+                        )}
+                        {followingPagination && followingPagination.totalPages > 1 && (
+                            <Pagination page={followingPage} totalPages={followingPagination.totalPages} onPageChange={(p) => setFollowingPage(p)} />
+                        )}
+                    </>
+                );
             default:
                 return null;
         }
@@ -200,7 +302,7 @@ const ProfilePage = () => {
                                 </Typography>
                             </Box>
 
-                            {isOwner && (
+                            {isOwner ? (
                                 <Button
                                     component={Link}
                                     to="/edit-profile"
@@ -219,6 +321,10 @@ const ProfilePage = () => {
                                 >
                                     Edit Profile
                                 </Button>
+                            ) : (
+                                <Box sx={{ mb: { xs: 0, sm: 1 } }}>
+                                    <FollowButton userId={user?._id} />
+                                </Box>
                             )}
                         </Box>
 
@@ -266,7 +372,7 @@ const ProfilePage = () => {
                         <Box
                             sx={{
                                 display: "grid",
-                                gridTemplateColumns: "repeat(4, 1fr)",
+                                gridTemplateColumns: "repeat(3, 1fr)",
                                 gap: 1.5,
                                 mt: 2.5,
                             }}
@@ -276,6 +382,8 @@ const ProfilePage = () => {
                                 { value: user?.commentCount || 0, label: "Comments", icon: <ChatBubbleOutline sx={{ fontSize: 18 }} /> },
                                 { value: user?.viewCount || 0, label: "Views", icon: <VisibilityOutlined sx={{ fontSize: 18 }} /> },
                                 { value: user?.likeCount || 0, label: "Likes", icon: <FavoriteBorder sx={{ fontSize: 18 }} /> },
+                                { value: user?.followerCount || 0, label: "Followers", icon: <PeopleOutline sx={{ fontSize: 18 }} /> },
+                                { value: user?.followingCount || 0, label: "Following", icon: <PersonAddOutlined sx={{ fontSize: 18 }} /> },
                             ].map((stat) => (
                                 <Box
                                     key={stat.label}

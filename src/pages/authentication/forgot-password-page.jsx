@@ -64,7 +64,14 @@ const ForgotPasswordPage = () => {
                         startIcon={<West />}
                         sx={{
                             py: 1.4, textTransform: "none", fontSize: "0.95rem", fontWeight: 600,
-                            bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" },
+                            borderRadius: 3,
+                            boxShadow: "none",
+                            background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                            },
+                            transition: "all 0.2s ease",
                         }}
                     >
                         Back to sign in
@@ -110,9 +117,15 @@ const ForgotPasswordPage = () => {
                                 type="submit" fullWidth variant="contained" endIcon={<East />}
                                 sx={{
                                     py: 1.4, textTransform: "none", fontSize: "0.95rem", fontWeight: 600,
-                                    bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" },
+                                    borderRadius: 3,
+                                    boxShadow: "none",
+                                    background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                                    "&:hover": {
+                                        background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                        boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                                    },
                                     "&:active": { transform: "scale(0.98)" },
-                                    transition: "all 0.15s ease",
+                                    transition: "all 0.2s ease",
                                 }}
                             >
                                 Send reset link

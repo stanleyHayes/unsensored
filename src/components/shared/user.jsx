@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, Box, Typography, keyframes } from "@mui/material";
 import { East } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import FollowButton from "./follow-button";
 
 const shimmer = keyframes`
     0% { background-position: -200% 0; }
@@ -133,22 +134,25 @@ const User = ({ user }) => {
                     <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.7rem" }}>
                         {articleCount || 0} article{articleCount !== 1 ? "s" : ""}
                     </Typography>
-                    <Box
-                        className="writer-arrow"
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 0.3,
-                            opacity: 0,
-                            transform: "translateX(-4px)",
-                            transition: "all 0.2s ease",
-                            color: "primary.main",
-                        }}
-                    >
-                        <Typography variant="caption" sx={{ fontWeight: 600, fontSize: "0.7rem" }}>
-                            View
-                        </Typography>
-                        <East sx={{ fontSize: 12 }} />
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <FollowButton userId={_id} />
+                        <Box
+                            className="writer-arrow"
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.3,
+                                opacity: 0,
+                                transform: "translateX(-4px)",
+                                transition: "all 0.2s ease",
+                                color: "primary.main",
+                            }}
+                        >
+                            <Typography variant="caption" sx={{ fontWeight: 600, fontSize: "0.7rem" }}>
+                                View
+                            </Typography>
+                            <East sx={{ fontSize: 12 }} />
+                        </Box>
                     </Box>
                 </Box>
             </Box>

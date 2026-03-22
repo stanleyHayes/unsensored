@@ -10,7 +10,8 @@ import {
     East, GitHub, LinkedIn, Email, Language,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/auth-reducer";
 import { useThemeMode } from "../../theme/theme-context";
 import Layout from "../../components/layout/layout";
 
@@ -21,13 +22,13 @@ const fadeIn = keyframes`
 
 const MorePage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const currentUser = useSelector((s) => s.auth.currentUser);
     const { mode, toggleTheme } = useThemeMode();
     const isLoggedIn = !!currentUser;
 
     const handleLogout = () => {
-        localStorage.clear();
-        navigate("/auth/login");
+        dispatch(logout());
     };
 
     const menuItems = isLoggedIn ? [

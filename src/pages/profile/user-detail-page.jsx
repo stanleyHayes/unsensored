@@ -13,6 +13,7 @@ import { getArticlesByUser } from "../../redux/articles/articles-reducer";
 import { getCommentsByUser } from "../../redux/comments/comments-reducer";
 import { getRepliesByUser } from "../../redux/replies/replies-reducer";
 import Layout from "../../components/layout/layout";
+import FollowButton from "../../components/shared/follow-button";
 
 const UserDetailPage = () => {
     const { userId } = useParams();
@@ -71,6 +72,9 @@ const UserDetailPage = () => {
         <Layout>
             <Container maxWidth="md">
                 <Box sx={{ pt: 2, pb: 6, minHeight: "80vh" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mb: 2 }}>
+                        <FollowButton userId={userId} />
+                    </Box>
                     <Tabs
                         value={tabIndex}
                         onChange={handleTabChange}
