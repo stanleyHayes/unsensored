@@ -7,12 +7,12 @@ export const getCommentsByUser = createAsyncThunk(
     'comments/getCommentsByUser',
     async ({userId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'get',
                 url: `${BASE_URL}/users/${userId}/comments`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers,
             });
             const {data} = response.data;
             return data;
@@ -26,10 +26,12 @@ export const getComment = createAsyncThunk(
     'comments/getComment',
     async ({commentId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'get',
                 url: `${BASE_URL}/comments/${commentId}`,
-                headers: { Authorization: `Bearer ${token}` }
+                headers,
             });
             return response.data.data;
         } catch (error) {
@@ -42,8 +44,10 @@ export const getCommentsByArticle = createAsyncThunk(
     'comments/getCommentsByArticle',
     async ({articleId, token, page = 1, limit = 10}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/articles/${articleId}/comments`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { page, limit },
             });
             return { data: response.data.data, pagination: response.data.pagination };

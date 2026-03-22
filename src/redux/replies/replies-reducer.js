@@ -7,12 +7,12 @@ export const getRepliesByUser = createAsyncThunk(
     'replies/getRepliesByUser',
     async ({userId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'get',
                 url: `${BASE_URL}/users/${userId}/replies`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers,
             });
             const {data} = response.data;
             return data;
@@ -26,8 +26,10 @@ export const getRepliesByComment = createAsyncThunk(
     'replies/getRepliesByComment',
     async ({commentId, token, page = 1, limit = 10}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/comments/${commentId}/replies`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { page, limit },
             });
             return { data: response.data.data, pagination: response.data.pagination };

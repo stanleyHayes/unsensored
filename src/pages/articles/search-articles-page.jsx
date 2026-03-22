@@ -43,6 +43,7 @@ const TrendingCard = ({ article, index = 0 }) => {
         <Box
             onClick={() => navigate(`/articles/${article._id}`)}
             sx={{
+                height: "100%", display: "flex", flexDirection: "column",
                 borderRadius: 3, overflow: "hidden", cursor: "pointer",
                 border: "1px solid", borderColor: "divider", bgcolor: "background.paper",
                 animation: `${fadeIn} 0.4s ease-out ${index * 0.08}s both`,
@@ -58,7 +59,7 @@ const TrendingCard = ({ article, index = 0 }) => {
             }}
         >
             {article.banner && (
-                <Box sx={{ height: 140, overflow: "hidden" }}>
+                <Box sx={{ height: 140, overflow: "hidden", flexShrink: 0 }}>
                     <Box
                         className="trending-thumb"
                         component="img" src={article.banner} alt={article.title}
@@ -67,7 +68,7 @@ const TrendingCard = ({ article, index = 0 }) => {
                     />
                 </Box>
             )}
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 2, display: "flex", flexDirection: "column", flex: 1 }}>
                 {article.tags?.length > 0 && (
                     <Box sx={{ display: "flex", gap: 0.5, mb: 1, flexWrap: "wrap" }}>
                         {article.tags.slice(0, 2).map((tag) => (
@@ -87,6 +88,7 @@ const TrendingCard = ({ article, index = 0 }) => {
                 }}>
                     {article.title}
                 </Typography>
+                <Box sx={{ flex: 1 }} />
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
                     <Avatar src={article.author?.avatar} sx={{ width: 22, height: 22, fontSize: "0.6rem", bgcolor: "primary.main", fontWeight: 700 }}>
                         {article.author?.name?.charAt(0)?.toUpperCase()}

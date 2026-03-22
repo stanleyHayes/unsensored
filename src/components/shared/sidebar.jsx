@@ -186,8 +186,36 @@ const Sidebar = ({ articles, loading }) => {
 
             <Divider sx={{ mb: 2 }} />
 
-            {/* Footer */}
-            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.62rem" }}>
+            {/* Footer links */}
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mb: 1.5 }}>
+                {[
+                    { label: "About", to: "/about" },
+                    { label: "Terms", to: "/terms" },
+                    { label: "Privacy", to: "/privacy" },
+                ].map((item, i) => (
+                    <React.Fragment key={item.label}>
+                        {i > 0 && (
+                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.6rem", lineHeight: "18px" }}>·</Typography>
+                        )}
+                        <Typography
+                            component={Link}
+                            to={item.to}
+                            variant="caption"
+                            color="text.disabled"
+                            sx={{
+                                fontSize: "0.64rem",
+                                textDecoration: "none",
+                                "&:hover": { color: "text.secondary", textDecoration: "underline" },
+                                transition: "color 0.15s ease",
+                            }}
+                        >
+                            {item.label}
+                        </Typography>
+                    </React.Fragment>
+                ))}
+            </Box>
+
+            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.6rem" }}>
                 © {new Date().getFullYear()} Uncensored
             </Typography>
         </Box>

@@ -6,8 +6,10 @@ export const getUserProfile = createAsyncThunk(
     'users/getUserProfile',
     async ({userId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/users/${userId}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
             });
             return response.data.data;
         } catch (error) {
@@ -23,8 +25,10 @@ export const getUsers = createAsyncThunk(
             const params = { page, limit };
             if (search) params.search = search;
             if (sortBy) params.sortBy = sortBy;
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/users`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params,
             });
             return { data: response.data.data, pagination: response.data.pagination };

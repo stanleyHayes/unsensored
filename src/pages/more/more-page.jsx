@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    Avatar, Box, Divider, IconButton, List, ListItemButton, ListItemIcon,
+    Avatar, Box, Button, Divider, IconButton, List, ListItemButton, ListItemIcon,
     ListItemText, Typography, keyframes,
 } from "@mui/material";
 import {
@@ -23,19 +23,22 @@ const MorePage = () => {
     const navigate = useNavigate();
     const currentUser = useSelector((s) => s.auth.currentUser);
     const { mode, toggleTheme } = useThemeMode();
+    const isLoggedIn = !!currentUser;
 
     const handleLogout = () => {
         localStorage.clear();
         navigate("/auth/login");
     };
 
-    const menuItems = [
+    const menuItems = isLoggedIn ? [
         { label: "My Profile", icon: <PersonOutline />, to: `/profile/${currentUser?._id}` },
         { label: "My Articles", icon: <ArticleOutlined />, to: "/articles/me" },
         { label: "Bookmarks", icon: <BookmarkBorderOutlined />, to: `/profile/${currentUser?._id}` },
         { label: "Writers", icon: <PeopleOutlined />, to: "/users" },
         { label: "Edit Profile", icon: <EditOutlined />, to: "/edit-profile" },
         { label: "Change Password", icon: <LockOutlined />, to: "/auth/change-password" },
+    ] : [
+        { label: "Writers", icon: <PeopleOutlined />, to: "/users" },
     ];
 
     const legalItems = [
@@ -75,37 +78,72 @@ const MorePage = () => {
                     </Box>
 
                     {/* Avatar + info */}
-                    <Box
-                        sx={{ px: 2, mt: -5, pt: 0, cursor: "pointer" }}
-                        onClick={() => navigate(`/profile/${currentUser?._id}`)}
-                    >
-                        <Avatar
-                            src={currentUser?.avatar}
-                            sx={{
-                                width: 80,
-                                height: 80,
-                                border: "4px solid",
-                                borderColor: "background.default",
-                                bgcolor: "primary.main",
-                                fontSize: "1.8rem",
-                                fontWeight: 800,
-                                boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
-                            }}
+                    {isLoggedIn ? (
+                        <Box
+                            sx={{ px: 2, mt: -5, pt: 0, cursor: "pointer" }}
+                            onClick={() => navigate(`/profile/${currentUser?._id}`)}
                         >
-                            {currentUser?.name?.charAt(0)?.toUpperCase()}
-                        </Avatar>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1.5 }}>
-                            <Box sx={{ flex: 1 }}>
-                                <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
-                                    {currentUser?.name}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>
-                                    @{currentUser?.username}
-                                </Typography>
+                            <Avatar
+                                src={currentUser?.avatar}
+                                sx={{
+                                    width: 80,
+                                    height: 80,
+                                    border: "4px solid",
+                                    borderColor: "background.default",
+                                    bgcolor: "primary.main",
+                                    color: "white",
+                                    fontSize: "1.8rem",
+                                    fontWeight: 800,
+                                    boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                                }}
+                            >
+                                {currentUser?.name?.charAt(0)?.toUpperCase()}
+                            </Avatar>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1.5 }}>
+                                <Box sx={{ flex: 1 }}>
+                                    <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+                                        {currentUser?.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>
+                                        @{currentUser?.username}
+                                    </Typography>
+                                </Box>
+                                <East sx={{ fontSize: 18, color: "text.disabled" }} />
                             </Box>
-                            <East sx={{ fontSize: 18, color: "text.disabled" }} />
                         </Box>
-                    </Box>
+                    ) : (
+                        <Box sx={{ px: 2, mt: -5, pt: 0 }}>
+                            <Avatar
+                                sx={{
+                                    width: 80,
+                                    height: 80,
+                                    border: "4px solid",
+                                    borderColor: "background.default",
+                                    bgcolor: "primary.main",
+                                    color: "white",
+                                    fontSize: "1.8rem",
+                                    fontWeight: 800,
+                                    boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                                }}
+                            >
+                                ?
+                            </Avatar>
+                            <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.02em", mt: 1.5 }}>
+                                Welcome to Unsensored
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem", mb: 2 }}>
+                                Sign in to like, comment, save, and write articles.
+                            </Typography>
+                            <Box sx={{ display: "flex", gap: 1 }}>
+                                <Button component={Link} to="/auth/login" variant="contained" size="small" sx={{ boxShadow: "none", px: 3 }}>
+                                    Sign In
+                                </Button>
+                                <Button component={Link} to="/auth/register" variant="outlined" size="small" sx={{ borderColor: "divider", px: 3 }}>
+                                    Register
+                                </Button>
+                            </Box>
+                        </Box>
+                    )}
                 </Box>
 
                 {/* Main links */}
@@ -161,18 +199,42 @@ const MorePage = () => {
                     </List>
                 </Box>
 
-                {/* Sign out */}
-                <Box sx={{ borderRadius: 3, border: "1px solid", borderColor: "divider", bgcolor: "background.paper", overflow: "hidden", mb: 2 }}>
-                    <ListItemButton onClick={handleLogout} sx={{ py: 1.5, px: 2.5 }}>
-                        <ListItemIcon sx={{ minWidth: 38, color: "error.main" }}>
-                            <LogoutOutlined />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary="Sign out"
-                            primaryTypographyProps={{ fontSize: "0.88rem", fontWeight: 500, color: "error.main" }}
-                        />
-                    </ListItemButton>
-                </Box>
+                {/* Sign out / Sign in */}
+                {isLoggedIn ? (
+                    <Box sx={{ borderRadius: 3, border: "1px solid", borderColor: "divider", bgcolor: "background.paper", overflow: "hidden", mb: 2 }}>
+                        <ListItemButton onClick={handleLogout} sx={{ py: 1.5, px: 2.5 }}>
+                            <ListItemIcon sx={{ minWidth: 38, color: "error.main" }}>
+                                <LogoutOutlined />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Sign out"
+                                primaryTypographyProps={{ fontSize: "0.88rem", fontWeight: 500, color: "error.main" }}
+                            />
+                        </ListItemButton>
+                    </Box>
+                ) : (
+                    <Box sx={{ borderRadius: 3, border: "1px solid", borderColor: "divider", bgcolor: "background.paper", overflow: "hidden", mb: 2 }}>
+                        <ListItemButton component={Link} to="/auth/login" sx={{ py: 1.5, px: 2.5 }}>
+                            <ListItemIcon sx={{ minWidth: 38, color: "primary.main" }}>
+                                <PersonOutline />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Sign In"
+                                primaryTypographyProps={{ fontSize: "0.88rem", fontWeight: 500 }}
+                            />
+                        </ListItemButton>
+                        <Divider sx={{ mx: 2.5 }} />
+                        <ListItemButton component={Link} to="/auth/register" sx={{ py: 1.5, px: 2.5 }}>
+                            <ListItemIcon sx={{ minWidth: 38, color: "primary.main" }}>
+                                <EditOutlined />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Create Account"
+                                primaryTypographyProps={{ fontSize: "0.88rem", fontWeight: 500 }}
+                            />
+                        </ListItemButton>
+                    </Box>
+                )}
 
                 {/* Developer */}
                 <Box sx={{ borderRadius: 3, border: "1px solid", borderColor: "divider", bgcolor: "background.paper", overflow: "hidden", mb: 2, p: 3 }}>

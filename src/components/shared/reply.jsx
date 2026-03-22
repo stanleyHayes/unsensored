@@ -147,6 +147,7 @@ const CommentReply = ({ reply, index = 0, isLast = false }) => {
                         <IconButton
                             size="small"
                             onClick={(e) => {
+                                if (!currentUser || !token) return navigate('/auth/login');
                                 if (!isLiked) { playLikeSound(); spawnHeartBurst(e); } else { playUnlikeSound(); }
                                 dispatch(toggleReplyLike({ reply: reply._id, token }));
                             }}

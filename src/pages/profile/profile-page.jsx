@@ -23,12 +23,7 @@ import { getCommentsByUser } from "../../redux/comments/comments-reducer";
 import { getRepliesByUser } from "../../redux/replies/replies-reducer";
 import { getMyBookmarks } from "../../redux/bookmarks/bookmarks-reducer";
 import moment from "moment";
-
-const formatCount = (n) => {
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
-    return n.toString();
-};
+import { formatCount } from "../../components/shared/animated-count";
 
 const ProfilePage = () => {
     const { userId } = useParams();

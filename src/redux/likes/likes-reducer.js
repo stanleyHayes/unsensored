@@ -34,8 +34,10 @@ export const getLikesByUser = createAsyncThunk(
     'likes/getLikesByUser',
     async ({ userId, token }, { rejectWithValue }) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/users/${userId}/likes`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
             });
             return response.data.data;
         } catch (error) {
@@ -48,8 +50,10 @@ export const getLikesByArticle = createAsyncThunk(
     'likes/getLikesByArticle',
     async ({ articleId, token }, { rejectWithValue }) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/articles/${articleId}/likes`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
             });
             return response.data.data;
         } catch (error) {

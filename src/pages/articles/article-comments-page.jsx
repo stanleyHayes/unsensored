@@ -152,44 +152,69 @@ const ArticleCommentsPage = () => {
                 </Box>
 
                 {/* Composer */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        mb: 4,
-                        pb: 3,
-                        borderBottom: "1px solid",
-                        borderColor: "divider",
-                    }}
-                >
-                    <Avatar
-                        src={currentUser?.avatar}
-                        sx={{ width: 34, height: 34, bgcolor: "primary.main", fontSize: "0.8rem", fontWeight: 700, flexShrink: 0 }}
+                {currentUser ? (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1.5,
+                            mb: 4,
+                            pb: 3,
+                            borderBottom: "1px solid",
+                            borderColor: "divider",
+                        }}
                     >
-                        {currentUser?.name?.charAt(0)?.toUpperCase()}
-                    </Avatar>
-                    <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
-                        <TextField
-                            fullWidth multiline minRows={2} maxRows={6}
-                            placeholder="Add to the discussion..."
-                            value={text} onChange={(e) => setText(e.target.value)}
-                            variant="outlined" size="small"
-                            sx={{
-                                mb: 1.5,
-                                "& .MuiOutlinedInput-root": { borderRadius: 2, bgcolor: "background.paper", fontSize: "0.88rem" },
-                            }}
-                        />
-                        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                            <Button
-                                type="submit" variant="contained" size="small"
-                                disabled={!text.trim() || submitting}
-                                sx={{ bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, px: 3, boxShadow: "none" }}
-                            >
-                                {submitting ? <>Posting <ButtonLoader /></> : "Comment"}
-                            </Button>
+                        <Avatar
+                            src={currentUser?.avatar}
+                            sx={{ width: 34, height: 34, bgcolor: "primary.main", fontSize: "0.8rem", fontWeight: 700, flexShrink: 0 }}
+                        >
+                            {currentUser?.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
+                            <TextField
+                                fullWidth multiline minRows={2} maxRows={6}
+                                placeholder="Add to the discussion..."
+                                value={text} onChange={(e) => setText(e.target.value)}
+                                variant="outlined" size="small"
+                                sx={{
+                                    mb: 1.5,
+                                    "& .MuiOutlinedInput-root": { borderRadius: 2, bgcolor: "background.paper", fontSize: "0.88rem" },
+                                }}
+                            />
+                            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                                <Button
+                                    type="submit" variant="contained" size="small"
+                                    disabled={!text.trim() || submitting}
+                                    sx={{ bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, px: 3, boxShadow: "none" }}
+                                >
+                                    {submitting ? <>Posting <ButtonLoader /></> : "Comment"}
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
+                ) : (
+                    <Box
+                        sx={{
+                            mb: 4,
+                            pb: 3,
+                            borderBottom: "1px solid",
+                            borderColor: "divider",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
+                            Sign in to join the discussion.
+                        </Typography>
+                        <Button
+                            component={Link}
+                            to="/auth/login"
+                            variant="contained"
+                            size="small"
+                            sx={{ px: 3, boxShadow: "none" }}
+                        >
+                            Sign In
+                        </Button>
+                    </Box>
+                )}
 
                 {/* Thread */}
                 <CommentList comments={comments} loading={loading} />

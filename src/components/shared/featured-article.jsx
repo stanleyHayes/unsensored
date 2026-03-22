@@ -110,24 +110,27 @@ const FeaturedArticle = ({ article }) => {
                     {summary}
                 </Typography>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                    <Avatar
-                        src={author?.avatar}
-                        sx={{ width: 28, height: 28, bgcolor: "rgba(255,255,255,0.2)", fontSize: "0.75rem" }}
-                    >
-                        {author?.name?.charAt(0)?.toUpperCase()}
-                    </Avatar>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.8)", fontWeight: 500 }}>
-                        {author?.name}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)" }}>·</Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.6)" }}>
-                        {moment(updatedAt).fromNow()}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)" }}>·</Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.6)" }}>
-                        {stats.text}
-                    </Typography>
+                <Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+                        <Avatar
+                            src={author?.avatar}
+                            sx={{ width: 28, height: 28, bgcolor: "rgba(255,255,255,0.2)", color: "white", fontSize: "0.75rem", fontWeight: 700 }}
+                        >
+                            {author?.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Typography variant="body2" sx={{ color: "white", fontWeight: 700, fontSize: "0.82rem" }}>
+                            {author?.name}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.6, pl: "40px" }}>
+                        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.68rem" }}>
+                            {stats.text}
+                        </Typography>
+                        <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: "rgba(255,255,255,0.4)", flexShrink: 0 }} />
+                        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.6)", fontSize: "0.68rem" }}>
+                            {moment(updatedAt).fromNow()}
+                        </Typography>
+                    </Box>
                 </Box>
             </Box>
         </Box>

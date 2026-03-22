@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { FeedSkeleton } from "../../components/shared/loader";
 import Layout from "../../components/layout/layout";
 import Pagination from "../../components/shared/pagination";
@@ -53,8 +53,8 @@ const TimelineArticlesPage = () => {
         <Layout>
             {featured && <FeaturedArticle article={featured} />}
 
-            <Box sx={{ display: "flex", gap: { xs: 0, md: 6 }, flexDirection: { xs: "column", md: "row" } }}>
-                <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Grid container spacing={{ xs: 0, md: 4 }}>
+                <Grid size={{ xs: 12, md: 8 }}>
                     <Typography variant="overline" sx={{ fontWeight: 700, letterSpacing: "0.08em", color: "text.secondary", fontSize: "0.68rem", mb: 1 }}>
                         {page === 1 ? "Latest articles" : `Page ${page}`}
                     </Typography>
@@ -64,12 +64,14 @@ const TimelineArticlesPage = () => {
                     {pagination && (
                         <Pagination page={page} totalPages={pagination.totalPages} onPageChange={handlePageChange} />
                     )}
-                </Box>
+                </Grid>
 
-                <Box sx={{ display: { xs: "none", md: "block" }, width: 280, flexShrink: 0, position: "sticky", top: 88, alignSelf: "flex-start" }}>
-                    <Sidebar articles={articles} loading={loading} />
-                </Box>
-            </Box>
+                <Grid size={{ xs: 12, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
+                    <Box sx={{ position: "sticky", top: 88 }}>
+                        <Sidebar articles={articles} loading={loading} />
+                    </Box>
+                </Grid>
+            </Grid>
         </Layout>
     );
 };

@@ -19,7 +19,7 @@ import { createArticleView } from "../../redux/views/views-reducer";
 import { toggleArticleLike } from "../../redux/likes/likes-reducer";
 import { toggleBookmark } from "../../redux/bookmarks/bookmarks-reducer";
 import { playLikeSound, playUnlikeSound, spawnHeartBurst, playBookmarkSound, playUnbookmarkSound, spawnBookmarkBurst } from "../../utils/like-effects";
-import AnimatedCount from "../../components/shared/animated-count";
+import AnimatedCount, { formatCount } from "../../components/shared/animated-count";
 import MarkdownPreview from "../../components/shared/markdown-preview";
 import { BASE_URL } from "../../constants/constants";
 import { useArticleRoom } from "../../socket/socket-context";
@@ -129,9 +129,11 @@ const ArticleDetailPage = () => {
 
     // Fetch author's other articles
     useEffect(() => {
-        if (articleDetail?.author?._id && token) {
+        if (articleDetail?.author?._id) {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             axios.get(`${BASE_URL}/users/${articleDetail.author._id}/articles`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { limit: 5 },
             }).then((res) => {
                 const others = (res.data.data || []).filter((a) => a._id !== articleId);
@@ -148,7 +150,10 @@ const ArticleDetailPage = () => {
     const isSaved = bookmarkIds.includes(articleDetail._id);
     const stats = readingTime(articleDetail.text || "");
 
+    const isLoggedIn = !!currentUser && !!token;
+
     const handleLike = (e) => {
+        if (!isLoggedIn) return navigate('/auth/login');
         if (!isLiked) {
             playLikeSound();
             spawnHeartBurst(e);
@@ -159,6 +164,7 @@ const ArticleDetailPage = () => {
     };
 
     const handleBookmark = (e) => {
+        if (!isLoggedIn) return navigate('/auth/login');
         if (!isSaved) {
             playBookmarkSound();
             spawnBookmarkBurst(e);
@@ -199,21 +205,33 @@ const ArticleDetailPage = () => {
                     </Typography>
 
                     {/* Author bar */}
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 4, animation: `${fadeIn} 0.5s ease-out 0.15s both` }}>
-                        <Avatar src={articleDetail.author?.avatar} sx={{ width: { xs: 36, sm: 44 }, height: { xs: 36, sm: 44 }, bgcolor: "primary.main", cursor: "pointer", fontWeight: 700, border: "2px solid", borderColor: "divider", flexShrink: 0 }}
-                            onClick={() => navigate(`/profile/${articleDetail.author?._id}`)}>
-                            {articleDetail.author?.name?.charAt(0)?.toUpperCase()}
-                        </Avatar>
-                        <Box sx={{ flex: 1, minWidth: 0 }}>
-                            <Typography variant="body2" sx={{ fontWeight: 700, cursor: "pointer", fontSize: { xs: "0.82rem", sm: "0.875rem" }, "&:hover": { textDecoration: "underline" } }}
+                    <Box sx={{ mb: 4, animation: `${fadeIn} 0.5s ease-out 0.15s both` }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                            <Avatar src={articleDetail.author?.avatar} sx={{ width: { xs: 36, sm: 44 }, height: { xs: 36, sm: 44 }, bgcolor: "primary.main", cursor: "pointer", fontWeight: 700, border: "2px solid", borderColor: "divider", flexShrink: 0 }}
                                 onClick={() => navigate(`/profile/${articleDetail.author?._id}`)}>
-                                {articleDetail.author?.name}
-                            </Typography>
-                            <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: "0.65rem", sm: "0.72rem" }, display: "block" }}>
-                                {moment(articleDetail.updatedAt).format("MMM D, YYYY")} · {stats.text} · {articleDetail.viewCount || 0} views
-                            </Typography>
+                                {articleDetail.author?.name?.charAt(0)?.toUpperCase()}
+                            </Avatar>
+                            <Box sx={{ flex: 1, minWidth: 0 }}>
+                                <Typography variant="body2" sx={{ fontWeight: 700, cursor: "pointer", fontSize: { xs: "0.82rem", sm: "0.875rem" }, "&:hover": { textDecoration: "underline" } }}
+                                    onClick={() => navigate(`/profile/${articleDetail.author?._id}`)}>
+                                    {articleDetail.author?.name}
+                                </Typography>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
+                                    <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: "0.7rem", sm: "0.72rem" } }}>
+                                        {moment(articleDetail.updatedAt).fromNow()}
+                                    </Typography>
+                                    <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: "text.secondary", flexShrink: 0 }} />
+                                    <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: "0.7rem", sm: "0.72rem" } }}>
+                                        {stats.text}
+                                    </Typography>
+                                    <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: "text.secondary", flexShrink: 0 }} />
+                                    <Typography variant="caption" color="text.disabled" sx={{ fontSize: { xs: "0.7rem", sm: "0.72rem" } }}>
+                                        {formatCount(articleDetail.viewCount || 0)} views
+                                    </Typography>
+                                </Box>
+                            </Box>
                         </Box>
-                        <Stack direction="row" spacing={0.3}>
+                        <Stack direction="row" spacing={0.3} sx={{ mt: 1.5, ml: { xs: 0, sm: "calc(44px + 12px)" } }}>
                             <Tooltip title={isLiked ? "Unlike" : "Like"} arrow>
                                 <IconButton size="small" onClick={handleLike} sx={{ transition: "transform 0.1s" }}>
                                     {isLiked ? <Favorite sx={{ fontSize: 19, color: "#e53935", animation: `${heartPop} 0.45s ease` }} /> : <FavoriteBorder sx={{ fontSize: 19, color: "text.disabled" }} />}
@@ -273,7 +291,7 @@ const ArticleDetailPage = () => {
                         <Typography variant="body2" color="text.secondary" sx={{ mr: 2.5, fontSize: "0.82rem" }}><AnimatedCount count={articleDetail.commentCount || 0} /> comments</Typography>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.4 }}>
                             <VisibilityOutlined sx={{ fontSize: 18, color: "text.disabled" }} />
-                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>{articleDetail.viewCount || 0} views</Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ fontSize: "0.82rem" }}>{formatCount(articleDetail.viewCount || 0)} views</Typography>
                         </Box>
                         <Box sx={{ flex: 1 }} />
                         <Tooltip title="Share" arrow><IconButton size="small" onClick={handleShare}><Share sx={{ fontSize: 19, color: "text.disabled" }} /></IconButton></Tooltip>

@@ -5,7 +5,10 @@ import Layout from "../../components/layout/layout";
 import PageBanner from "../../components/shared/page-banner";
 import Pagination from "../../components/shared/pagination";
 import { useSelector, useDispatch } from "react-redux";
-import ArticleList from "../../components/shared/article-list";
+import Article from "../../components/shared/article";
+import EmptyState from "../../components/shared/empty-state";
+import { ArticleOutlined } from "@mui/icons-material";
+import { Grid } from "@mui/material";
 import { getTrendingArticles } from "../../redux/articles/articles-reducer";
 
 const TrendingArticlesPage = () => {
@@ -17,7 +20,7 @@ const TrendingArticlesPage = () => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getTrendingArticles({ token, page }));
+        dispatch(getTrendingArticles({ token, page, limit: 9 }));
     }, [dispatch, token, page]);
 
     const handlePageChange = (p) => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); };
@@ -26,9 +29,17 @@ const TrendingArticlesPage = () => {
         <Layout>
             <PageBanner title="Trending" description="The most popular articles being read right now." gradient="linear-gradient(135deg, #0f0c29 0%, #44337a 50%, #302b63 100%)" />
             <Box sx={{ pb: 6 }}>
-                {loading && !articles?.length ? <FeedSkeleton /> : (
+                {loading && !articles?.length ? <FeedSkeleton /> : !articles?.length ? (
+                    <EmptyState icon={<ArticleOutlined />} title="No trending articles" description="Articles will appear here once published." />
+                ) : (
                     <>
-                        <ArticleList articles={articles} message="No trending articles" />
+                        <Grid container spacing={3}>
+                            {articles.map((article, i) => (
+                                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={article._id}>
+                                    <Article article={article} index={i} gridView />
+                                </Grid>
+                            ))}
+                        </Grid>
                         {pagination && <Pagination page={page} totalPages={pagination.totalPages} onPageChange={handlePageChange} />}
                     </>
                 )}

@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Typography, keyframes } from "@mui/material";
 
+export const formatCount = (n) => {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return String(n);
+};
+
 const slideUp = keyframes`
     from { transform: translateY(8px); opacity: 0; }
     to   { transform: translateY(0); opacity: 1; }
@@ -38,7 +44,7 @@ const AnimatedCount = ({ count, sx = {} }) => {
                     ...sx,
                 }}
             >
-                {count}
+                {formatCount(count)}
             </Typography>
         </Box>
     );

@@ -62,15 +62,12 @@ const NotificationsDropdown = () => {
                     size="small"
                     onClick={() => setOpen(!open)}
                     sx={{
-                        color: open ? "primary.main" : "text.primary",
-                        border: "1.5px solid",
-                        borderColor: open ? "primary.main" : "divider",
-                        borderRadius: 1,
-                        p: 0.6,
+                        color: open ? "primary.main" : "text.secondary",
                         bgcolor: open
                             ? (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.1)" : "rgba(26,26,46,0.06)"
-                            : (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
-                        "&:hover": { color: "primary.main", borderColor: "primary.main" },
+                            : "transparent",
+                        "&:hover": { color: "primary.main", bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)" },
+                        transition: "all 0.15s ease",
                     }}
                 >
                     <Badge
@@ -86,7 +83,7 @@ const NotificationsDropdown = () => {
                             },
                         }}
                     >
-                        <NotificationsOutlined sx={{ fontSize: 19 }} />
+                        <NotificationsOutlined sx={{ fontSize: 20 }} />
                     </Badge>
                 </IconButton>
             </Tooltip>

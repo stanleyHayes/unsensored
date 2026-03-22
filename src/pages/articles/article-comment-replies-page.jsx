@@ -9,7 +9,7 @@ import Pagination from "../../components/shared/pagination";
 import { useSelector, useDispatch } from "react-redux";
 import ReplyList from "../../components/shared/reply-list";
 import ButtonLoader from "../../components/shared/button-loader";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { createReply, getRepliesByComment } from "../../redux/replies/replies-reducer";
 import { getComment } from "../../redux/comments/comments-reducer";
 import moment from "moment";
@@ -105,44 +105,69 @@ const ArticleCommentRepliesPage = () => {
                 </Box>
 
                 {/* Composer */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        mb: 4,
-                        pb: 3,
-                        borderBottom: "1px solid",
-                        borderColor: "divider",
-                    }}
-                >
-                    <Avatar
-                        src={currentUser?.avatar}
-                        sx={{ width: 28, height: 28, bgcolor: "primary.main", fontSize: "0.7rem", fontWeight: 700, flexShrink: 0 }}
+                {currentUser ? (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: 1.5,
+                            mb: 4,
+                            pb: 3,
+                            borderBottom: "1px solid",
+                            borderColor: "divider",
+                        }}
                     >
-                        {currentUser?.name?.charAt(0)?.toUpperCase()}
-                    </Avatar>
-                    <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
-                        <TextField
-                            fullWidth multiline minRows={1} maxRows={4}
-                            placeholder="Write a reply..."
-                            value={text} onChange={(e) => setText(e.target.value)}
-                            variant="outlined" size="small"
-                            sx={{
-                                mb: 1.5,
-                                "& .MuiOutlinedInput-root": { borderRadius: 2, bgcolor: "background.paper", fontSize: "0.85rem" },
-                            }}
-                        />
-                        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                            <Button
-                                type="submit" variant="contained" size="small"
-                                disabled={!text.trim() || submitting}
-                                sx={{ bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, px: 3, boxShadow: "none" }}
-                            >
-                                {submitting ? <>Posting <ButtonLoader /></> : "Reply"}
-                            </Button>
+                        <Avatar
+                            src={currentUser?.avatar}
+                            sx={{ width: 28, height: 28, bgcolor: "primary.main", fontSize: "0.7rem", fontWeight: 700, flexShrink: 0 }}
+                        >
+                            {currentUser?.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
+                            <TextField
+                                fullWidth multiline minRows={1} maxRows={4}
+                                placeholder="Write a reply..."
+                                value={text} onChange={(e) => setText(e.target.value)}
+                                variant="outlined" size="small"
+                                sx={{
+                                    mb: 1.5,
+                                    "& .MuiOutlinedInput-root": { borderRadius: 2, bgcolor: "background.paper", fontSize: "0.85rem" },
+                                }}
+                            />
+                            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                                <Button
+                                    type="submit" variant="contained" size="small"
+                                    disabled={!text.trim() || submitting}
+                                    sx={{ bgcolor: "primary.main", "&:hover": { bgcolor: "primary.light" }, px: 3, boxShadow: "none" }}
+                                >
+                                    {submitting ? <>Posting <ButtonLoader /></> : "Reply"}
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
+                ) : (
+                    <Box
+                        sx={{
+                            mb: 4,
+                            pb: 3,
+                            borderBottom: "1px solid",
+                            borderColor: "divider",
+                            textAlign: "center",
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
+                            Sign in to reply.
+                        </Typography>
+                        <Button
+                            component={Link}
+                            to="/auth/login"
+                            variant="contained"
+                            size="small"
+                            sx={{ px: 3, boxShadow: "none" }}
+                        >
+                            Sign In
+                        </Button>
+                    </Box>
+                )}
 
                 {/* Thread */}
                 <ReplyList replies={replies} loading={loading} />

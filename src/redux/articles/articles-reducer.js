@@ -30,12 +30,12 @@ export const getArticle = createAsyncThunk(
     'articles/getArticle',
     async ({articleId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'get',
                 url: `${BASE_URL}/articles/${articleId}`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers,
             });
             const {data} = response.data;
             return data;
@@ -92,8 +92,10 @@ export const getArticles = createAsyncThunk(
         try {
             const params = { page, limit };
             if (search) params.search = search;
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/articles`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params,
             });
             return { data: response.data.data, pagination: response.data.pagination };
@@ -122,8 +124,10 @@ export const getArticlesByUser = createAsyncThunk(
     'articles/getArticlesByUser',
     async ({userId, token, page = 1, limit = 6}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/users/${userId}/articles`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { page, limit },
             });
             return { data: response.data.data, pagination: response.data.pagination };
@@ -137,8 +141,10 @@ export const getTrendingArticles = createAsyncThunk(
     'articles/getTrendingArticles',
     async ({token, page = 1, limit = 6}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/articles/trending`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { page, limit },
             });
             return { data: response.data.data, pagination: response.data.pagination };
@@ -150,10 +156,12 @@ export const getTrendingArticles = createAsyncThunk(
 
 export const getTags = createAsyncThunk(
     'articles/getTags',
-    async ({token, limit = 20}, {rejectWithValue}) => {
+    async ({token, limit = 20} = {}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/articles/tags`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
                 params: { limit },
             });
             return response.data.data;

@@ -8,6 +8,7 @@ import viewsReducer from "./views/views-reducer";
 import repliesReducer from "./replies/replies-reducer";
 import bookmarksReducer from "./bookmarks/bookmarks-reducer";
 import notificationsReducer from "./notifications/notifications-reducer";
+import uiReducer from "./ui/ui-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     replies: repliesReducer,
     bookmarks: bookmarksReducer,
     notifications: notificationsReducer,
+    ui: uiReducer,
 });
 
 export default rootReducer;

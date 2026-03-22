@@ -21,12 +21,14 @@ import ArticleViewsPage from "./pages/articles/article-views-page";
 import ArticleLikesPage from "./pages/articles/article-likes-page";
 import PageNotFound from "./pages/404/404-page-not-found-page";
 import ProtectedRoute from "./components/shared/protected-route";
+import OptionalAuthRoute from "./components/shared/optional-auth-route";
 import ArticleCommentRepliesPage from "./pages/articles/article-comment-replies-page";
 import UsersPage from "./pages/users/users-page";
 import MorePage from "./pages/more/more-page";
 import AboutPage from "./pages/legal/about-page";
 import TermsPage from "./pages/legal/terms-page";
 import PrivacyPage from "./pages/legal/privacy-page";
+import GlobalToast from "./components/shared/global-toast";
 
 function App() {
     useSocketEvents();
@@ -34,39 +36,39 @@ function App() {
     return (
         <PageTransition>
             <Routes>
-                <Route path="/" element={<ProtectedRoute><TimelinePage /></ProtectedRoute>} />
+                <Route path="/" element={<OptionalAuthRoute><TimelinePage /></OptionalAuthRoute>} />
 
                 <Route path="/article/new" element={<ProtectedRoute><CreateArticlePage /></ProtectedRoute>} />
 
                 <Route path="/articles/me" element={<ProtectedRoute><AuthoredArticlesPage /></ProtectedRoute>} />
 
-                <Route path="/articles/:articleId" element={<ProtectedRoute><ArticleDetailPage /></ProtectedRoute>} />
+                <Route path="/articles/:articleId" element={<OptionalAuthRoute><ArticleDetailPage /></OptionalAuthRoute>} />
 
                 <Route path="/articles" element={<ProtectedRoute><AuthoredArticlesPage /></ProtectedRoute>} />
 
                 <Route path="/articles/:articleId/update" element={<ProtectedRoute><UpdateArticlePage /></ProtectedRoute>} />
 
-                <Route path="/articles/:articleId/comments" element={<ProtectedRoute><ArticleCommentsPage /></ProtectedRoute>} />
+                <Route path="/articles/:articleId/comments" element={<OptionalAuthRoute><ArticleCommentsPage /></OptionalAuthRoute>} />
 
-                <Route path="/articles/:articleId/comments/:commentId/replies" element={<ProtectedRoute><ArticleCommentRepliesPage /></ProtectedRoute>} />
+                <Route path="/articles/:articleId/comments/:commentId/replies" element={<OptionalAuthRoute><ArticleCommentRepliesPage /></OptionalAuthRoute>} />
 
-                <Route path="/articles/:articleId/likes" element={<ProtectedRoute><ArticleLikesPage /></ProtectedRoute>} />
+                <Route path="/articles/:articleId/likes" element={<OptionalAuthRoute><ArticleLikesPage /></OptionalAuthRoute>} />
 
-                <Route path="/articles/:articleId/views" element={<ProtectedRoute><ArticleViewsPage /></ProtectedRoute>} />
+                <Route path="/articles/:articleId/views" element={<OptionalAuthRoute><ArticleViewsPage /></OptionalAuthRoute>} />
 
-                <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+                <Route path="/search" element={<OptionalAuthRoute><SearchPage /></OptionalAuthRoute>} />
 
-                <Route path="/profile/:userId" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                <Route path="/profile/:userId" element={<OptionalAuthRoute><ProfilePage /></OptionalAuthRoute>} />
 
                 <Route path="/edit-profile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
 
-                <Route path="/trending" element={<ProtectedRoute><TrendingPage /></ProtectedRoute>} />
+                <Route path="/trending" element={<OptionalAuthRoute><TrendingPage /></OptionalAuthRoute>} />
 
                 <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
 
-                <Route path="/users" element={<ProtectedRoute><UsersPage /></ProtectedRoute>} />
+                <Route path="/users" element={<OptionalAuthRoute><UsersPage /></OptionalAuthRoute>} />
 
-                <Route path="/users/:userId/activities" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                <Route path="/users/:userId/activities" element={<OptionalAuthRoute><ProfilePage /></OptionalAuthRoute>} />
 
                 <Route path="/auth/register" element={<SignUpPage />} />
 
@@ -74,7 +76,7 @@ function App() {
 
                 <Route path="/auth/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
 
-                <Route path="/more" element={<ProtectedRoute><MorePage /></ProtectedRoute>} />
+                <Route path="/more" element={<OptionalAuthRoute><MorePage /></OptionalAuthRoute>} />
 
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/terms" element={<TermsPage />} />
@@ -82,6 +84,7 @@ function App() {
 
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
+            <GlobalToast />
         </PageTransition>
     );
 }

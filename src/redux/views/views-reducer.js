@@ -7,12 +7,12 @@ export const createArticleView = createAsyncThunk(
     'views/createArticleView',
     async ({articleId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'post',
                 url: `${BASE_URL}/views`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
+                headers,
                 data: {article: articleId}
             });
             const {data} = response.data;
@@ -27,12 +27,12 @@ export const getViewsByArticle = createAsyncThunk(
     'views/getViewsByArticle',
     async ({articleId, token}, {rejectWithValue}) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios({
                 method: 'get',
                 url: `${BASE_URL}/articles/${articleId}/views`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
+                headers,
                 data: {article: articleId}
             });
             const {data} = response.data;

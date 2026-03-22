@@ -10,6 +10,7 @@ import {
     NotificationsOutlined, KeyboardArrowDown, ArticleOutlined,
     EditOutlined, LockOutlined, CloseOutlined, East,
     InfoOutlined, GavelOutlined, PrivacyTipOutlined,
+    LoginOutlined, PersonAddOutlined,
 } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -28,10 +29,10 @@ const shimmer = keyframes`
 `;
 
 const navItems = [
-    { label: "Feed", path: "/" },
-    { label: "Trending", path: "/trending" },
-    { label: "Explore", path: "/search" },
-    { label: "Writers", path: "/users" },
+    { label: "Pulse", path: "/" },
+    { label: "Buzzing", path: "/trending" },
+    { label: "Rabbit Hole", path: "/search" },
+    { label: "Voices", path: "/users" },
 ];
 
 const DesktopHeader = () => {
@@ -45,8 +46,31 @@ const DesktopHeader = () => {
     const [profileMenuOpen, setProfileMenuOpen] = useState(false);
     const profileRef = useRef(null);
     const searchRef = useRef(null);
+    const navContainerRef = useRef(null);
+    const navRefs = useRef({});
+    const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
 
     const isActive = (path) => location.pathname === path;
+
+    // Animate pill indicator to the active nav item
+    useEffect(() => {
+        const activeItem = navItems.find((item) => item.path === location.pathname);
+        if (!activeItem || !navContainerRef.current) {
+            setPillStyle((prev) => ({ ...prev, opacity: 0 }));
+            return;
+        }
+        const el = navRefs.current[activeItem.path];
+        const container = navContainerRef.current;
+        if (el && container) {
+            const elRect = el.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            setPillStyle({
+                left: elRect.left - containerRect.left,
+                width: elRect.width,
+                opacity: 1,
+            });
+        }
+    }, [location.pathname]);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -82,149 +106,223 @@ const DesktopHeader = () => {
                     <Toolbar disableGutters sx={{ height: 60, gap: 0.5 }}>
                         {/* Logo */}
                         <Box sx={{ mr: 3 }}>
-                            <Logo size={26} />
+                            <Logo size={30} />
                         </Box>
 
                         {/* Nav */}
-                        <Box sx={{ display: "flex", gap: 0.3, flex: 1 }}>
+                        <Box sx={{ flex: 1 }}>
+                        <Box
+                            ref={navContainerRef}
+                            sx={{
+                                display: "inline-flex",
+                                gap: 0.3,
+                                position: "relative",
+                                bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+                                borderRadius: 8,
+                                p: 0.5,
+                                border: "1px solid",
+                                borderColor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+                            }}
+                        >
+                            {/* Sliding pill indicator */}
+                            <Box
+                                sx={{
+                                    position: "absolute",
+                                    top: 4,
+                                    left: pillStyle.left,
+                                    width: pillStyle.width,
+                                    height: "calc(100% - 8px)",
+                                    borderRadius: 7,
+                                    bgcolor: "primary.main",
+                                    opacity: pillStyle.opacity,
+                                    transition: "left 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease",
+                                    zIndex: 0,
+                                    boxShadow: (t) => pillStyle.opacity
+                                        ? t.palette.mode === "dark"
+                                            ? "0 2px 12px rgba(124,58,237,0.4)"
+                                            : "0 2px 12px rgba(124,58,237,0.25)"
+                                        : "none",
+                                }}
+                            />
                             {navItems.map((item) => (
                                 <Button
                                     key={item.path}
+                                    ref={(el) => { navRefs.current[item.path] = el; }}
                                     component={Link}
                                     to={item.path}
-                                    startIcon={item.icon}
                                     size="small"
                                     sx={{
                                         fontWeight: isActive(item.path) ? 700 : 500,
                                         fontSize: "0.8rem",
-                                        color: isActive(item.path) ? "text.primary" : "text.secondary",
-                                        position: "relative",
-                                        px: 1.5,
+                                        color: isActive(item.path) ? "white" : "text.secondary",
+                                        px: 2,
                                         py: 0.6,
-                                        borderRadius: 1.5,
-                                        "&::after": isActive(item.path) ? {
-                                            content: '""',
-                                            position: "absolute",
-                                            bottom: 0,
-                                            left: "50%",
-                                            transform: "translateX(-50%)",
-                                            width: 18,
-                                            height: 2,
-                                            borderRadius: 1,
-                                            bgcolor: "primary.main",
-                                        } : {},
+                                        borderRadius: 7,
+                                        bgcolor: "transparent",
+                                        position: "relative",
+                                        zIndex: 1,
                                         "&:hover": {
-                                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
-                                            color: "text.primary",
+                                            bgcolor: isActive(item.path)
+                                                ? "transparent"
+                                                : (t) => t.palette.mode === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.03)",
+                                            color: isActive(item.path) ? "white" : "text.primary",
                                         },
-                                        transition: "all 0.15s ease",
+                                        transition: "color 0.2s ease, font-weight 0.2s ease",
                                     }}
                                 >
                                     {item.label}
                                 </Button>
                             ))}
                         </Box>
+                        </Box>
 
                         {/* Right side */}
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                             {/* Search toggle */}
-                            <Tooltip title="Search (⌘K)" arrow>
+                            <Tooltip title="Search" arrow>
                                 <IconButton
                                     ref={searchRef}
                                     size="small"
                                     onClick={() => setSearchOpen(!searchOpen)}
                                     sx={{
-                                        color: searchOpen ? "primary.main" : "text.disabled",
+                                        color: searchOpen ? "primary.main" : "text.secondary",
                                         bgcolor: searchOpen
                                             ? (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.1)" : "rgba(26,26,46,0.06)"
                                             : "transparent",
-                                        "&:hover": { color: "text.primary" },
-                                    }}
-                                >
-                                    <SearchOutlined sx={{ fontSize: 19 }} />
-                                </IconButton>
-                            </Tooltip>
-
-                            {/* Notifications */}
-                            <NotificationsDropdown />
-
-                            {/* Write */}
-                            <Tooltip title="Write article" arrow>
-                                <IconButton
-                                    component={Link}
-                                    to="/article/new"
-                                    size="small"
-                                    sx={{
-                                        color: "text.disabled",
-                                        border: "1.5px solid",
-                                        borderColor: "divider",
-                                        borderRadius: 2,
-                                        p: 0.6,
-                                        "&:hover": {
-                                            color: "primary.main",
-                                            borderColor: "primary.main",
-                                            bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)",
-                                        },
+                                        "&:hover": { color: "primary.main", bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)" },
                                         transition: "all 0.15s ease",
                                     }}
                                 >
-                                    <EditOutlined sx={{ fontSize: 17 }} />
+                                    <SearchOutlined sx={{ fontSize: 20 }} />
                                 </IconButton>
                             </Tooltip>
 
-                            <Divider orientation="vertical" flexItem sx={{ mx: 0.8, my: 1.5 }} />
+                            {/* Notifications (auth only) */}
+                            {currentUser && <NotificationsDropdown />}
+
+                            {/* Write (auth only) */}
+                            {currentUser && (
+                                <Tooltip title="Write" arrow>
+                                    <IconButton
+                                        component={Link}
+                                        to="/article/new"
+                                        size="small"
+                                        sx={{
+                                            color: isActive("/article/new") ? "primary.main" : "text.secondary",
+                                            bgcolor: isActive("/article/new")
+                                                ? (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.1)" : "rgba(26,26,46,0.06)"
+                                                : "transparent",
+                                            "&:hover": { color: "primary.main", bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)" },
+                                            transition: "all 0.15s ease",
+                                        }}
+                                    >
+                                        <EditOutlined sx={{ fontSize: 20 }} />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
+
+                            <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 1.5 }} />
 
                             {/* Theme toggle */}
                             <Tooltip title={mode === "dark" ? "Light mode" : "Dark mode"} arrow>
                                 <IconButton
                                     onClick={toggleTheme}
                                     size="small"
-                                    sx={{ color: "text.disabled", "&:hover": { color: "text.primary" } }}
+                                    sx={{
+                                        color: "text.secondary",
+                                        "&:hover": { color: "primary.main", bgcolor: (t) => t.palette.mode === "dark" ? "rgba(167,139,250,0.08)" : "rgba(26,26,46,0.04)" },
+                                        transition: "all 0.15s ease",
+                                    }}
                                 >
                                     {mode === "dark"
-                                        ? <LightModeOutlined sx={{ fontSize: 18 }} />
-                                        : <DarkModeOutlined sx={{ fontSize: 18 }} />
+                                        ? <LightModeOutlined sx={{ fontSize: 20 }} />
+                                        : <DarkModeOutlined sx={{ fontSize: 20 }} />
                                     }
                                 </IconButton>
                             </Tooltip>
 
                             {/* Profile dropdown */}
                             <Box ref={profileRef}>
-                                <Button
-                                    onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                                    size="small"
-                                    sx={{
-                                        p: 0.4,
-                                        pl: 0.5,
-                                        pr: 0.8,
-                                        borderRadius: 6,
-                                        minWidth: 0,
-                                        border: "1px solid",
-                                        borderColor: profileMenuOpen ? "primary.main" : "divider",
-                                        "&:hover": { borderColor: "primary.main" },
-                                        transition: "border-color 0.15s ease",
-                                    }}
-                                >
-                                    <Avatar
-                                        src={currentUser?.avatar}
+                                {currentUser ? (
+                                    <Button
+                                        onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                                        size="small"
                                         sx={{
-                                            width: 28, height: 28,
-                                            fontSize: "0.75rem", fontWeight: 700,
-                                            bgcolor: "primary.main",
+                                            p: 0.4,
+                                            pl: 0.5,
+                                            pr: 0.8,
+                                            borderRadius: 6,
+                                            minWidth: 0,
+                                            border: "1px solid",
+                                            borderColor: profileMenuOpen ? "primary.main" : "divider",
+                                            "&:hover": { borderColor: "primary.main" },
+                                            transition: "border-color 0.15s ease",
                                         }}
                                     >
-                                        {currentUser?.name?.charAt(0)?.toUpperCase()}
-                                    </Avatar>
-                                    <KeyboardArrowDown
-                                        sx={{
-                                            fontSize: 16,
-                                            color: "text.disabled",
-                                            ml: 0.3,
-                                            transition: "transform 0.2s ease",
-                                            transform: profileMenuOpen ? "rotate(180deg)" : "rotate(0)",
-                                        }}
-                                    />
-                                </Button>
+                                        <Avatar
+                                            src={currentUser?.avatar}
+                                            sx={{
+                                                width: 28, height: 28,
+                                                fontSize: "0.75rem", fontWeight: 700,
+                                                bgcolor: "primary.main",
+                                                color: "white",
+                                            }}
+                                        >
+                                            {currentUser?.name?.charAt(0)?.toUpperCase()}
+                                        </Avatar>
+                                        <KeyboardArrowDown
+                                            sx={{
+                                                fontSize: 16,
+                                                color: "text.disabled",
+                                                ml: 0.3,
+                                                transition: "transform 0.2s ease",
+                                                transform: profileMenuOpen ? "rotate(180deg)" : "rotate(0)",
+                                            }}
+                                        />
+                                    </Button>
+                                ) : (
+                                    <Stack direction="row" spacing={1} alignItems="center">
+                                        <Button
+                                            component={Link}
+                                            to="/auth/login"
+                                            variant="outlined"
+                                            size="small"
+                                            sx={{
+                                                borderColor: "divider",
+                                                color: "text.primary",
+                                                fontSize: "0.78rem",
+                                                fontWeight: 600,
+                                                px: 2,
+                                                borderRadius: 2,
+                                                "&:hover": { borderColor: "primary.main", color: "primary.main" },
+                                                transition: "all 0.15s ease",
+                                            }}
+                                        >
+                                            Sign In
+                                        </Button>
+                                        <Button
+                                            component={Link}
+                                            to="/auth/register"
+                                            variant="contained"
+                                            size="small"
+                                            sx={{
+                                                boxShadow: "none",
+                                                fontSize: "0.78rem",
+                                                fontWeight: 600,
+                                                px: 2,
+                                                borderRadius: 2,
+                                                background: "linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)",
+                                                "&:hover": {
+                                                    background: "linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%)",
+                                                    boxShadow: "0 4px 12px rgba(124,58,237,0.3)",
+                                                },
+                                                transition: "all 0.2s ease",
+                                            }}
+                                        >
+                                            Get Started
+                                        </Button>
+                                    </Stack>
+                                )}
                             </Box>
                         </Box>
                     </Toolbar>
@@ -281,9 +379,9 @@ const DesktopHeader = () => {
                 </ClickAwayListener>
             </Popper>
 
-            {/* Profile dropdown */}
+            {/* Profile dropdown (auth only) */}
             <Popper
-                open={profileMenuOpen}
+                open={!!currentUser && profileMenuOpen}
                 anchorEl={profileRef.current}
                 placement="bottom-end"
                 sx={{ zIndex: 1300, width: 260, mt: 0.5 }}

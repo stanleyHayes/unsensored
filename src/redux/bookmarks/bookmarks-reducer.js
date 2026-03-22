@@ -49,8 +49,10 @@ export const getBookmarksByArticle = createAsyncThunk(
     'bookmarks/getBookmarksByArticle',
     async ({ articleId, token }, { rejectWithValue }) => {
         try {
+            const headers = {};
+            if (token) headers.Authorization = `Bearer ${token}`;
             const response = await axios.get(`${BASE_URL}/bookmarks/article/${articleId}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers,
             });
             return response.data.data;
         } catch (error) {

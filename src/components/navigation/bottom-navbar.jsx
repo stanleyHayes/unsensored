@@ -10,10 +10,10 @@ import {
 } from "@mui/icons-material";
 
 const tabs = [
-    { label: "Feed", path: "/", icon: HomeOutlined, activeIcon: Home },
-    { label: "Trending", path: "/trending", icon: TrendingUpOutlined, activeIcon: TrendingUp },
+    { label: "Pulse", path: "/", icon: HomeOutlined, activeIcon: Home },
+    { label: "Buzzing", path: "/trending", icon: TrendingUpOutlined, activeIcon: TrendingUp },
     { label: "Write", path: "/article/new", fab: true },
-    { label: "Explore", path: "/search", icon: ExploreOutlined, activeIcon: Explore },
+    { label: "Rabbit Hole", path: "/search", icon: ExploreOutlined, activeIcon: Explore },
     { label: "More", path: "/more", icon: MenuOutlined, activeIcon: Menu },
 ];
 
